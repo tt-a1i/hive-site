@@ -1,8 +1,15 @@
 ---
+import type { Lang } from '../i18n'
+import { STRINGS } from '../i18n'
+
+interface Props {
+  lang: Lang
+}
+const { lang } = Astro.props
+const s = STRINGS[lang]
 ---
 
 <section class="relative overflow-hidden pt-20 pb-12 sm:pt-24 sm:pb-16">
-  {/* top honey hairline */}
   <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/40 to-transparent"></div>
 
   {/* foreground hex anchor — right side, layered, visible at any scale */}
@@ -28,41 +35,41 @@
   </svg>
 
   <div class="mx-auto max-w-6xl px-6">
-    {/* editorial kicker — with live pulse */}
+    {/* editorial kicker */}
     <p class="reveal flex items-center gap-3 font-mono text-[10.5px] uppercase tracking-[0.28em] text-[var(--color-cool)]" style="animation-delay:0.05s">
       <span class="relative flex size-1.5">
         <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-accent)] opacity-60"></span>
         <span class="relative inline-flex size-1.5 rounded-full bg-[var(--color-accent)]"></span>
       </span>
       <span class="flex items-center">
-        <span class="text-[var(--color-accent)]">Hive</span><span class="mx-3 opacity-50">/</span>browser-native<span class="mx-3 opacity-50">/</span>v0.6.0-alpha.5
+        <span class="text-[var(--color-accent)]">{s.hero.kicker.product}</span><span class="mx-3 opacity-50">/</span>{s.hero.kicker.sub}<span class="mx-3 opacity-50">/</span>{s.hero.kicker.version}
       </span>
     </p>
 
-    {/* headline — controlled to break in 2 lines on desktop */}
+    {/* headline */}
     <h1
       class="reveal mt-10 max-w-[1000px] font-display leading-[0.94] tracking-[-0.025em]"
       style="font-size:clamp(2.8rem,6.6vw,5.75rem);font-weight:280;font-variation-settings:'opsz' 144,'SOFT' 30;animation-delay:0.18s"
     >
-      <span class="text-[var(--color-text)]">The </span><span class="text-[var(--color-text)]" style="font-weight:520;font-variation-settings:'opsz' 144,'SOFT' 20">hive-mind</span><br/>
-      <span class="text-[var(--color-text-muted)]">for CLI coding agents</span><span class="text-[var(--color-accent)]">.</span>
+      {s.hero.headlinePre && <span class="text-[var(--color-text)]">{s.hero.headlinePre}</span>}<span class="text-[var(--color-text)]" style="font-weight:520;font-variation-settings:'opsz' 144,'SOFT' 20">{s.hero.headlineKey}</span><br/>
+      <span class="text-[var(--color-text-muted)]">{s.hero.headlinePost}</span><span class="text-[var(--color-accent)]">.</span>
     </h1>
 
-    {/* subhead — bolder editorial weight */}
+    {/* subhead */}
     <p
       class="reveal mt-9 max-w-md font-display text-[26px] leading-[1.3] text-[var(--color-text-muted)] sm:text-[30px]"
       style="font-weight:340;font-style:italic;font-variation-settings:'opsz' 18,'SOFT' 90;animation-delay:0.32s"
     >
-      Real CLIs. Real PTYs.<br/>In your browser.
+      {s.hero.subheadLine1}<br/>{s.hero.subheadLine2}
     </p>
 
-    {/* CTA row */}
+    {/* CTA */}
     <div class="reveal mt-12 flex flex-wrap items-center gap-7" style="animation-delay:0.46s">
       <a
         href="https://github.com/tt-a1i/hive#try-the-demo-first"
         class="group inline-flex items-center gap-2 rounded-md bg-[var(--color-accent)] px-6 py-3 text-[13.5px] font-medium text-[#1a1813] transition hover:bg-[var(--color-accent-hi)]"
       >
-        Try the demo
+        {s.hero.tryDemo}
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="transition group-hover:translate-x-0.5">
           <path d="M5 12h14M13 5l7 7-7 7"/>
         </svg>
@@ -71,7 +78,7 @@
         href="https://github.com/tt-a1i/hive"
         class="group inline-flex items-center gap-1.5 text-sm text-[var(--color-text-muted)] underline-offset-[6px] transition hover:text-[var(--color-text)] hover:underline"
       >
-        View source
+        {s.hero.viewSource}
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-50 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100">
           <path d="m7 17 10-10M7 7h10v10"/>
         </svg>

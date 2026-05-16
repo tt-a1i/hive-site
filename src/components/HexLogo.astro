@@ -1,0 +1,28 @@
+---
+interface Props {
+  size?: number
+  class?: string
+  glow?: boolean
+}
+const { size = 22, class: className = '', glow = false } = Astro.props
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  class={className}
+  style={glow ? 'filter: drop-shadow(0 0 10px var(--color-accent-glow))' : ''}
+>
+  <path
+    d="M12 2.5 L20.4 7.25 L20.4 16.75 L12 21.5 L3.6 16.75 L3.6 7.25 Z"
+    stroke="currentColor"
+    stroke-width="1.5"
+    stroke-linejoin="round"
+    fill="currentColor"
+    fill-opacity="0.08"
+  />
+  <circle cx="12" cy="12" r="1.15" fill="currentColor" />
+</svg>

@@ -1,0 +1,41 @@
+---
+import '../styles/global.css'
+
+interface Props {
+  title?: string
+  description?: string
+}
+
+const {
+  title = 'Hive — Browser-native hive-mind for CLI coding agents',
+  description = 'Orchestrate Claude Code, Codex, Gemini, and OpenCode as real PTY processes via a small team protocol. Your orchestrator is a real CLI agent.',
+} = Astro.props
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://hive.pages.dev" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#08090b" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

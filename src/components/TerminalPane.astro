@@ -1,0 +1,44 @@
+---
+import HexLogo from './HexLogo.astro'
+
+interface Props {
+  name: string
+  role: 'orchestrator' | 'coder' | 'reviewer' | 'tester'
+  status: 'working' | 'idle'
+  height?: string
+  class?: string
+}
+
+const { name, role, status, height, class: className = '' } = Astro.props
+---
+
+<div
+  class={`group relative overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-[0_2px_0_0_rgba(0,0,0,0.5),0_20px_60px_-20px_rgba(0,0,0,0.6)] transition-all duration-300 hover:border-[var(--color-border-hi)] hover:shadow-[var(--shadow-glow)] ${className}`}
+  style={height ? `min-height:${height}` : undefined}
+>
+  {/* gradient edge highlight on hover */}
+  <div class="pointer-events-none absolute inset-0 rounded-xl opacity-0 transition-opacity duration-500 group-hover:opacity-100" style="background: radial-gradient(600px circle at 50% 0%, rgba(245,165,36,0.07), transparent 50%);"></div>
+
+  {/* title bar */}
+  <div class="flex items-center justify-between border-b border-[var(--color-border)]/80 bg-[var(--color-bg-2)]/60 px-4 py-2.5">
+    <div class="flex items-center gap-2.5">
+      <HexLogo size={14} class={role === 'orchestrator' ? 'text-[var(--color-accent)]' : 'text-[var(--color-text-faint)]'} />
+      <span class="font-mono text-[12.5px] font-medium text-[var(--color-text)]">{name}</span>
+      <span class="rounded-md border border-[var(--color-border-hi)] bg-[var(--color-surface-2)] px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-[var(--color-text-muted)]">
+        {role}
+      </span>
+    </div>
+    <div class="flex items-center gap-1.5">
+      <span
+        class={`size-1.5 rounded-full ${status === 'working' ? 'bg-[var(--color-status-working)] pulse-dot' : 'bg-[var(--color-status-idle)]'}`}
+        style={status === 'working' ? '--tw-shadow:0 0 0 3px rgba(245,165,36,0.18);' : undefined}
+      ></span>
+      <span class={`font-mono text-[10.5px] uppercase tracking-wider ${status === 'working' ? 'text-[var(--color-accent-hi)]' : 'text-[var(--color-text-faint)]'}`}>{status}</span>
+    </div>
+  </div>
+
+  {/* body */}
+  <div class="relative px-4 py-4 font-mono text-[12.5px] leading-[1.65] text-[var(--color-text-muted)]">
+    <slot />
+  </div>
+</div>

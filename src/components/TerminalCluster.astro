@@ -1,0 +1,94 @@
+---
+import TerminalPane from './TerminalPane.astro'
+---
+
+<div class="relative">
+  {/* ambient glow behind cluster */}
+  <div class="pointer-events-none absolute -inset-8 -z-10 rounded-[28px] bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,rgba(245,165,36,0.10),transparent_70%)] blur-2xl"></div>
+
+  {/* Orchestrator (full width, taller) */}
+  <TerminalPane name="queen-bee-42" role="orchestrator" status="working" class="reveal" height="auto">
+    <div style="animation-delay:0.05s" class="reveal">
+      <span class="text-[var(--color-accent-hi)]">$</span>
+      <span class="text-[var(--color-text)]"> team list</span>
+    </div>
+    <div style="animation-delay:0.15s" class="reveal">
+      <span class="text-[var(--color-text-faint)]">[</span>
+      <div class="pl-5">
+        <span class="text-[var(--color-text-faint)]">{'{ '}</span><span class="text-[var(--color-accent-hi)]">"name"</span>: <span class="text-[var(--color-text)]">"alice-fox-31"</span>, <span class="text-[var(--color-accent-hi)]">"role"</span>: <span class="text-[var(--color-text)]">"coder"</span>, <span class="text-[var(--color-accent-hi)]">"status"</span>: <span class="text-[var(--color-accent)]">"working"</span> <span class="text-[var(--color-text-faint)]">{'},'}</span><br/>
+        <span class="text-[var(--color-text-faint)]">{'{ '}</span><span class="text-[var(--color-accent-hi)]">"name"</span>: <span class="text-[var(--color-text)]">"bob-otter-12"</span>, <span class="text-[var(--color-accent-hi)]">"role"</span>: <span class="text-[var(--color-text)]">"reviewer"</span>, <span class="text-[var(--color-accent-hi)]">"status"</span>: <span class="text-[var(--color-text-muted)]">"idle"</span> <span class="text-[var(--color-text-faint)]">{'},'}</span><br/>
+        <span class="text-[var(--color-text-faint)]">{'{ '}</span><span class="text-[var(--color-accent-hi)]">"name"</span>: <span class="text-[var(--color-text)]">"carol-newt-08"</span>, <span class="text-[var(--color-accent-hi)]">"role"</span>: <span class="text-[var(--color-text)]">"tester"</span>, <span class="text-[var(--color-accent-hi)]">"status"</span>: <span class="text-[var(--color-text-muted)]">"idle"</span> <span class="text-[var(--color-text-faint)]">{'}'}</span>
+      </div>
+      <span class="text-[var(--color-text-faint)]">]</span>
+    </div>
+    <div style="animation-delay:0.45s" class="reveal pt-3">
+      <span class="text-[var(--color-accent-hi)]">$</span>
+      <span class="text-[var(--color-text)]"> team send</span>
+      <span class="text-[var(--color-accent)]"> alice-fox-31</span>
+      <span class="text-[var(--color-text-muted)]"> "Refactor auth middleware, extract JWT into helper"</span>
+    </div>
+    <div style="animation-delay:0.55s" class="reveal">
+      <span class="text-[var(--color-text-faint)]">{'{ '}</span><span class="text-[var(--color-accent-hi)]">"ok"</span>: <span class="text-[var(--color-accent)]">true</span>, <span class="text-[var(--color-accent-hi)]">"dispatch_id"</span>: <span class="text-[var(--color-text)]">"d_e1f2…"</span> <span class="text-[var(--color-text-faint)]">{'}'}</span>
+    </div>
+    <div style="animation-delay:0.85s" class="reveal pt-3">
+      <span class="text-[var(--color-accent-hi)]">$</span>
+      <span class="text-[var(--color-text)]"> team send</span>
+      <span class="text-[var(--color-accent)]"> carol-newt-08</span>
+      <span class="text-[var(--color-text-muted)]"> "Write tests for the new JWT helper once Alice reports"</span>
+    </div>
+    <div style="animation-delay:1.05s" class="reveal cursor inline-block">
+      <span class="text-[var(--color-accent-hi)]">$</span>
+    </div>
+  </TerminalPane>
+
+  {/* Workers row */}
+  <div class="mt-5 grid gap-5 sm:grid-cols-3">
+    <TerminalPane name="alice-fox-31" role="coder" status="working" class="reveal" >
+      <div style="animation-delay:1.3s" class="reveal">
+        <span class="text-[var(--color-text-faint)]">›</span>
+        Reading <span class="text-[var(--color-accent-hi)]">src/server/auth-middleware.ts</span>…
+      </div>
+      <div style="animation-delay:1.5s" class="reveal">
+        <span class="text-[var(--color-text-faint)]">›</span>
+        Extracting <span class="text-[var(--color-text)]">validateJwt()</span> →
+        <span class="text-[var(--color-accent-hi)]">jwt.ts</span>
+      </div>
+      <div style="animation-delay:1.7s" class="reveal">
+        <span class="text-[var(--color-text-faint)]">›</span>
+        Updating 3 call sites
+      </div>
+      <div style="animation-delay:1.9s" class="reveal">
+        <span class="text-[var(--color-text-faint)]">›</span>
+        Running <span class="text-[var(--color-text)]">pnpm check</span>
+        <span class="cursor"></span>
+      </div>
+    </TerminalPane>
+
+    <TerminalPane name="bob-otter-12" role="reviewer" status="idle" class="reveal">
+      <div style="animation-delay:1.4s" class="reveal">
+        <span class="text-[var(--color-text-faint)]">›</span>
+        Idle. Awaiting dispatch.
+      </div>
+      <div style="animation-delay:1.6s" class="reveal">
+        <span class="text-[var(--color-text-faint)]">›</span>
+        Last task: reviewed
+        <span class="text-[var(--color-accent-hi)]">PR #142</span>
+        <span class="text-[var(--color-text-faint)]">(approved)</span>
+      </div>
+    </TerminalPane>
+
+    <TerminalPane name="carol-newt-08" role="tester" status="idle" class="reveal">
+      <div style="animation-delay:1.5s" class="reveal">
+        <span class="text-[var(--color-text-faint)]">›</span>
+        Idle. Queued: <span class="text-[var(--color-text)]">1</span> task
+      </div>
+      <div style="animation-delay:1.7s" class="reveal">
+        <span class="text-[var(--color-text-faint)]">›</span>
+        Watching
+        <span class="text-[var(--color-accent-hi)]">alice-fox-31</span>
+        for completion
+        <span class="cursor"></span>
+      </div>
+    </TerminalPane>
+  </div>
+</div>

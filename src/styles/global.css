@@ -1,0 +1,127 @@
+@import 'tailwindcss';
+
+@import '@fontsource-variable/fraunces/index.css';
+@import '@fontsource-variable/fraunces/wght-italic.css';
+@import '@fontsource-variable/inter/index.css';
+@import '@fontsource-variable/jetbrains-mono/index.css';
+
+@theme {
+  /* Warm-shifted near-black — workshop, not cyber-club */
+  --color-bg: #0e0c08;
+  --color-bg-2: #15120c;
+  --color-surface: #1c1812;
+  --color-surface-2: #25201a;
+  --color-border: #2a2620;
+  --color-border-hi: #3a342c;
+
+  /* Cream-shifted text on warm black */
+  --color-text: #ece7da;
+  --color-text-muted: #948a78;
+  --color-text-faint: #5d564c;
+
+  /* Matte honey — desaturated from neon amber */
+  --color-accent: #d39860;
+  --color-accent-hi: #ebbe85;
+  --color-accent-soft: rgba(211, 152, 96, 0.10);
+  --color-accent-glow: rgba(211, 152, 96, 0.22);
+
+  /* Cool slate as secondary — breaks single-hue monotony */
+  --color-cool: #7d8c95;
+  --color-cool-soft: rgba(125, 140, 149, 0.14);
+
+  --color-status-working: #d39860;
+  --color-status-idle: #6b6660;
+
+  /* Editorial serif display + clean sans body + crisp mono */
+  --font-display: 'Fraunces Variable', 'Times New Roman', 'Songti SC', serif;
+  --font-sans:
+    'Inter Variable', system-ui, -apple-system, BlinkMacSystemFont,
+    'Helvetica Neue', sans-serif;
+  --font-mono:
+    'JetBrains Mono Variable', ui-monospace, 'SF Mono', Menlo, Consolas,
+    monospace;
+}
+
+html {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-feature-settings: 'ss01', 'cv11';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background:
+    /* Soft warm radial from top, then base */
+    radial-gradient(
+      ellipse 75% 45% at 50% -8%,
+      rgba(211, 152, 96, 0.07),
+      transparent 70%
+    ),
+    /* Faint grain — adds organic texture without being noisy */
+      url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/><feColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.45 0 0 0 0 0.4 0 0 0 0.5 0'/></filter><rect width='200' height='200' filter='url(%23n)' opacity='0.45'/></svg>"),
+    var(--color-bg);
+  background-size: auto, 220px 220px, auto;
+  min-height: 100vh;
+}
+
+/* Honeycomb pattern — Hive signature, very subtle */
+.honeycomb {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 86.6' fill='none' stroke='%23d39860' stroke-width='0.5'><polygon points='25,0 75,0 100,43.3 75,86.6 25,86.6 0,43.3'/><polygon points='100,43.3 125,86.6 75,86.6'/><polygon points='0,43.3 -25,86.6 25,86.6' opacity='0'/></svg>");
+  background-size: 80px 70px;
+  background-position: 0 0;
+}
+
+/* Animations */
+@keyframes hive-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.cursor::after {
+  content: '▍';
+  margin-left: 2px;
+  color: var(--color-accent-hi);
+  animation: hive-blink 1.05s steps(1) infinite;
+}
+
+@keyframes hive-reveal {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+  animation: hive-reveal 1.1s cubic-bezier(0.16, 0.7, 0.18, 1) forwards;
+}
+
+@keyframes hive-drift {
+  0%, 100% { transform: rotate(-14deg) translateY(0); }
+  50% { transform: rotate(-14deg) translateY(-14px); }
+}
+
+.drift {
+  animation: hive-drift 14s ease-in-out infinite;
+}
+
+::selection {
+  background: rgba(211, 152, 96, 0.28);
+  color: var(--color-text);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-hi);
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #4a4239;
+}

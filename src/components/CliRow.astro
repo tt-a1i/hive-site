@@ -17,35 +17,38 @@ const label = lang === 'zh' ? '— 协调' : '— Orchestrates'
     {label}
   </span>
 
-  {/* Claude Code — Anthropic 8-point sparkle */}
+  {/* Claude Code — Claude sparkle: asterisk-style 8-ray burst */}
   <a
     href="https://claude.com/code"
     target="_blank"
     rel="noopener"
     class="group inline-flex items-center gap-2 text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]"
   >
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
-      <path d="M12 1.2 L13.4 10.6 L22.8 12 L13.4 13.4 L12 22.8 L10.6 13.4 L1.2 12 L10.6 10.6 Z"/>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
+      <line x1="12" y1="2"   x2="12" y2="22"/>
+      <line x1="2"  y1="12"  x2="22" y2="12"/>
+      <line x1="4.6" y1="4.6"  x2="19.4" y2="19.4"/>
+      <line x1="4.6" y1="19.4" x2="19.4" y2="4.6"/>
     </svg>
     <span class="text-[13px]">Claude&nbsp;Code</span>
   </a>
 
-  {/* Codex — OpenAI nested ellipse */}
+  {/* Codex — OpenAI knot: nested rotated ellipses */}
   <a
     href="https://github.com/openai/codex"
     target="_blank"
     rel="noopener"
     class="group inline-flex items-center gap-2 text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]"
   >
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
-      <circle cx="12" cy="12" r="9"/>
-      <ellipse cx="12" cy="12" rx="9" ry="3.6"/>
-      <ellipse cx="12" cy="12" rx="3.6" ry="9"/>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
+      <ellipse cx="12" cy="12" rx="10" ry="4"/>
+      <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/>
+      <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/>
     </svg>
     <span class="text-[13px]">Codex</span>
   </a>
 
-  {/* Gemini CLI — Google 4-point star */}
+  {/* Gemini CLI — Google's four-petal twinkle (verbatim path from Google brand) */}
   <a
     href="https://github.com/google-gemini/gemini-cli"
     target="_blank"
@@ -53,27 +56,27 @@ const label = lang === 'zh' ? '— 协调' : '— Orchestrates'
     class="group inline-flex items-center gap-2 text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]"
   >
     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
-      <path d="M12 1 C 12 7 13.5 10.5 23 12 C 13.5 13.5 12 17 12 23 C 12 17 10.5 13.5 1 12 C 10.5 10.5 12 7 12 1 Z"/>
+      <path d="M11.04 19.32Q12 21.51 12 24q0-2.49.93-4.68.96-2.19 2.58-3.81t3.81-2.55Q21.51 12 24 12q-2.49 0-4.68-.93a12.3 12.3 0 0 1-3.81-2.58 12.3 12.3 0 0 1-2.58-3.81Q12 2.49 12 0q0 2.49-.96 4.68-.93 2.19-2.55 3.81a12.3 12.3 0 0 1-3.81 2.58Q2.49 12 0 12q2.49 0 4.68.96 2.19.93 3.81 2.55t2.55 3.81"/>
     </svg>
     <span class="text-[13px]">Gemini&nbsp;CLI</span>
   </a>
 
-  {/* OpenCode — brackets + central node */}
+  {/* OpenCode — terminal frame with prompt block */}
   <a
     href="https://opencode.ai"
     target="_blank"
     rel="noopener"
     class="group inline-flex items-center gap-2 text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]"
   >
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
-      <path d="M8.5 4 L4 4 L4 20 L8.5 20"/>
-      <path d="M15.5 4 L20 4 L20 20 L15.5 20"/>
-      <circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
+      <rect x="3" y="5" width="18" height="14" rx="1.5"/>
+      <path d="M7 11 L10 13 L7 15" stroke-width="1.6"/>
+      <path d="M13 15 L17 15" stroke-width="1.6"/>
     </svg>
     <span class="text-[13px]">OpenCode</span>
   </a>
 
-  {/* Aider — angular A with raised dot for the 'i' */}
+  {/* Aider — A glyph with raised dot ('i') */}
   <a
     href="https://aider.chat"
     target="_blank"
@@ -89,7 +92,7 @@ const label = lang === 'zh' ? '— 协调' : '— Orchestrates'
     <span class="text-[13px]">Aider</span>
   </a>
 
-  {/* Hermes — caduceus: central staff + two winged twists */}
+  {/* Hermes — winged staff (caduceus): central rod + two snake twists */}
   <a
     href="https://hermes-agent.nousresearch.com"
     target="_blank"
@@ -100,11 +103,12 @@ const label = lang === 'zh' ? '— 协调' : '— Orchestrates'
       <path d="M12 3 L12 21"/>
       <path d="M6 6 C 9 4 11 7 12 6 C 13 7 15 4 18 6"/>
       <path d="M6 11 C 9 9 11 12 12 11 C 13 12 15 9 18 11"/>
+      <path d="M9 4 L12 2 L15 4"/>
     </svg>
     <span class="text-[13px]">Hermes</span>
   </a>
 
-  {/* OpenClaw — three claw marks slashing outward */}
+  {/* OpenClaw — three claw slashes (nodding to the lobster mascot) */}
   <a
     href="https://openclaw.ai"
     target="_blank"
@@ -112,9 +116,9 @@ const label = lang === 'zh' ? '— 协调' : '— Orchestrates'
     class="group inline-flex items-center gap-2 text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]"
   >
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
-      <path d="M6 3 L4 13 L8 21"/>
+      <path d="M6 3 L4.5 13 L8 21"/>
       <path d="M12 3 L12 14 L12 21"/>
-      <path d="M18 3 L20 13 L16 21"/>
+      <path d="M18 3 L19.5 13 L16 21"/>
     </svg>
     <span class="text-[13px]">OpenClaw</span>
   </a>

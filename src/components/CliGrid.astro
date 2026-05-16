@@ -29,7 +29,7 @@ const t = lang === 'zh'
       <p class="mt-4 max-w-xl text-[15px] leading-relaxed text-[var(--color-text-muted)]">{t.sub}</p>
     </div>
 
-    <ul class="mt-12 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 sm:gap-x-5 lg:grid-cols-6 lg:gap-x-4">
+    <ul class="mt-12 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 sm:gap-x-5 lg:grid-cols-7 lg:gap-x-4">
       {/* Claude Code — Anthropic A wordmark, white on near-black card */}
       <li>
         <a href="https://claude.com/code" target="_blank" rel="noopener" class="group block">
@@ -88,6 +88,19 @@ const t = lang === 'zh'
           <p class="mt-4 text-center text-[14px] font-semibold tracking-tight text-[var(--color-text)]">OpenCode</p>
           <p class="mt-2 flex justify-center">
             <code class="rounded-md border border-[var(--color-border)] bg-[var(--color-surface)]/60 px-2 py-0.5 font-mono text-[11px] text-[var(--color-text-muted)]">opencode</code>
+          </p>
+        </a>
+      </li>
+
+      {/* Hermes — NousResearch logo from LobeHub icon set */}
+      <li>
+        <a href="https://hermes-agent.nousresearch.com" target="_blank" rel="noopener" class="group block">
+          <div class="flex aspect-square items-center justify-center rounded-xl border border-[var(--color-border)] bg-[#0e1117] transition group-hover:border-[var(--color-accent)]/45">
+            <img src="/logos/hermes.svg" alt="Hermes" class="size-[62%]" loading="lazy" decoding="async"/>
+          </div>
+          <p class="mt-4 text-center text-[14px] font-semibold tracking-tight text-[var(--color-text)]">Hermes</p>
+          <p class="mt-2 flex justify-center">
+            <code class="rounded-md border border-[var(--color-border)] bg-[var(--color-surface)]/60 px-2 py-0.5 font-mono text-[11px] text-[var(--color-text-muted)]">hermes</code>
           </p>
         </a>
       </li>

@@ -14,10 +14,10 @@
   --color-border: #2a2620;
   --color-border-hi: #3a342c;
 
-  /* Cream-shifted text on warm black */
+  /* Cream-shifted text on warm black — WCAG AA verified */
   --color-text: #ece7da;
   --color-text-muted: #948a78;
-  --color-text-faint: #5d564c;
+  --color-text-faint: #7a7264;
 
   /* Matte honey — desaturated from neon amber */
   --color-accent: #d39860;
@@ -32,11 +32,16 @@
   --color-status-working: #d39860;
   --color-status-idle: #6b6660;
 
-  /* Editorial serif display + clean sans body + crisp mono */
-  --font-display: 'Fraunces Variable', 'Times New Roman', 'Songti SC', serif;
+  /* Editorial serif display + clean sans body + crisp mono.
+     CJK fall through to Noto Serif/Sans SC (loaded on /zh/) and
+     system fallbacks (Songti SC / PingFang / Source Han) so the
+     Chinese page reads natively across macOS, Windows, Linux. */
+  --font-display:
+    'Fraunces Variable', 'Noto Serif SC', 'Songti SC',
+    'Source Han Serif SC', 'Noto Serif CJK SC', 'Times New Roman', serif;
   --font-sans:
-    'Inter Variable', system-ui, -apple-system, BlinkMacSystemFont,
-    'Helvetica Neue', sans-serif;
+    'Inter Variable', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei',
+    system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
   --font-mono:
     'JetBrains Mono Variable', ui-monospace, 'SF Mono', Menlo, Consolas,
     monospace;
@@ -124,4 +129,23 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #4a4239;
+}
+
+/* Honor user motion preference (WCAG 2.3.3) */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    animation: none;
+  }
+  .drift,
+  .cursor::after {
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }

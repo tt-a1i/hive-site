@@ -8,7 +8,7 @@ const { lang } = Astro.props
 
 const t = lang === 'zh'
   ? {
-      status: '本地运行 · 开源 · v0.6.0-alpha.5',
+      status: '本地运行 · 开源 · v0.6.0-alpha.7',
       headline1: '看几个 AI',
       headline2: '在你的浏览器里一起干活。',
       subhead:
@@ -17,7 +17,7 @@ const t = lang === 'zh'
       viewSource: '看看怎么做的',
     }
   : {
-      status: 'Runs on your laptop · Open source · v0.6.0-alpha.5',
+      status: 'Runs on your laptop · Open source · v0.6.0-alpha.7',
       headline1: 'Watch a team of AIs',
       headline2: 'work together in your browser.',
       subhead:
@@ -28,6 +28,12 @@ const t = lang === 'zh'
 ---
 
 <section class="relative pt-28 pb-16 sm:pt-36 sm:pb-20">
+  {/* faint honeycomb texture — Hive's only brand motif, kept whisper-quiet */}
+  <div
+    class="honeycomb pointer-events-none absolute inset-0 -z-10 opacity-[0.05]"
+    style="mask-image:radial-gradient(ellipse 80% 60% at 50% 30%, black, transparent 75%); -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 30%, black, transparent 75%);"
+  ></div>
+
   <div class="mx-auto max-w-6xl px-6">
     <p
       class="reveal font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-accent)]"

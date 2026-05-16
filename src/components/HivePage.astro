@@ -15,13 +15,55 @@ const { lang } = Astro.props
 const t = lang === 'zh'
   ? {
       installLabel: '一分钟搞定',
-      installHint: '复制粘贴一下，AI 们就搬进来了。Node ≥ 22 · Apache-2.0',
       footerNote: 'Hive · 2026',
+      patterns: {
+        label: '这样玩',
+        heading: '不是一个 AI 在写——是一群。',
+        sub: '同一个工作台里，不同 AI 各司其职。下面是三种最常见的搭法。',
+        cards: [
+          {
+            kicker: '搭法 · 01',
+            title: '写 + 审',
+            body: 'Claude Code 写代码，Codex 在旁边读、找 bug、留评论。Claude 看完再改。两个 AI 一来一回，一份代码就稳了。',
+          },
+          {
+            kicker: '搭法 · 02',
+            title: '测 + 修',
+            body: 'Gemini 起好测试，跑一遍。哪条红了立刻甩给 Claude 修。循环到全绿——你只看着进度跳。',
+          },
+          {
+            kicker: '搭法 · 03',
+            title: '自定义你的团队',
+            body: '不喜欢上面？自己组队。给每个 worker 起个角色名（前端、后端、QA、文档），随便玩。',
+          },
+        ],
+      },
     }
   : {
       installLabel: 'Up and running in a minute',
-      installHint: "Paste it. They'll move in. · Node ≥ 22 · Apache-2.0",
       footerNote: 'Hive · 2026',
+      patterns: {
+        label: 'Three ways to play',
+        heading: "It's not one AI writing — it's a team.",
+        sub: 'Different AIs, different jobs, same workbench. Three patterns we see all the time.',
+        cards: [
+          {
+            kicker: 'Pattern · 01',
+            title: 'Write + review',
+            body: "Claude Code writes the code. Codex reads it, finds the bugs, leaves notes. Claude reads the notes and rewrites. Two AIs, one tight feedback loop.",
+          },
+          {
+            kicker: 'Pattern · 02',
+            title: 'Test + fix',
+            body: "Gemini drafts the tests and runs them. Anything red gets handed to Claude to fix. Loop until everything is green — you just watch the indicator.",
+          },
+          {
+            kicker: 'Pattern · 03',
+            title: 'Roll your own team',
+            body: "Neither of the above? Pick your own crew. Name each worker (frontend, backend, QA, docs) and let them split work the way you want.",
+          },
+        ],
+      },
     }
 ---
 
@@ -54,6 +96,32 @@ const t = lang === 'zh'
       </div>
     </section>
 
+    {/* ─── Use-case patterns — three concrete "what could I do with this?" cards ─ */}
+    <section class="relative py-20 sm:py-24">
+      <div class="mx-auto max-w-6xl px-6">
+        <div class="max-w-2xl">
+          <p class="font-mono text-[10.5px] uppercase tracking-[0.22em] text-[var(--color-accent)]">{t.patterns.label}</p>
+          <h2
+            class="mt-4 tracking-[-0.025em] leading-[1.1] text-[var(--color-text)]"
+            style="font-family:'Inter Variable',system-ui,sans-serif;font-size:clamp(1.65rem,3.2vw,2.5rem);font-weight:560"
+          >
+            {t.patterns.heading}
+          </h2>
+          <p class="mt-4 max-w-xl text-[15px] leading-relaxed text-[var(--color-text-muted)]">{t.patterns.sub}</p>
+        </div>
+
+        <ul class="mt-14 grid grid-cols-1 gap-5 md:grid-cols-3">
+          {t.patterns.cards.map((card) => (
+            <li class="group rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)]/30 p-7 transition-colors duration-300 hover:border-[var(--color-accent)]/40">
+              <p class="font-mono text-[10.5px] uppercase tracking-[0.22em] text-[var(--color-text-faint)]">{card.kicker}</p>
+              <h3 class="mt-4 text-[19px] font-semibold tracking-tight text-[var(--color-text)]">{card.title}</h3>
+              <p class="mt-3 text-[14.5px] leading-relaxed text-[var(--color-text-muted)]">{card.body}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
     {/* ─── Supported CLIs grid ──────────────────────────────────── */}
     <CliGrid lang={lang} />
 
@@ -69,7 +137,6 @@ const t = lang === 'zh'
             <div class="text-[var(--color-text-faint)]"><span class="select-none text-[var(--color-text-muted)]">$</span> <span class="text-[var(--color-text)]">hive --port 4010</span></div>
             <div class="text-[var(--color-text-faint)]"><span class="select-none text-[var(--color-text-muted)]">$</span> <span class="text-[var(--color-text)]">open http://localhost:4010</span></div>
           </div>
-          <p class="mt-5 font-mono text-[11px] text-[var(--color-text-faint)]">{t.installHint}</p>
         </div>
       </div>
     </section>

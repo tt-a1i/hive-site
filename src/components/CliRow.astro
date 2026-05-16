@@ -7,15 +7,6 @@ interface Props {
 const { lang } = Astro.props
 
 const label = lang === 'zh' ? '— 协调' : '— Orchestrates'
-
-const clis = [
-  { name: 'Claude Code', href: 'https://claude.com/code' },
-  { name: 'Codex',       href: 'https://github.com/openai/codex' },
-  { name: 'Gemini',      href: 'https://github.com/google-gemini/gemini-cli' },
-  { name: 'OpenCode',    href: 'https://opencode.ai' },
-  { name: 'Cursor',      href: 'https://cursor.com' },
-  { name: 'Aider',       href: 'https://aider.chat' },
-]
 ---
 
 <div
@@ -26,51 +17,105 @@ const clis = [
     {label}
   </span>
 
-  {clis.map((cli) => (
-    <a
-      href={cli.href}
-      target="_blank"
-      rel="noopener"
-      class="group inline-flex items-center gap-2 text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]"
-    >
-      {cli.name === 'Claude Code' && (
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
-          <path d="M12 1.2 L13.4 10.6 L22.8 12 L13.4 13.4 L12 22.8 L10.6 13.4 L1.2 12 L10.6 10.6 Z"/>
-        </svg>
-      )}
-      {cli.name === 'Codex' && (
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
-          <circle cx="12" cy="12" r="9"/>
-          <ellipse cx="12" cy="12" rx="9" ry="3.6"/>
-          <ellipse cx="12" cy="12" rx="3.6" ry="9"/>
-        </svg>
-      )}
-      {cli.name === 'Gemini' && (
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
-          <path d="M12 1 C 12 7 13.5 10.5 23 12 C 13.5 13.5 12 17 12 23 C 12 17 10.5 13.5 1 12 C 10.5 10.5 12 7 12 1 Z"/>
-        </svg>
-      )}
-      {cli.name === 'OpenCode' && (
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
-          <path d="M9 6 L3 12 L9 18"/>
-          <path d="M15 6 L21 12 L15 18"/>
-          <path d="M13.5 4 L10.5 20"/>
-        </svg>
-      )}
-      {cli.name === 'Cursor' && (
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
-          <path d="M4 2 L20 11 L13 13 L11 20 Z"/>
-        </svg>
-      )}
-      {cli.name === 'Aider' && (
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
-          <path d="M4 19 L9 5 L14 19"/>
-          <path d="M5.5 15 L12.5 15"/>
-          <path d="M17 19 L17 11"/>
-          <circle cx="17" cy="7.5" r="1.1" fill="currentColor"/>
-        </svg>
-      )}
-      <span class="text-[13px]">{cli.name}</span>
-    </a>
-  ))}
+  {/* Claude Code — Anthropic 8-point sparkle */}
+  <a
+    href="https://claude.com/code"
+    target="_blank"
+    rel="noopener"
+    class="group inline-flex items-center gap-2 text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]"
+  >
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
+      <path d="M12 1.2 L13.4 10.6 L22.8 12 L13.4 13.4 L12 22.8 L10.6 13.4 L1.2 12 L10.6 10.6 Z"/>
+    </svg>
+    <span class="text-[13px]">Claude&nbsp;Code</span>
+  </a>
+
+  {/* Codex — OpenAI nested ellipse */}
+  <a
+    href="https://github.com/openai/codex"
+    target="_blank"
+    rel="noopener"
+    class="group inline-flex items-center gap-2 text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]"
+  >
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
+      <circle cx="12" cy="12" r="9"/>
+      <ellipse cx="12" cy="12" rx="9" ry="3.6"/>
+      <ellipse cx="12" cy="12" rx="3.6" ry="9"/>
+    </svg>
+    <span class="text-[13px]">Codex</span>
+  </a>
+
+  {/* Gemini CLI — Google 4-point star */}
+  <a
+    href="https://github.com/google-gemini/gemini-cli"
+    target="_blank"
+    rel="noopener"
+    class="group inline-flex items-center gap-2 text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]"
+  >
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
+      <path d="M12 1 C 12 7 13.5 10.5 23 12 C 13.5 13.5 12 17 12 23 C 12 17 10.5 13.5 1 12 C 10.5 10.5 12 7 12 1 Z"/>
+    </svg>
+    <span class="text-[13px]">Gemini&nbsp;CLI</span>
+  </a>
+
+  {/* OpenCode — brackets + central node */}
+  <a
+    href="https://opencode.ai"
+    target="_blank"
+    rel="noopener"
+    class="group inline-flex items-center gap-2 text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]"
+  >
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
+      <path d="M8.5 4 L4 4 L4 20 L8.5 20"/>
+      <path d="M15.5 4 L20 4 L20 20 L15.5 20"/>
+      <circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/>
+    </svg>
+    <span class="text-[13px]">OpenCode</span>
+  </a>
+
+  {/* Aider — angular A with raised dot for the 'i' */}
+  <a
+    href="https://aider.chat"
+    target="_blank"
+    rel="noopener"
+    class="group inline-flex items-center gap-2 text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]"
+  >
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
+      <path d="M3 20 L9 5 L15 20"/>
+      <path d="M5 15 L13 15"/>
+      <path d="M19 11 L19 20"/>
+      <circle cx="19" cy="7" r="1.3" fill="currentColor" stroke="none"/>
+    </svg>
+    <span class="text-[13px]">Aider</span>
+  </a>
+
+  {/* Hermes — caduceus: central staff + two winged twists */}
+  <a
+    href="https://hermes-agent.nousresearch.com"
+    target="_blank"
+    rel="noopener"
+    class="group inline-flex items-center gap-2 text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]"
+  >
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
+      <path d="M12 3 L12 21"/>
+      <path d="M6 6 C 9 4 11 7 12 6 C 13 7 15 4 18 6"/>
+      <path d="M6 11 C 9 9 11 12 12 11 C 13 12 15 9 18 11"/>
+    </svg>
+    <span class="text-[13px]">Hermes</span>
+  </a>
+
+  {/* OpenClaw — three claw marks slashing outward */}
+  <a
+    href="https://openclaw.ai"
+    target="_blank"
+    rel="noopener"
+    class="group inline-flex items-center gap-2 text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]"
+  >
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
+      <path d="M6 3 L4 13 L8 21"/>
+      <path d="M12 3 L12 14 L12 21"/>
+      <path d="M18 3 L20 13 L16 21"/>
+    </svg>
+    <span class="text-[13px]">OpenClaw</span>
+  </a>
 </div>

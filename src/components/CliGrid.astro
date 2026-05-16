@@ -8,14 +8,14 @@ const { lang } = Astro.props
 
 const t = lang === 'zh'
   ? {
-      label: '协调',
-      heading: '任意 CLI Agent。任意类别。',
-      sub: '每个 agent 都是你机器上的真实终端进程，互相通过 team 协议对话。下面这七个开箱即用——其他能跑 stdin 的 CLI 也照样跑。',
+      label: '阵容',
+      heading: '把你已经在用的 AI，都拉进来。',
+      sub: '下面七个开箱即用。你想加谁都行——你电脑上能跑的 AI，Hive 里就能跑。不用新账号，不用新 key。',
     }
   : {
-      label: 'Orchestrates',
-      heading: 'Any CLI agent. Any kind.',
-      sub: 'Every agent is a real terminal process on your machine, talking to the others through a small team protocol. The seven below ship preset — any other CLI that reads stdin works the same way.',
+      label: 'Lineup',
+      heading: 'Bring the AIs you already use.',
+      sub: "Seven sit here by default. Bring anyone else — if it runs on your laptop, it runs in Hive. No new accounts, no new keys.",
     }
 ---
 

@@ -1,6 +1,7 @@
 ---
 import type { Lang } from '../i18n'
 import { STRINGS } from '../i18n'
+import CliRow from './CliRow.astro'
 
 interface Props {
   lang: Lang
@@ -64,29 +65,8 @@ const s = STRINGS[lang]
       {s.hero.subheadLine1}<br/>{s.hero.subheadLine2}
     </p>
 
-    {/* Supported CLIs — differentiation row */}
-    <div
-      class="reveal mt-9 flex flex-wrap items-center gap-x-7 gap-y-3 font-mono text-[10.5px] uppercase tracking-[0.22em] text-[var(--color-text-muted)]"
-      style="animation-delay:0.40s"
-    >
-      <span class="text-[var(--color-text-faint)]">— Orchestrates</span>
-      <span class="inline-flex items-center gap-1.5">
-        <span class="size-1 rounded-full bg-[var(--color-accent)] opacity-80"></span>
-        <span>Claude&nbsp;Code</span>
-      </span>
-      <span class="inline-flex items-center gap-1.5">
-        <span class="size-1 rounded-full bg-[var(--color-accent)] opacity-80"></span>
-        <span>Codex</span>
-      </span>
-      <span class="inline-flex items-center gap-1.5">
-        <span class="size-1 rounded-full bg-[var(--color-accent)] opacity-80"></span>
-        <span>Gemini</span>
-      </span>
-      <span class="inline-flex items-center gap-1.5">
-        <span class="size-1 rounded-full bg-[var(--color-accent)] opacity-80"></span>
-        <span>OpenCode</span>
-      </span>
-    </div>
+    {/* Supported CLIs — differentiation row with monochrome marks */}
+    <CliRow lang={lang} />
 
     {/* CTA */}
     <div class="reveal mt-12 flex flex-wrap items-center gap-7" style="animation-delay:0.54s">

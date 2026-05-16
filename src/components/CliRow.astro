@@ -1,0 +1,76 @@
+---
+import type { Lang } from '../i18n'
+
+interface Props {
+  lang: Lang
+}
+const { lang } = Astro.props
+
+const label = lang === 'zh' ? '— 协调' : '— Orchestrates'
+
+const clis = [
+  { name: 'Claude Code', href: 'https://claude.com/code' },
+  { name: 'Codex',       href: 'https://github.com/openai/codex' },
+  { name: 'Gemini',      href: 'https://github.com/google-gemini/gemini-cli' },
+  { name: 'OpenCode',    href: 'https://opencode.ai' },
+  { name: 'Cursor',      href: 'https://cursor.com' },
+  { name: 'Aider',       href: 'https://aider.chat' },
+]
+---
+
+<div
+  class="reveal mt-9 flex flex-wrap items-center gap-x-6 gap-y-3"
+  style="animation-delay:0.40s"
+>
+  <span class="font-mono text-[10.5px] uppercase tracking-[0.22em] text-[var(--color-text-faint)]">
+    {label}
+  </span>
+
+  {clis.map((cli) => (
+    <a
+      href={cli.href}
+      target="_blank"
+      rel="noopener"
+      class="group inline-flex items-center gap-2 text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]"
+    >
+      {cli.name === 'Claude Code' && (
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
+          <path d="M12 1.2 L13.4 10.6 L22.8 12 L13.4 13.4 L12 22.8 L10.6 13.4 L1.2 12 L10.6 10.6 Z"/>
+        </svg>
+      )}
+      {cli.name === 'Codex' && (
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
+          <circle cx="12" cy="12" r="9"/>
+          <ellipse cx="12" cy="12" rx="9" ry="3.6"/>
+          <ellipse cx="12" cy="12" rx="3.6" ry="9"/>
+        </svg>
+      )}
+      {cli.name === 'Gemini' && (
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
+          <path d="M12 1 C 12 7 13.5 10.5 23 12 C 13.5 13.5 12 17 12 23 C 12 17 10.5 13.5 1 12 C 10.5 10.5 12 7 12 1 Z"/>
+        </svg>
+      )}
+      {cli.name === 'OpenCode' && (
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
+          <path d="M9 6 L3 12 L9 18"/>
+          <path d="M15 6 L21 12 L15 18"/>
+          <path d="M13.5 4 L10.5 20"/>
+        </svg>
+      )}
+      {cli.name === 'Cursor' && (
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
+          <path d="M4 2 L20 11 L13 13 L11 20 Z"/>
+        </svg>
+      )}
+      {cli.name === 'Aider' && (
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
+          <path d="M4 19 L9 5 L14 19"/>
+          <path d="M5.5 15 L12.5 15"/>
+          <path d="M17 19 L17 11"/>
+          <circle cx="17" cy="7.5" r="1.1" fill="currentColor"/>
+        </svg>
+      )}
+      <span class="text-[13px]">{cli.name}</span>
+    </a>
+  ))}
+</div>

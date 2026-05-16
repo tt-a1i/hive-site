@@ -111,6 +111,37 @@ body {
   animation: hive-drift 14s ease-in-out infinite;
 }
 
+/* Layered hex pulse — visualises the orchestrator → workers signal.
+   Each layer breathes at the same period but staggered so the eye
+   reads it as energy radiating from the centre dot outward. */
+@keyframes hex-pulse-outer {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 0.72; }
+}
+@keyframes hex-pulse-mid {
+  0%, 100% { opacity: 0.42; }
+  50% { opacity: 0.68; }
+}
+@keyframes hex-pulse-inner {
+  0%, 100% { opacity: 0.28; }
+  50% { opacity: 0.55; }
+}
+@keyframes hex-pulse-core {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+}
+
+.hex-layer-1 { animation: hex-pulse-outer 5.4s ease-in-out infinite; }
+.hex-layer-2 { animation: hex-pulse-mid 5.4s 1.6s ease-in-out infinite; }
+.hex-layer-3 { animation: hex-pulse-inner 5.4s 3.2s ease-in-out infinite; }
+.hex-core   { transform-origin: center; animation: hex-pulse-core 5.4s 1s ease-in-out infinite; }
+
 ::selection {
   background: rgba(211, 152, 96, 0.28);
   color: var(--color-text);

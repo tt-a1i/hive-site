@@ -12,16 +12,17 @@ const s = STRINGS[lang]
 <section class="relative overflow-hidden pt-20 pb-12 sm:pt-24 sm:pb-16">
   <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/40 to-transparent"></div>
 
-  {/* foreground hex anchor — right side, layered, visible at any scale */}
+  {/* foreground hex signature — layered pulse encodes the
+      orchestrator → workers → tasks signal */}
   <svg
     aria-hidden="true"
-    class="pointer-events-none absolute right-[-110px] top-[60px] hidden -rotate-[14deg] text-[var(--color-accent)] opacity-[0.55] lg:block xl:right-[-40px]"
+    class="pointer-events-none absolute right-[-110px] top-[60px] hidden -rotate-[14deg] text-[var(--color-accent)] lg:block xl:right-[-40px]"
     width="520" height="520" viewBox="0 0 520 520" fill="none"
   >
-    <path d="M260 30 L460 150 L460 370 L260 490 L60 370 L60 150 Z" stroke="currentColor" stroke-width="1.1"/>
-    <path d="M260 105 L395 187.5 L395 332.5 L260 415 L125 332.5 L125 187.5 Z" stroke="currentColor" stroke-width="1" opacity="0.65"/>
-    <path d="M260 180 L330 225 L330 295 L260 340 L190 295 L190 225 Z" stroke="currentColor" stroke-width="0.9" opacity="0.4"/>
-    <circle cx="260" cy="260" r="6" fill="currentColor" opacity="0.75"/>
+    <path class="hex-layer-1" d="M260 30 L460 150 L460 370 L260 490 L60 370 L60 150 Z" stroke="currentColor" stroke-width="1.1"/>
+    <path class="hex-layer-2" d="M260 105 L395 187.5 L395 332.5 L260 415 L125 332.5 L125 187.5 Z" stroke="currentColor" stroke-width="1"/>
+    <path class="hex-layer-3" d="M260 180 L330 225 L330 295 L260 340 L190 295 L190 225 Z" stroke="currentColor" stroke-width="0.9"/>
+    <circle class="hex-core" cx="260" cy="260" r="6" fill="currentColor"/>
   </svg>
 
   {/* secondary smaller hex bottom-left — cool slate */}
@@ -63,8 +64,32 @@ const s = STRINGS[lang]
       {s.hero.subheadLine1}<br/>{s.hero.subheadLine2}
     </p>
 
+    {/* Supported CLIs — differentiation row */}
+    <div
+      class="reveal mt-9 flex flex-wrap items-center gap-x-7 gap-y-3 font-mono text-[10.5px] uppercase tracking-[0.22em] text-[var(--color-text-muted)]"
+      style="animation-delay:0.40s"
+    >
+      <span class="text-[var(--color-text-faint)]">— Orchestrates</span>
+      <span class="inline-flex items-center gap-1.5">
+        <span class="size-1 rounded-full bg-[var(--color-accent)] opacity-80"></span>
+        <span>Claude&nbsp;Code</span>
+      </span>
+      <span class="inline-flex items-center gap-1.5">
+        <span class="size-1 rounded-full bg-[var(--color-accent)] opacity-80"></span>
+        <span>Codex</span>
+      </span>
+      <span class="inline-flex items-center gap-1.5">
+        <span class="size-1 rounded-full bg-[var(--color-accent)] opacity-80"></span>
+        <span>Gemini</span>
+      </span>
+      <span class="inline-flex items-center gap-1.5">
+        <span class="size-1 rounded-full bg-[var(--color-accent)] opacity-80"></span>
+        <span>OpenCode</span>
+      </span>
+    </div>
+
     {/* CTA */}
-    <div class="reveal mt-12 flex flex-wrap items-center gap-7" style="animation-delay:0.46s">
+    <div class="reveal mt-12 flex flex-wrap items-center gap-7" style="animation-delay:0.54s">
       <a
         href="https://github.com/tt-a1i/hive#try-the-demo-first"
         class="group inline-flex items-center gap-2 rounded-[5px] bg-[var(--color-accent)] px-5 py-2.5 text-[13px] font-medium text-[#1a1813] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.35),inset_0_-1px_0_0_rgba(0,0,0,0.18),0_1px_0_0_rgba(0,0,0,0.4)] transition-shadow duration-200 hover:bg-[var(--color-accent-hi)] hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.45),inset_0_-1px_0_0_rgba(0,0,0,0.22),0_1px_0_0_rgba(0,0,0,0.5),0_0_0_3px_var(--color-accent-soft)]"

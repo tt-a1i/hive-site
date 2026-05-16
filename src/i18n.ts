@@ -106,7 +106,7 @@ export const STRINGS: Record<Lang, Strings> = {
     nav: {
       star: 'Star',
       switcherLabel: '中文',
-      switcherHref: '/zh/',
+      switcherHref: '/',
     },
   },
   zh: {
@@ -160,7 +160,7 @@ export const STRINGS: Record<Lang, Strings> = {
     nav: {
       star: 'Star',
       switcherLabel: 'English',
-      switcherHref: '/',
+      switcherHref: '/en/',
     },
   },
 }

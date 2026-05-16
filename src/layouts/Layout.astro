@@ -10,7 +10,7 @@ interface Props {
 const { lang = 'en' } = Astro.props
 const s = STRINGS[lang]
 const baseUrl = 'https://hive-site.pages.dev'
-const path = lang === 'zh' ? '/zh/' : '/'
+const path = lang === 'zh' ? '/' : '/en/'
 const canonicalUrl = `${baseUrl}${path}`
 ---
 
@@ -26,8 +26,8 @@ const canonicalUrl = `${baseUrl}${path}`
     <meta name="description" content={s.meta.description} />
 
     <link rel="canonical" href={canonicalUrl} />
-    <link rel="alternate" hreflang="en" href={`${baseUrl}/`} />
-    <link rel="alternate" hreflang="zh-CN" href={`${baseUrl}/zh/`} />
+    <link rel="alternate" hreflang="zh-CN" href={`${baseUrl}/`} />
+    <link rel="alternate" hreflang="en" href={`${baseUrl}/en/`} />
     <link rel="alternate" hreflang="x-default" href={`${baseUrl}/`} />
 
     <meta property="og:title" content={s.meta.title} />

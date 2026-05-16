@@ -19,17 +19,24 @@
   --color-text-muted: #948a78;
   --color-text-faint: #7a7264;
 
-  /* Matte honey — desaturated from neon amber */
-  --color-accent: #d39860;
-  --color-accent-hi: #ebbe85;
-  --color-accent-soft: rgba(211, 152, 96, 0.10);
-  --color-accent-glow: rgba(211, 152, 96, 0.22);
+  /* Matte teal — cool signal hue, sits in temperature contrast
+     with the warm workshop background; intentionally not amber so
+     the brand doesn't read as Anthropic / Claude-orange editorial. */
+  --color-accent: #5a8a8a;
+  --color-accent-hi: #82b0b0;
+  --color-accent-soft: rgba(90, 138, 138, 0.10);
+  --color-accent-glow: rgba(90, 138, 138, 0.22);
 
-  /* Cool slate as secondary — breaks single-hue monotony */
+  /* Warm amber kept as a secondary, used sparingly for warmth
+     accents (faint body radial, small dots) — never as primary. */
+  --color-warm: #c08560;
+  --color-warm-soft: rgba(192, 133, 96, 0.08);
+
+  /* Cool slate — supporting secondary for borders / faint hex */
   --color-cool: #7d8c95;
   --color-cool-soft: rgba(125, 140, 149, 0.14);
 
-  --color-status-working: #d39860;
+  --color-status-working: #5a8a8a;
   --color-status-idle: #6b6660;
 
   /* Editorial serif display + clean sans body + crisp mono.
@@ -59,22 +66,29 @@ html {
 
 body {
   background:
-    /* Soft warm radial from top, then base */
+    /* Soft teal halo from top — the "signal" colour */
     radial-gradient(
       ellipse 75% 45% at 50% -8%,
-      rgba(211, 152, 96, 0.07),
+      rgba(90, 138, 138, 0.07),
       transparent 70%
+    ),
+    /* Faint warm secondary glow from bottom-right — keeps the
+       workshop warmth without making the page feel single-hue. */
+    radial-gradient(
+      ellipse 50% 35% at 100% 100%,
+      rgba(192, 133, 96, 0.04),
+      transparent 65%
     ),
     /* Faint grain — adds organic texture without being noisy */
       url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/><feColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.45 0 0 0 0 0.4 0 0 0 0.5 0'/></filter><rect width='200' height='200' filter='url(%23n)' opacity='0.45'/></svg>"),
     var(--color-bg);
-  background-size: auto, 220px 220px, auto;
+  background-size: auto, auto, 220px 220px, auto;
   min-height: 100vh;
 }
 
 /* Honeycomb pattern — Hive signature, very subtle */
 .honeycomb {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 86.6' fill='none' stroke='%23d39860' stroke-width='0.5'><polygon points='25,0 75,0 100,43.3 75,86.6 25,86.6 0,43.3'/><polygon points='100,43.3 125,86.6 75,86.6'/><polygon points='0,43.3 -25,86.6 25,86.6' opacity='0'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 86.6' fill='none' stroke='%235a8a8a' stroke-width='0.5'><polygon points='25,0 75,0 100,43.3 75,86.6 25,86.6 0,43.3'/><polygon points='100,43.3 125,86.6 75,86.6'/><polygon points='0,43.3 -25,86.6 25,86.6' opacity='0'/></svg>");
   background-size: 80px 70px;
   background-position: 0 0;
 }
@@ -143,7 +157,7 @@ body {
 .hex-core   { transform-origin: center; animation: hex-pulse-core 5.4s 1s ease-in-out infinite; }
 
 ::selection {
-  background: rgba(211, 152, 96, 0.28);
+  background: rgba(90, 138, 138, 0.32);
   color: var(--color-text);
 }
 

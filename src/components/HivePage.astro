@@ -24,16 +24,16 @@ const s = STRINGS[lang]
     {/* ─── Supported CLIs grid — six cards with real brand logos ─ */}
     <CliGrid lang={lang} />
 
-    {/* ─── Section transition — editorial divider ─────────────── */}
+    {/* ─── Section transition — magazine numeral divider ────────── */}
     <div class="mx-auto max-w-6xl px-6 pb-12">
       <div class="flex items-center gap-5">
         <div class="h-px flex-1 bg-gradient-to-r from-transparent to-[var(--color-border-hi)]"></div>
         <div class="flex items-center gap-3">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" class="text-[var(--color-accent)]">
-            <path d="M12 2.5 L20.4 7.25 L20.4 16.75 L12 21.5 L3.6 16.75 L3.6 7.25 Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" fill="currentColor" fill-opacity="0.1"/>
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" class="text-[var(--color-accent)]" aria-hidden="true">
+            <path d="M12 2.5 L20.4 7.25 L20.4 16.75 L12 21.5 L3.6 16.75 L3.6 7.25 Z"/>
           </svg>
           <p class="font-mono text-[10.5px] uppercase tracking-[0.3em] text-[var(--color-text-faint)]">
-            <span class="text-[var(--color-text-muted)]">{s.workbench.figLabel}</span><span class="mx-3 opacity-50">/</span>{s.workbench.figTitle}
+            <span class="text-[var(--color-accent)]">{s.workbench.figLabel}</span><span class="mx-3 opacity-50">·</span>{s.workbench.figTitle}
           </p>
         </div>
         <div class="h-px flex-1 bg-gradient-to-r from-[var(--color-border-hi)] to-transparent"></div>
@@ -64,9 +64,9 @@ const s = STRINGS[lang]
         </div>
 
         <div class="mt-8 flex items-center justify-between font-mono text-[10.5px] uppercase tracking-[0.22em] text-[var(--color-text-faint)]">
-          <span>{s.workbench.figLabel}</span>
+          <span class="text-[var(--color-text-muted)]">{s.workbench.figLabel}</span>
           <span class="hidden sm:inline">{s.workbench.figCaption} <span class="text-[var(--color-text-muted)]">{s.workbench.figCaptionAt}</span></span>
-          <span>2026</span>
+          <span>MMXXVI</span>
         </div>
       </div>
     </section>
@@ -82,7 +82,7 @@ const s = STRINGS[lang]
       </svg>
 
       <div class="mx-auto max-w-4xl px-6 pt-20">
-        <p class="font-mono text-[10.5px] uppercase tracking-[0.28em] text-[var(--color-cool)]">
+        <p class="font-mono text-[10.5px] uppercase tracking-[0.28em] text-[var(--color-accent)]">
           {s.note.kicker}
         </p>
         <blockquote
@@ -167,14 +167,13 @@ const s = STRINGS[lang]
 
         <div class="mt-12 flex items-center justify-between border-t border-[var(--color-border)]/60 pt-6 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-faint)]">
           <span class="inline-flex items-center gap-2">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2.5 L20.4 7.25 L20.4 16.75 L12 21.5 L3.6 16.75 L3.6 7.25 Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="currentColor" fill-opacity="0.1"/>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" class="text-[var(--color-accent)]" aria-hidden="true">
+              <path d="M12 2.5 L20.4 7.25 L20.4 16.75 L12 21.5 L3.6 16.75 L3.6 7.25 Z"/>
             </svg>
-            {s.colophon.signoff}
+            <span>{s.colophon.signoff}</span>
           </span>
           <span class="inline-flex items-center gap-1.5">
-            <span class="size-1 rounded-full bg-[var(--color-accent)] opacity-70"></span>
-            v0.6.0-alpha.5
+            <span>MMXXVI · v0.6.0-alpha.5</span>
           </span>
         </div>
       </div>

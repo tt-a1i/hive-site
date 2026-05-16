@@ -7,6 +7,14 @@ interface Props {
 const { lang } = Astro.props
 
 const label = lang === 'zh' ? '— 协调' : '— Orchestrates'
+
+/* Logo strategy: 4 of the 7 CLIs publish a usable SVG mark, which we
+   inline verbatim and switch to currentColor so the row renders in
+   one teal hue. The remaining three (Codex, Aider, Hermes) don't
+   expose a logo we can fetch at small mono sizes — Aider's mark is
+   a CRT-glow wordmark, Hermes only ships a PNG, OpenAI's CDN blocks
+   anonymous SVG fetches — so we use faithful geometric redraws that
+   read at 14px without misrepresenting their identity. */
 ---
 
 <div
@@ -17,30 +25,27 @@ const label = lang === 'zh' ? '— 协调' : '— Orchestrates'
     {label}
   </span>
 
-  {/* Claude Code — Claude sparkle: asterisk-style 8-ray burst */}
+  {/* Claude Code — verbatim Anthropic Claude sparkle */}
   <a
     href="https://claude.com/code"
     target="_blank"
     rel="noopener"
     class="group inline-flex items-center gap-2 text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]"
   >
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
-      <line x1="12" y1="2"   x2="12" y2="22"/>
-      <line x1="2"  y1="12"  x2="22" y2="12"/>
-      <line x1="4.6" y1="4.6"  x2="19.4" y2="19.4"/>
-      <line x1="4.6" y1="19.4" x2="19.4" y2="4.6"/>
+    <svg width="14" height="14" viewBox="0 0 248 248" fill="currentColor" class="text-[var(--color-accent)] opacity-90 transition group-hover:opacity-100">
+      <path d="M52.43 162.87L98.78 136.88L99.55 134.6L98.78 133.33H96.49L88.72 132.86L62.23 132.15L39.31 131.21L17.02 130.03L11.42 128.84L6.2 121.87L6.71 118.45L11.42 115.26L18.17 115.85L33.07 116.91L55.49 118.45L71.66 119.39L95.73 121.87H99.55L100.06 120.34L98.78 119.39L97.77 118.45L74.59 102.73L49.5 86.19L36.38 76.62L29.38 71.78L25.81 67.29L24.28 57.36L30.65 50.27L39.31 50.86L41.48 51.45L50.26 58.19L68.98 72.72L93.44 90.68L97 93.63L98.44 92.67L98.66 91.98L97 89.26L83.76 65.28L69.62 40.82L63.25 30.66L61.6 24.63C60.96 22.1 60.58 20.01 60.58 17.42L67.84 7.5L71.91 6.2L81.72 7.5L85.79 11.04L91.91 24.99L101.71 46.85L116.99 76.62L121.45 85.48L123.87 93.63L124.76 96.12H126.29V94.7L127.57 77.92L129.86 57.36L132.15 30.89L132.91 23.45L136.61 14.47L143.99 9.63L149.72 12.34L154.44 19.08L153.8 23.45L151 41.65L145.52 70.12L141.96 89.26H143.99L146.41 86.78L156.09 74.02L172.27 53.7L179.4 45.66L187.8 36.8L193.15 32.55H203.34L210.73 43.65L207.42 55.12L196.97 68.35L188.31 79.57L175.9 96.21L168.19 109.59L168.88 110.69L170.74 110.53L198.76 104.5L213.91 101.79L231.99 98.71L240.14 102.5L241.04 106.4L237.85 114.31L218.5 119.04L195.83 123.65L162.07 131.59L161.7 131.89L162.14 132.55L177.36 133.93L183.86 134.28H199.77L229.45 136.52L237.22 141.61L241.8 147.87L241.04 152.71L229.07 158.74L213.02 154.96L175.45 145.98L162.59 142.79H160.81V143.85L171.5 154.37L191.24 172.09L215.82 195.01L217.09 200.68L213.91 205.17L210.6 204.7L188.95 188.39L180.54 181.07L161.7 165.12H160.42V166.77L164.75 173.15L187.8 207.77L188.95 218.41L187.29 221.83L181.31 223.96L174.81 222.78L161.19 203.75L147.31 182.49L136.1 163.35L134.75 164.2L128.08 235.42L125.02 239.08L117.89 241.8L111.9 237.31L108.72 229.98L111.9 215.45L115.72 196.55L118.78 181.54L121.58 162.87L123.29 156.64L123.14 156.22L121.77 156.45L107.7 175.75L86.3 204.7L69.37 222.78L65.29 224.43L58.29 220.77L58.92 214.27L62.87 208.48L86.3 178.71L100.44 160.16L109.55 149.51L109.46 147.97L108.96 147.92L46.7 188.51L35.62 189.93L30.78 185.44L31.42 178.12L33.71 175.75L52.43 162.87Z"/>
     </svg>
     <span class="text-[13px]">Claude&nbsp;Code</span>
   </a>
 
-  {/* Codex — OpenAI knot: nested rotated ellipses */}
+  {/* Codex — OpenAI woven knot, geometric redraw (OpenAI doesn't expose an SVG mark to anon fetch) */}
   <a
     href="https://github.com/openai/codex"
     target="_blank"
     rel="noopener"
     class="group inline-flex items-center gap-2 text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]"
   >
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-[var(--color-accent)] opacity-90 transition group-hover:opacity-100">
       <ellipse cx="12" cy="12" rx="10" ry="4"/>
       <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/>
       <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/>
@@ -48,42 +53,40 @@ const label = lang === 'zh' ? '— 协调' : '— Orchestrates'
     <span class="text-[13px]">Codex</span>
   </a>
 
-  {/* Gemini CLI — Google's four-petal twinkle (verbatim path from Google brand) */}
+  {/* Gemini CLI — verbatim Google Gemini twinkle (via Simple Icons) */}
   <a
     href="https://github.com/google-gemini/gemini-cli"
     target="_blank"
     rel="noopener"
     class="group inline-flex items-center gap-2 text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]"
   >
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-[var(--color-accent)] opacity-90 transition group-hover:opacity-100">
       <path d="M11.04 19.32Q12 21.51 12 24q0-2.49.93-4.68.96-2.19 2.58-3.81t3.81-2.55Q21.51 12 24 12q-2.49 0-4.68-.93a12.3 12.3 0 0 1-3.81-2.58 12.3 12.3 0 0 1-2.58-3.81Q12 2.49 12 0q0 2.49-.96 4.68-.93 2.19-2.55 3.81a12.3 12.3 0 0 1-3.81 2.58Q2.49 12 0 12q2.49 0 4.68.96 2.19.93 3.81 2.55t2.55 3.81"/>
     </svg>
     <span class="text-[13px]">Gemini&nbsp;CLI</span>
   </a>
 
-  {/* OpenCode — terminal frame with prompt block */}
+  {/* OpenCode — verbatim 'I' letter path from opencode.ai/favicon.svg */}
   <a
     href="https://opencode.ai"
     target="_blank"
     rel="noopener"
     class="group inline-flex items-center gap-2 text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]"
   >
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
-      <rect x="3" y="5" width="18" height="14" rx="1.5"/>
-      <path d="M7 11 L10 13 L7 15" stroke-width="1.6"/>
-      <path d="M13 15 L17 15" stroke-width="1.6"/>
+    <svg width="14" height="14" viewBox="0 0 512 512" fill="currentColor" class="text-[var(--color-accent)] opacity-90 transition group-hover:opacity-100">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M384 416H128V96H384V416ZM320 160H192V352H320V160Z"/>
     </svg>
     <span class="text-[13px]">OpenCode</span>
   </a>
 
-  {/* Aider — A glyph with raised dot ('i') */}
+  {/* Aider — angular 'A' with raised dot for the 'i', redrawn (wordmark doesn't scale) */}
   <a
     href="https://aider.chat"
     target="_blank"
     rel="noopener"
     class="group inline-flex items-center gap-2 text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]"
   >
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-accent)] opacity-90 transition group-hover:opacity-100">
       <path d="M3 20 L9 5 L15 20"/>
       <path d="M5 15 L13 15"/>
       <path d="M19 11 L19 20"/>
@@ -92,14 +95,14 @@ const label = lang === 'zh' ? '— 协调' : '— Orchestrates'
     <span class="text-[13px]">Aider</span>
   </a>
 
-  {/* Hermes — winged staff (caduceus): central rod + two snake twists */}
+  {/* Hermes — caduceus, redrawn (no SVG asset published) */}
   <a
     href="https://hermes-agent.nousresearch.com"
     target="_blank"
     rel="noopener"
     class="group inline-flex items-center gap-2 text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]"
   >
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-accent)] opacity-90 transition group-hover:opacity-100">
       <path d="M12 3 L12 21"/>
       <path d="M6 6 C 9 4 11 7 12 6 C 13 7 15 4 18 6"/>
       <path d="M6 11 C 9 9 11 12 12 11 C 13 12 15 9 18 11"/>
@@ -108,17 +111,19 @@ const label = lang === 'zh' ? '— 协调' : '— Orchestrates'
     <span class="text-[13px]">Hermes</span>
   </a>
 
-  {/* OpenClaw — three claw slashes (nodding to the lobster mascot) */}
+  {/* OpenClaw — simplified lobster silhouette from openclaw.ai/favicon.svg */}
   <a
     href="https://openclaw.ai"
     target="_blank"
     rel="noopener"
     class="group inline-flex items-center gap-2 text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]"
   >
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-accent)] opacity-85 transition group-hover:opacity-100">
-      <path d="M6 3 L4.5 13 L8 21"/>
-      <path d="M12 3 L12 14 L12 21"/>
-      <path d="M18 3 L19.5 13 L16 21"/>
+    <svg width="14" height="14" viewBox="0 0 120 120" fill="currentColor" class="text-[var(--color-accent)] opacity-90 transition group-hover:opacity-100">
+      <path d="M60 10 C30 10 15 35 15 55 C15 75 30 95 45 100 L45 110 L55 110 L55 100 C55 100 60 102 65 100 L65 110 L75 110 L75 100 C90 95 105 75 105 55 C105 35 90 10 60 10Z"/>
+      <path d="M20 45 C5 40 0 50 5 60 C10 70 20 65 25 55 C28 48 25 45 20 45Z"/>
+      <path d="M100 45 C115 40 120 50 115 60 C110 70 100 65 95 55 C92 48 95 45 100 45Z"/>
+      <path d="M45 15 Q35 5 30 8" stroke="currentColor" stroke-width="3" stroke-linecap="round" fill="none"/>
+      <path d="M75 15 Q85 5 90 8" stroke="currentColor" stroke-width="3" stroke-linecap="round" fill="none"/>
     </svg>
     <span class="text-[13px]">OpenClaw</span>
   </a>

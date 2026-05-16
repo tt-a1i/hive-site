@@ -12,7 +12,8 @@ const t = lang === 'zh'
       headline1: '在浏览器里',
       headline2: '看一群 AI 一起干活。',
       subhead:
-        '把 Claude、Codex、Gemini 拉进同一个窗口，让它们分工、对话、互相检查——你坐在前面看着就行。全程跑在你自己的电脑上。',
+        '把 Claude、Codex、Gemini 拉进同一个窗口。一个 orchestrator 派活、把每个 worker 的进展汇总给你——不是再造一个 framework，是直接用你已经在用的 CLI。全程跑在你自己的电脑上。',
+      alpha: 'Alpha 阶段 · 还有粗糙的地方',
       tryDemo: '看它们干活',
     }
   : {
@@ -20,7 +21,8 @@ const t = lang === 'zh'
       headline1: 'Watch a team of AI agents',
       headline2: 'work together in your browser.',
       subhead:
-        'Bring Claude, Codex, Gemini and the rest into one window. They split the work, talk to each other, check each other’s output — you just watch. Everything stays on your laptop.',
+        'Bring Claude, Codex, Gemini and the rest into one window. An orchestrator splits the work and relays each one’s report back to you — not a framework you write, the CLIs you already use. Everything stays on your laptop.',
+      alpha: 'Alpha · expect rough edges',
       tryDemo: 'Watch them work',
     }
 ---
@@ -42,8 +44,8 @@ const t = lang === 'zh'
     </p>
 
     <h1
-      class="reveal mt-6 max-w-4xl tracking-[-0.035em] leading-[1.02]"
-      style="font-family:'Inter Variable',system-ui,sans-serif;font-size:clamp(2.75rem,6.5vw,5.25rem);font-weight:560;animation-delay:0.15s"
+      class="mt-6 max-w-4xl tracking-[-0.035em] leading-[1.02]"
+      style="font-family:'Inter Variable',system-ui,sans-serif;font-size:clamp(2.75rem,6.5vw,5.25rem);font-weight:560"
     >
       <span class="text-[var(--color-text)]">{t.headline1}</span>
       <span class="text-[var(--color-text-muted)]"> {t.headline2}</span><span class="cursor align-baseline" aria-hidden="true"></span>
@@ -59,13 +61,17 @@ const t = lang === 'zh'
     <div class="reveal mt-10 flex flex-wrap items-center gap-4" style="animation-delay:0.4s">
       <a
         href="#install"
-        class="group inline-flex items-center gap-2 rounded-full bg-[var(--color-text)] px-6 py-3 text-[13.5px] font-semibold text-[var(--color-bg)] transition-all duration-200 ease-out hover:-translate-y-px hover:bg-white hover:shadow-[0_10px_28px_-10px_rgba(90,138,138,0.55)]"
+        class="group inline-flex items-center gap-2 rounded-full bg-[var(--color-text)] px-6 py-3 text-[13.5px] font-semibold text-[var(--color-bg)] transition-all duration-200 ease-out hover:-translate-y-px hover:bg-white hover:shadow-[0_10px_28px_-10px_rgba(90,138,138,0.55)] active:translate-y-0 active:shadow-none active:duration-75"
       >
         {t.tryDemo}
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" class="transition group-hover:translate-x-0.5">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" class="transition group-hover:translate-x-0.5" aria-hidden="true" focusable="false">
           <path d="M5 12h14M13 5l7 7-7 7"/>
         </svg>
       </a>
+      <span class="inline-flex items-center gap-2 font-mono text-[10.5px] uppercase tracking-[0.22em] text-[var(--color-text-faint)]">
+        <span class="inline-block size-1.5 rounded-full bg-[var(--color-warm)] opacity-75"></span>
+        {t.alpha}
+      </span>
     </div>
   </div>
 </section>

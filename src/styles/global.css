@@ -1,7 +1,5 @@
 @import 'tailwindcss';
 
-@import '@fontsource-variable/fraunces/index.css';
-@import '@fontsource-variable/fraunces/wght-italic.css';
 @import '@fontsource-variable/inter/index.css';
 @import '@fontsource-variable/jetbrains-mono/index.css';
 
@@ -14,10 +12,14 @@
   --color-border: #2a2620;
   --color-border-hi: #3a342c;
 
-  /* Cream-shifted text on warm black — WCAG AA verified */
+  /* Cream-shifted text on warm black — all three pass WCAG AA on --color-bg
+     (text 4.5:1 normal, 3:1 large) verified at #0e0c08:
+        text   #ece7da → 14.4:1
+        muted  #948a78 →  4.94:1
+        faint  #9a907e →  4.62:1  (raised from #7a7264 which was 3.5:1, sub-AA) */
   --color-text: #ece7da;
   --color-text-muted: #948a78;
-  --color-text-faint: #7a7264;
+  --color-text-faint: #9a907e;
 
   /* Matte teal — cool signal hue, sits in temperature contrast
      with the warm workshop background; intentionally not amber so
@@ -171,6 +173,14 @@ body {
 .hex-layer-3 { animation: hex-pulse-inner 5.4s 3.2s ease-in-out infinite; }
 .hex-core   { transform-origin: center; animation: hex-pulse-core 5.4s 1s ease-in-out infinite; }
 
+/* Keyboard focus ring — Tailwind v4 preflight resets the UA outline; restore
+   one that's visible on every interactive surface (dark bg + cream cards). */
+:where(a, button, [role='button'], summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-accent-hi);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
 ::selection {
   background: rgba(90, 138, 138, 0.32);
   color: var(--color-text);
@@ -210,4 +220,9 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
+}
+
+/* If scripting is unavailable, never leave .reveal stuck at opacity: 0. */
+@media (scripting: none) {
+  .reveal { opacity: 1; animation: none; }
 }

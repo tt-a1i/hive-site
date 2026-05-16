@@ -60,15 +60,17 @@ const npmPublishedAgo = relativeTime(npmPublishedISO, lang)
 const downloadsLabel =
   weeklyDownloads !== null
     ? lang === 'zh'
-      ? `本周 ${weeklyDownloads.toLocaleString()} 次安装`
-      : `${weeklyDownloads.toLocaleString()} installs this week`
+      ? `本周 ${weeklyDownloads.toLocaleString()} 次下载`
+      : `${weeklyDownloads.toLocaleString()} downloads this week`
     : ''
 
 const t = lang === 'zh'
   ? {
-      installLabel: '一分钟搞定',
+      installLabel: '三条命令上手',
       footerNote: 'Hive · 2026',
-      builtBy: '由 @tt-a1i 一人维护 · BSL 1.1 · Node ≥ 22',
+      builtBy: '由 @tt-a1i 一人维护 · 源码可见 (BSL 1.1, 非生产/非商业 free) · Node ≥ 22',
+      trademark:
+        'Claude、Codex、Gemini 及其他 CLI 名称与图标为各自所有者的商标。Hive 是独立项目，与 Anthropic、OpenAI、Google 等公司无关联或背书。',
       patterns: {
         label: '这样玩',
         heading: '不是一个 AI 在写——是一群。',
@@ -77,12 +79,12 @@ const t = lang === 'zh'
           {
             kicker: '玩法 · 01',
             title: '写 + 审',
-            body: 'Claude Code 写代码，Codex 在旁边读、找 bug、留评论。Claude 看完再改。两个 AI 一来一回，代码就稳了。',
+            body: 'Claude Code 写代码，Codex 读代码、找 bug、把意见交回给 orchestrator。Orchestrator 把意见转给 Claude 再改一轮。跨厂商互审，代码就稳了。',
           },
           {
             kicker: '玩法 · 02',
             title: '测 + 修',
-            body: 'Gemini 起好测试、跑一遍。哪条红了立刻甩给 Claude 修。循环到全绿——你只看着进度条往前跳。',
+            body: 'Gemini 起好测试、跑一遍。哪条红了 orchestrator 把它甩给 Claude 修。绿不绿、什么时候算完——由你判断。',
           },
           {
             kicker: '玩法 · 03',
@@ -93,9 +95,11 @@ const t = lang === 'zh'
       },
     }
   : {
-      installLabel: 'Up and running in a minute',
+      installLabel: 'Three commands to launch',
       footerNote: 'Hive · 2026',
-      builtBy: 'Solo-built by @tt-a1i · BSL 1.1 · Node ≥ 22',
+      builtBy: 'Solo-built by @tt-a1i · Source-available (BSL 1.1, free for non-production use) · Node ≥ 22',
+      trademark:
+        'Claude, Codex, Gemini and other CLI names and logos are trademarks of their respective owners. Hive is an independent project, not affiliated with or endorsed by Anthropic, OpenAI, Google, or any other vendor.',
       patterns: {
         label: 'Three ways to play',
         heading: "It's not one AI writing — it's a team.",
@@ -104,12 +108,12 @@ const t = lang === 'zh'
           {
             kicker: 'Pattern · 01',
             title: 'Write + review',
-            body: "Claude Code writes the code. Codex reads it, finds the bugs, leaves notes. Claude reads the notes and rewrites. Two AIs, one tight feedback loop.",
+            body: "Claude Code writes the code. Codex reads it, finds the bugs, and ships its notes back to the orchestrator. The orchestrator hands them to Claude for a second pass. Cross-vendor review keeps the bar high.",
           },
           {
             kicker: 'Pattern · 02',
             title: 'Test + fix',
-            body: "Gemini drafts the tests and runs them. Anything red gets handed to Claude to fix. Loop until the bar turns green — you just watch the dots flip.",
+            body: "Gemini drafts the tests and runs them. Anything red, the orchestrator hands to Claude to fix. You decide when it's actually green.",
           },
           {
             kicker: 'Pattern · 03',
@@ -139,11 +143,13 @@ const t = lang === 'zh'
               formats={['avif', 'webp']}
               widths={[768, 1280, 1920, 2400]}
               sizes="(min-width: 1320px) 1272px, 92vw"
-              alt="Hive workbench"
+              alt={lang === 'zh'
+                ? 'Hive 工作台：浏览器里的 orchestrator 给多个 CLI worker（Claude Code、Codex、Gemini 等）派活的协作截图'
+                : 'Hive workbench: an orchestrator dispatching tasks to Claude Code, Codex and Gemini worker terminals in the browser'}
               loading="eager"
               decoding="async"
+              fetchpriority="high"
               class="block w-full"
-              pictureAttributes={{ fetchpriority: 'high' }}
             />
           </div>
         </div>
@@ -167,7 +173,7 @@ const t = lang === 'zh'
         <ul class="mt-14 grid grid-cols-1 gap-5 md:grid-cols-3">
           {t.patterns.cards.map((card, i) => (
             <li
-              class="reveal group rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)]/30 p-7 transition-colors duration-300 hover:border-[var(--color-accent)]/40"
+              class="reveal group rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)]/30 p-7 transition-colors duration-150 ease-out hover:border-[var(--color-accent)]/40"
               style={`animation-delay:${0.2 + i * 0.08}s`}
             >
               <p class="font-mono text-[10.5px] uppercase tracking-[0.22em] text-[var(--color-text-faint)]">{card.kicker}</p>
@@ -210,14 +216,17 @@ const t = lang === 'zh'
 
     {/* ─── Footer ──────────────────────────────────────────────── */}
     <footer class="border-t border-[var(--color-border)]/60 py-12">
-      <div class="mx-auto flex max-w-6xl flex-col gap-6 px-6 sm:flex-row sm:items-center sm:justify-between">
-        <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-text-faint)]">{t.footerNote}</p>
-        <div class="flex flex-wrap gap-x-6 gap-y-2 font-mono text-[11px]">
-          <a href="https://github.com/tt-a1i/hive" class="text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]">GitHub</a>
-          <a href="https://www.npmjs.com/package/@tt-a1i/hive" class="text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]">npm</a>
-          <a href="https://github.com/tt-a1i/hive/blob/main/CHANGELOG.md" class="text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]">Changelog</a>
-          <a href="https://github.com/tt-a1i/hive/blob/main/LICENSE" class="text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]">BSL 1.1</a>
+      <div class="mx-auto max-w-6xl px-6">
+        <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+          <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-text-faint)]">{t.footerNote}</p>
+          <div class="flex flex-wrap gap-x-6 gap-y-2 font-mono text-[11px]">
+            <a href="https://github.com/tt-a1i/hive" class="text-[var(--color-text-muted)] transition-colors duration-150 ease-out hover:text-[var(--color-text)]">GitHub</a>
+            <a href="https://www.npmjs.com/package/@tt-a1i/hive" class="text-[var(--color-text-muted)] transition-colors duration-150 ease-out hover:text-[var(--color-text)]">npm</a>
+            <a href="https://github.com/tt-a1i/hive/blob/main/CHANGELOG.md" class="text-[var(--color-text-muted)] transition-colors duration-150 ease-out hover:text-[var(--color-text)]">Changelog</a>
+            <a href="https://github.com/tt-a1i/hive/blob/main/LICENSE" class="text-[var(--color-text-muted)] transition-colors duration-150 ease-out hover:text-[var(--color-text)]">BSL 1.1</a>
+          </div>
         </div>
+        <p class="mt-8 max-w-3xl text-[11px] leading-relaxed text-[var(--color-text-faint)]">{t.trademark}</p>
       </div>
     </footer>
   </main>

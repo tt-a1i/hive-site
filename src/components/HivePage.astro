@@ -12,29 +12,82 @@ interface Props {
 }
 const { lang } = Astro.props
 
+/* Build-time fetch — npm registry + downloads.
+   The hive package is public on npm even though the GitHub repo is
+   currently private, so these are the most reliable "this is alive"
+   signals available. Gracefully degrade if either fetch fails. */
+const fetchJson = async (url: string) => {
+  try {
+    const r = await fetch(url, { headers: { accept: 'application/json' } })
+    if (!r.ok) return null
+    return await r.json()
+  } catch {
+    return null
+  }
+}
+
+const npmPkg = await fetchJson('https://registry.npmjs.org/@tt-a1i/hive')
+const npmLatest =
+  (npmPkg && (npmPkg['dist-tags'] as Record<string, string> | undefined)?.latest) ?? '0.6.0-alpha.7'
+const npmTimes = (npmPkg && (npmPkg.time as Record<string, string> | undefined)) ?? null
+const npmPublishedISO = npmTimes?.[npmLatest] ?? null
+
+const dlData = await fetchJson(
+  'https://api.npmjs.org/downloads/point/last-week/@tt-a1i/hive'
+)
+const weeklyDownloads = (dlData?.downloads as number | undefined) ?? null
+
+const relativeTime = (iso: string | null, l: Lang): string => {
+  if (!iso) return ''
+  const date = new Date(iso)
+  if (Number.isNaN(date.getTime())) return ''
+  const days = Math.floor((Date.now() - date.getTime()) / 86_400_000)
+  if (l === 'zh') {
+    if (days <= 0) return '今天发布'
+    if (days === 1) return '昨天发布'
+    if (days < 7) return `${days} 天前发布`
+    if (days < 30) return `${Math.floor(days / 7)} 周前发布`
+    return `${Math.floor(days / 30)} 个月前发布`
+  }
+  if (days <= 0) return 'published today'
+  if (days === 1) return 'published yesterday'
+  if (days < 7) return `published ${days} days ago`
+  if (days < 30) return `published ${Math.floor(days / 7)} weeks ago`
+  return `published ${Math.floor(days / 30)} months ago`
+}
+
+const npmPublishedAgo = relativeTime(npmPublishedISO, lang)
+const downloadsLabel =
+  weeklyDownloads !== null
+    ? lang === 'zh'
+      ? `本周 ${weeklyDownloads.toLocaleString()} 次安装`
+      : `${weeklyDownloads.toLocaleString()} installs this week`
+    : ''
+
 const t = lang === 'zh'
   ? {
       installLabel: '一分钟搞定',
       footerNote: 'Hive · 2026',
+      builtBy: '由 @tt-a1i 一人维护 · BSL 1.1 · Node ≥ 22',
       patterns: {
         label: '这样玩',
         heading: '不是一个 AI 在写——是一群。',
-        sub: '同一个工作台里，不同 AI 各司其职。下面是三种最常见的搭法。',
+        sub: '同一个工作台里，不同 AI 各司其职。下面是三种常见玩法。',
         cards: [
           {
-            kicker: '搭法 · 01',
+            kicker: '玩法 · 01',
             title: '写 + 审',
-            body: 'Claude Code 写代码，Codex 在旁边读、找 bug、留评论。Claude 看完再改。两个 AI 一来一回，一份代码就稳了。',
+            body: 'Claude Code 写代码，Codex 在旁边读、找 bug、留评论。Claude 看完再改。两个 AI 一来一回，代码就稳了。',
           },
           {
-            kicker: '搭法 · 02',
+            kicker: '玩法 · 02',
             title: '测 + 修',
-            body: 'Gemini 起好测试，跑一遍。哪条红了立刻甩给 Claude 修。循环到全绿——你只看着进度跳。',
+            body: 'Gemini 起好测试、跑一遍。哪条红了立刻甩给 Claude 修。循环到全绿——你只看着进度条往前跳。',
           },
           {
-            kicker: '搭法 · 03',
-            title: '自定义你的团队',
-            body: '不喜欢上面？自己组队。给每个 worker 起个角色名（前端、后端、QA、文档），随便玩。',
+            kicker: '玩法 · 03',
+            title: '自己组个队',
+            body: '不喜欢上面？自己排兵布阵。给每个 worker 起个角色名（前端、后端、QA、文档），怎么爽怎么来。',
           },
         ],
       },
@@ -42,6 +95,7 @@ const t = lang === 'zh'
   : {
       installLabel: 'Up and running in a minute',
       footerNote: 'Hive · 2026',
+      builtBy: 'Solo-built by @tt-a1i · BSL 1.1 · Node ≥ 22',
       patterns: {
         label: 'Three ways to play',
         heading: "It's not one AI writing — it's a team.",
@@ -55,12 +109,12 @@ const t = lang === 'zh'
           {
             kicker: 'Pattern · 02',
             title: 'Test + fix',
-            body: "Gemini drafts the tests and runs them. Anything red gets handed to Claude to fix. Loop until everything is green — you just watch the indicator.",
+            body: "Gemini drafts the tests and runs them. Anything red gets handed to Claude to fix. Loop until the bar turns green — you just watch the dots flip.",
           },
           {
             kicker: 'Pattern · 03',
-            title: 'Roll your own team',
-            body: "Neither of the above? Pick your own crew. Name each worker (frontend, backend, QA, docs) and let them split work the way you want.",
+            title: 'Build your own crew',
+            body: "Neither of the above? Roll your own team. Name each worker (frontend, backend, QA, docs) and let them split work the way you like.",
           },
         ],
       },
@@ -78,8 +132,8 @@ const t = lang === 'zh'
       <div class="pointer-events-none absolute left-1/2 top-1/4 -z-10 size-[1100px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(90,138,138,0.07),transparent_60%)] blur-[80px]"></div>
 
       <div class="mx-auto max-w-[1320px] px-6">
-        <div class="reveal group relative" style="animation-delay:0.55s">
-          <div class="overflow-hidden rounded-2xl border border-white/[0.06] shadow-[0_60px_160px_-40px_rgba(0,0,0,0.75)] transition-transform duration-700 ease-out will-change-transform group-hover:-translate-y-1">
+        <div class="reveal relative" style="animation-delay:0.15s">
+          <div class="screenshot-float overflow-hidden rounded-2xl border border-white/[0.06] shadow-[0_60px_160px_-40px_rgba(0,0,0,0.75)]">
             <Picture
               src={hiveUi}
               formats={['avif', 'webp']}
@@ -99,7 +153,7 @@ const t = lang === 'zh'
     {/* ─── Use-case patterns — three concrete "what could I do with this?" cards ─ */}
     <section class="relative py-20 sm:py-24">
       <div class="mx-auto max-w-6xl px-6">
-        <div class="max-w-2xl">
+        <div class="reveal max-w-2xl" style="animation-delay:0.05s">
           <p class="font-mono text-[10.5px] uppercase tracking-[0.22em] text-[var(--color-accent)]">{t.patterns.label}</p>
           <h2
             class="mt-4 tracking-[-0.025em] leading-[1.1] text-[var(--color-text)]"
@@ -111,8 +165,11 @@ const t = lang === 'zh'
         </div>
 
         <ul class="mt-14 grid grid-cols-1 gap-5 md:grid-cols-3">
-          {t.patterns.cards.map((card) => (
-            <li class="group rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)]/30 p-7 transition-colors duration-300 hover:border-[var(--color-accent)]/40">
+          {t.patterns.cards.map((card, i) => (
+            <li
+              class="reveal group rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)]/30 p-7 transition-colors duration-300 hover:border-[var(--color-accent)]/40"
+              style={`animation-delay:${0.2 + i * 0.08}s`}
+            >
               <p class="font-mono text-[10.5px] uppercase tracking-[0.22em] text-[var(--color-text-faint)]">{card.kicker}</p>
               <h3 class="mt-4 text-[19px] font-semibold tracking-tight text-[var(--color-text)]">{card.title}</h3>
               <p class="mt-3 text-[14.5px] leading-relaxed text-[var(--color-text-muted)]">{card.body}</p>
@@ -126,17 +183,27 @@ const t = lang === 'zh'
     <CliGrid lang={lang} />
 
     {/* ─── Install panel — quiet and competent ──────────────────── */}
-    <section class="relative py-20 sm:py-24">
+    <section id="install" class="relative py-20 sm:py-24">
       <div class="mx-auto max-w-3xl px-6">
         <div class="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)]/40 p-8 backdrop-blur-sm sm:p-10">
-          <p class="font-mono text-[10.5px] uppercase tracking-[0.22em] text-[var(--color-accent)]">
-            {t.installLabel}
-          </p>
+          <div class="flex flex-wrap items-baseline justify-between gap-4">
+            <p class="font-mono text-[10.5px] uppercase tracking-[0.22em] text-[var(--color-accent)]">
+              {t.installLabel}
+            </p>
+            <p class="font-mono text-[10.5px] tracking-[0.06em] text-[var(--color-text-faint)]">
+              <span class="text-[var(--color-text-muted)]">v{npmLatest}</span>
+              {npmPublishedAgo && <><span class="mx-2 opacity-50">·</span>{npmPublishedAgo}</>}
+              {downloadsLabel && <><span class="mx-2 opacity-50">·</span>{downloadsLabel}</>}
+            </p>
+          </div>
+
           <div class="mt-6 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-2)]/70 p-5 font-mono text-[13px] leading-[1.95]">
             <div class="text-[var(--color-text-faint)]"><span class="select-none text-[var(--color-text-muted)]">$</span> <span class="text-[var(--color-text)]">npm i -g @tt-a1i/hive</span></div>
             <div class="text-[var(--color-text-faint)]"><span class="select-none text-[var(--color-text-muted)]">$</span> <span class="text-[var(--color-text)]">hive --port 4010</span></div>
             <div class="text-[var(--color-text-faint)]"><span class="select-none text-[var(--color-text-muted)]">$</span> <span class="text-[var(--color-text)]">open http://localhost:4010</span></div>
           </div>
+
+          <p class="mt-6 font-mono text-[11px] text-[var(--color-text-faint)]">{t.builtBy}</p>
         </div>
       </div>
     </section>
@@ -149,7 +216,7 @@ const t = lang === 'zh'
           <a href="https://github.com/tt-a1i/hive" class="text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]">GitHub</a>
           <a href="https://www.npmjs.com/package/@tt-a1i/hive" class="text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]">npm</a>
           <a href="https://github.com/tt-a1i/hive/blob/main/CHANGELOG.md" class="text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]">Changelog</a>
-          <a href="https://github.com/tt-a1i/hive/blob/main/LICENSE" class="text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]">Apache-2.0</a>
+          <a href="https://github.com/tt-a1i/hive/blob/main/LICENSE" class="text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]">BSL 1.1</a>
         </div>
       </div>
     </footer>

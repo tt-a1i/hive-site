@@ -29,4 +29,4 @@ The site is a static build — point any static host (Cloudflare Pages / Vercel 
 
 ## License
 
-Apache-2.0 — same as the parent [Hive](https://github.com/tt-a1i/hive) project.
+BSL 1.1 — same as the parent [Hive](https://github.com/tt-a1i/hive) project.

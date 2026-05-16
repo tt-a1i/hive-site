@@ -15,13 +15,16 @@ const t = lang === 'zh'
   : {
       label: 'Lineup',
       heading: 'Bring the AIs you already use.',
-      sub: "Seven sit here by default. Bring anyone else — if it runs on your laptop, it runs in Hive. No new accounts, no new keys.",
+      sub: "Seven come built-in. Bring anyone else — if it runs on your laptop, it runs in Hive. No new accounts, no new keys.",
     }
+
+const baseDelay = 0.2
+const step = 0.05
 ---
 
 <section class="relative py-20 sm:py-24">
   <div class="mx-auto max-w-6xl px-6">
-    <div class="max-w-2xl">
+    <div class="reveal max-w-2xl" style="animation-delay:0.05s">
       <p class="font-mono text-[10.5px] uppercase tracking-[0.22em] text-[var(--color-accent)]">{t.label}</p>
       <h2
         class="mt-4 tracking-[-0.025em] leading-[1.1] text-[var(--color-text)]"
@@ -34,7 +37,7 @@ const t = lang === 'zh'
 
     <ul class="mt-14 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 sm:gap-x-5 lg:grid-cols-7 lg:gap-x-4">
       {/* Claude Code */}
-      <li>
+      <li class="reveal" style={`animation-delay:${baseDelay + 0 * step}s`}>
         <a href="https://claude.com/code" target="_blank" rel="noopener" class="group block">
           <div class="flex aspect-square items-center justify-center rounded-xl border border-[var(--color-border)] bg-[#13161d] transition group-hover:border-[var(--color-accent)]/45">
             <img src="/logos/claude-code.png" alt="Claude Code" class="size-[60%]" loading="lazy" decoding="async"/>
@@ -44,7 +47,7 @@ const t = lang === 'zh'
       </li>
 
       {/* Gemini CLI */}
-      <li>
+      <li class="reveal" style={`animation-delay:${baseDelay + 1 * step}s`}>
         <a href="https://github.com/google-gemini/gemini-cli" target="_blank" rel="noopener" class="group block">
           <div class="flex aspect-square items-center justify-center rounded-xl border border-[var(--color-border)] bg-[#13161d] transition group-hover:border-[var(--color-accent)]/45">
             <img src="/logos/gemini.png" alt="Gemini CLI" class="size-[60%]" loading="lazy" decoding="async"/>
@@ -54,7 +57,7 @@ const t = lang === 'zh'
       </li>
 
       {/* Codex CLI */}
-      <li>
+      <li class="reveal" style={`animation-delay:${baseDelay + 2 * step}s`}>
         <a href="https://github.com/openai/codex" target="_blank" rel="noopener" class="group block">
           <div class="flex aspect-square items-center justify-center rounded-xl border border-[var(--color-border)] bg-[#f2efe9] transition group-hover:border-[var(--color-accent)]/45">
             <svg viewBox="0 0 24 24" fill="#0f1115" class="size-[55%]">
@@ -66,7 +69,7 @@ const t = lang === 'zh'
       </li>
 
       {/* OpenCode */}
-      <li>
+      <li class="reveal" style={`animation-delay:${baseDelay + 3 * step}s`}>
         <a href="https://opencode.ai" target="_blank" rel="noopener" class="group block">
           <div class="flex aspect-square items-center justify-center rounded-xl border border-[var(--color-border)] bg-[#131010] transition group-hover:border-[var(--color-accent)]/45">
             <svg viewBox="0 0 512 512" class="size-[60%]">
@@ -80,7 +83,7 @@ const t = lang === 'zh'
       </li>
 
       {/* Hermes */}
-      <li>
+      <li class="reveal" style={`animation-delay:${baseDelay + 4 * step}s`}>
         <a href="https://hermes-agent.nousresearch.com" target="_blank" rel="noopener" class="group block">
           <div class="flex aspect-square items-center justify-center rounded-xl border border-[var(--color-border)] bg-[#0e1117] transition group-hover:border-[var(--color-accent)]/45">
             <img src="/logos/hermes.svg" alt="Hermes" class="size-[62%]" loading="lazy" decoding="async"/>
@@ -90,7 +93,7 @@ const t = lang === 'zh'
       </li>
 
       {/* Qwen Code */}
-      <li>
+      <li class="reveal" style={`animation-delay:${baseDelay + 5 * step}s`}>
         <a href="https://github.com/QwenLM/qwen-code" target="_blank" rel="noopener" class="group block">
           <div class="flex aspect-square items-center justify-center rounded-xl border border-[var(--color-border)] bg-[#13161d] transition group-hover:border-[var(--color-accent)]/45">
             <img src="/logos/qwen.png" alt="Qwen Code" class="size-[60%]" loading="lazy" decoding="async"/>
@@ -100,7 +103,7 @@ const t = lang === 'zh'
       </li>
 
       {/* OpenClaw */}
-      <li>
+      <li class="reveal" style={`animation-delay:${baseDelay + 6 * step}s`}>
         <a href="https://openclaw.ai" target="_blank" rel="noopener" class="group block">
           <div class="flex aspect-square items-center justify-center rounded-xl border border-[var(--color-border)] bg-[#0b0d12] transition group-hover:border-[var(--color-accent)]/45">
             <svg viewBox="0 0 120 120" class="size-[62%]">

@@ -9,13 +9,13 @@ const { lang } = Astro.props
 const t = lang === 'zh'
   ? {
       label: '协调',
-      heading: '七个 CLI Agent。一个工作台。',
-      sub: '每个 agent 都是你机器上的真实 PTY 进程，互相通过 team 协议对话。',
+      heading: '任意 CLI Agent。任意类别。',
+      sub: '每个 agent 都是你机器上的真实终端进程，互相通过 team 协议对话。下面这七个开箱即用——其他能跑 stdin 的 CLI 也照样跑。',
     }
   : {
       label: 'Orchestrates',
-      heading: 'Seven CLI agents. One workbench.',
-      sub: 'Each agent is a real PTY process on your machine, talking to the others through a small team protocol.',
+      heading: 'Any CLI agent. Any kind.',
+      sub: 'Every agent is a real terminal process on your machine, talking to the others through a small team protocol. The seven below ship preset — any other CLI that reads stdin works the same way.',
     }
 ---
 

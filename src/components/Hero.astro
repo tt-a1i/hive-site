@@ -1,7 +1,6 @@
 ---
 import type { Lang } from '../i18n'
 import { STRINGS } from '../i18n'
-import CliRow from './CliRow.astro'
 
 interface Props {
   lang: Lang
@@ -65,8 +64,6 @@ const s = STRINGS[lang]
       {s.hero.subheadLine1}<br/>{s.hero.subheadLine2}
     </p>
 
-    {/* Supported CLIs — differentiation row with monochrome marks */}
-    <CliRow lang={lang} />
 
     {/* CTA */}
     <div class="reveal mt-12 flex flex-wrap items-center gap-7" style="animation-delay:0.54s">

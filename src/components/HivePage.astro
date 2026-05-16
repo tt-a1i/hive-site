@@ -3,6 +3,7 @@ import { Picture } from 'astro:assets'
 import Layout from '../layouts/Layout.astro'
 import Nav from './Nav.astro'
 import Hero from './Hero.astro'
+import CliGrid from './CliGrid.astro'
 import hiveUi from '../assets/screenshots/hive-ui.png'
 import type { Lang } from '../i18n'
 import { STRINGS } from '../i18n'
@@ -19,6 +20,9 @@ const s = STRINGS[lang]
 
   <main>
     <Hero lang={lang} />
+
+    {/* ─── Supported CLIs grid — six cards with real brand logos ─ */}
+    <CliGrid lang={lang} />
 
     {/* ─── Section transition — editorial divider ─────────────── */}
     <div class="mx-auto max-w-6xl px-6 pb-12">

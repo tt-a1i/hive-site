@@ -1,86 +1,72 @@
 ---
 import type { Lang } from '../i18n'
-import { STRINGS } from '../i18n'
 
 interface Props {
   lang: Lang
 }
 const { lang } = Astro.props
-const s = STRINGS[lang]
+
+const t = lang === 'zh'
+  ? {
+      status: '浏览器原生 · v0.6.0-alpha.5',
+      headline1: '浏览器版蜂巢',
+      headline2: '为 CLI Agent 而生。',
+      subhead:
+        '真实的 CLI agent —— Claude Code、Codex、Gemini、OpenCode、Qwen、Hermes、OpenClaw —— 作为真实 PTY 进程在浏览器里互相协作。本机优先，开源。',
+      tryDemo: '试试 demo',
+      viewSource: '查看源码',
+    }
+  : {
+      status: 'Browser-native · v0.6.0-alpha.5',
+      headline1: 'The hive-mind',
+      headline2: 'for CLI coding agents.',
+      subhead:
+        'Real CLI agents — Claude Code, Codex, Gemini, OpenCode, Qwen, Hermes and more — orchestrated as actual PTY processes in your browser. Local-first, open source.',
+      tryDemo: 'Try the demo',
+      viewSource: 'View source',
+    }
 ---
 
-<section class="relative overflow-hidden pt-20 pb-12 sm:pt-24 sm:pb-16">
-  <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/40 to-transparent"></div>
-
-  {/* foreground hex signature — layered pulse encodes the
-      orchestrator → workers → tasks signal */}
-  <svg
-    aria-hidden="true"
-    class="pointer-events-none absolute right-[-110px] top-[60px] hidden -rotate-[14deg] text-[var(--color-accent)] lg:block xl:right-[-40px]"
-    width="520" height="520" viewBox="0 0 520 520" fill="none"
-  >
-    <path d="M260 30 L460 150 L460 370 L260 490 L60 370 L60 150 Z" stroke="currentColor" stroke-width="1.1" opacity="0.55"/>
-    <path d="M260 105 L395 187.5 L395 332.5 L260 415 L125 332.5 L125 187.5 Z" stroke="currentColor" stroke-width="1" opacity="0.4"/>
-    <path d="M260 180 L330 225 L330 295 L260 340 L190 295 L190 225 Z" stroke="currentColor" stroke-width="0.9" opacity="0.28"/>
-    <circle cx="260" cy="260" r="5" fill="currentColor" opacity="0.6"/>
-  </svg>
-
-  {/* secondary smaller hex bottom-left — cool slate */}
-  <svg
-    aria-hidden="true"
-    class="pointer-events-none absolute left-[-90px] bottom-[20px] hidden rotate-[12deg] text-[var(--color-cool)] opacity-[0.45] md:block"
-    width="280" height="280" viewBox="0 0 280 280" fill="none"
-  >
-    <path d="M140 20 L240 80 L240 200 L140 260 L40 200 L40 80 Z" stroke="currentColor" stroke-width="1"/>
-    <path d="M140 65 L208.3 102.5 L208.3 177.5 L140 215 L71.7 177.5 L71.7 102.5 Z" stroke="currentColor" stroke-width="0.9" opacity="0.55"/>
-  </svg>
-
+<section class="relative pt-28 pb-16 sm:pt-36 sm:pb-20">
   <div class="mx-auto max-w-6xl px-6">
-    {/* editorial kicker */}
-    <p class="reveal flex items-center gap-3 font-mono text-[10.5px] uppercase tracking-[0.28em] text-[var(--color-cool)]" style="animation-delay:0.05s">
-      <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" class="text-[var(--color-accent)]" aria-hidden="true">
-        <path d="M12 2.5 L20.4 7.25 L20.4 16.75 L12 21.5 L3.6 16.75 L3.6 7.25 Z"/>
-      </svg>
-      <span class="flex items-center">
-        <span class="text-[var(--color-accent)]">{s.hero.kicker.product}</span><span class="mx-3 opacity-50">·</span>{s.hero.kicker.sub}<span class="mx-3 opacity-50">·</span>{s.hero.kicker.version}
-      </span>
+    <p
+      class="reveal font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-accent)]"
+      style="animation-delay:0.05s"
+    >
+      {t.status}
     </p>
 
-    {/* headline */}
     <h1
-      class="reveal mt-10 max-w-[1000px] font-display leading-[0.94] tracking-[-0.025em]"
-      style="font-size:clamp(2.8rem,6.6vw,5.75rem);font-weight:280;font-variation-settings:'opsz' 144,'SOFT' 30;animation-delay:0.18s"
+      class="reveal mt-8 max-w-4xl tracking-[-0.035em] leading-[1.02]"
+      style="font-family:'Inter Variable',system-ui,sans-serif;font-size:clamp(2.75rem,6.5vw,5.25rem);font-weight:560;animation-delay:0.15s"
     >
-      {s.hero.headlinePre && <span class="text-[var(--color-text)]">{s.hero.headlinePre}</span>}<span class="text-[var(--color-text)]" style="font-weight:520;font-variation-settings:'opsz' 144,'SOFT' 20">{s.hero.headlineKey}</span><br/>
-      <span class="text-[var(--color-text-muted)]">{s.hero.headlinePost}</span><span class="text-[var(--color-accent)]">.</span>
+      <span class="text-[var(--color-text)]">{t.headline1}</span>
+      <span class="text-[var(--color-text-muted)]"> {t.headline2}</span>
     </h1>
 
-    {/* subhead */}
     <p
-      class="reveal mt-9 max-w-md font-display text-[26px] leading-[1.3] text-[var(--color-text-muted)] sm:text-[30px]"
-      style="font-weight:340;font-style:italic;font-variation-settings:'opsz' 18,'SOFT' 90;animation-delay:0.32s"
+      class="reveal mt-7 max-w-xl text-[17px] leading-relaxed text-[var(--color-text-muted)] sm:text-[18px]"
+      style="animation-delay:0.28s"
     >
-      {s.hero.subheadLine1}<br/>{s.hero.subheadLine2}
+      {t.subhead}
     </p>
 
-
-    {/* CTA */}
-    <div class="reveal mt-12 flex flex-wrap items-center gap-7" style="animation-delay:0.54s">
+    <div class="reveal mt-10 flex flex-wrap items-center gap-4" style="animation-delay:0.4s">
       <a
         href="https://github.com/tt-a1i/hive#try-the-demo-first"
-        class="group inline-flex items-center gap-2 rounded-[5px] bg-[var(--color-accent)] px-5 py-2.5 text-[13px] font-medium text-[#1a1813] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.35),inset_0_-1px_0_0_rgba(0,0,0,0.18),0_1px_0_0_rgba(0,0,0,0.4)] transition-shadow duration-200 hover:bg-[var(--color-accent-hi)] hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.45),inset_0_-1px_0_0_rgba(0,0,0,0.22),0_1px_0_0_rgba(0,0,0,0.5),0_0_0_3px_var(--color-accent-soft)]"
+        class="group inline-flex items-center gap-2 rounded-full bg-[var(--color-text)] px-6 py-3 text-[13.5px] font-semibold text-[var(--color-bg)] transition hover:bg-white"
       >
-        {s.hero.tryDemo}
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="transition group-hover:translate-x-0.5">
+        {t.tryDemo}
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" class="transition group-hover:translate-x-0.5">
           <path d="M5 12h14M13 5l7 7-7 7"/>
         </svg>
       </a>
       <a
         href="https://github.com/tt-a1i/hive"
-        class="group inline-flex items-center gap-1.5 text-sm text-[var(--color-text-muted)] underline-offset-[6px] transition hover:text-[var(--color-text)] hover:underline"
+        class="group inline-flex items-center gap-2 rounded-full border border-[var(--color-border-hi)] bg-[var(--color-surface)]/40 px-6 py-3 text-[13.5px] font-medium text-[var(--color-text)] backdrop-blur transition hover:border-[var(--color-accent)]/40 hover:bg-[var(--color-surface-2)]"
       >
-        {s.hero.viewSource}
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-50 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100">
+        {t.viewSource}
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-60 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100">
           <path d="m7 17 10-10M7 7h10v10"/>
         </svg>
       </a>

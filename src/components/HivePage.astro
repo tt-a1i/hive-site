@@ -5,7 +5,12 @@ import Nav from './Nav.astro'
 import Hero from './Hero.astro'
 import CliGrid from './CliGrid.astro'
 import hiveUi from '../assets/screenshots/hive-ui.png'
+import pattern1 from '../assets/pattern-1.png'
+import pattern2 from '../assets/pattern-2.png'
+import pattern3 from '../assets/pattern-3.png'
 import type { Lang } from '../i18n'
+
+const patternImages = [pattern1, pattern2, pattern3]
 
 interface Props {
   lang: Lang
@@ -66,59 +71,75 @@ const downloadsLabel =
 
 const t = lang === 'zh'
   ? {
-      installLabel: '三条命令上手',
+      installLabel: '三条命令造一座',
       footerNote: 'Hive · 2026',
-      builtBy: '由 @tt-a1i 一人维护 · 源码可见 (BSL 1.1, 非生产/非商业 free) · Node ≥ 22',
-      trademark:
-        'Claude、Codex、Gemini 及其他 CLI 名称与图标为各自所有者的商标。Hive 是独立项目，与 Anthropic、OpenAI、Google 等公司无关联或背书。',
+      builtBy: '由 @tt-a1i 一人维护 · BSL 1.1 · Node ≥ 22',
+      manifesto: '一个 Agent 让你省时间。一群 Agent 让你看到可能。',
+      footerTagline: '一座属于你的 Agent 蜂巢。本地运行，源码可见。',
+      footerColProduct: '产品',
+      footerColAbout: '项目',
+      footerLinkGitHub: 'GitHub',
+      footerLinkNpm: 'npm',
+      footerLinkChangelog: '更新日志',
+      footerLinkLicense: 'BSL 1.1',
+      footerLinkSecurity: '安全',
+      footerLinkIssues: '反馈',
       patterns: {
-        label: '这样玩',
-        heading: '不是一个 AI 在写——是一群。',
-        sub: '同一个工作台里，不同 AI 各司其职。下面是三种常见玩法。',
+        label: '三种分工',
+        heading: '蜂巢里没有英雄。',
+        sub: '没有一个 Agent 干完整个项目。每个负责自己最擅长的那一段。下面是我们最常看到的三种玩法。',
         cards: [
           {
-            kicker: '玩法 · 01',
+            kicker: '分工 · 01',
             title: '写 + 审',
-            body: 'Claude Code 写代码，Codex 读代码、找 bug、把意见交回给 orchestrator。Orchestrator 把意见转给 Claude 再改一轮。跨厂商互审，代码就稳了。',
+            body: 'Claude Code 写完，Codex 立刻挑刺，Orchestrator 把意见再丢回去改一轮。两家互查，代码踏实——你只看最终 diff。',
           },
           {
-            kicker: '玩法 · 02',
+            kicker: '分工 · 02',
             title: '测 + 修',
-            body: 'Gemini 起好测试、跑一遍。哪条红了 orchestrator 把它甩给 Claude 修。绿不绿、什么时候算完——由你判断。',
+            body: 'Gemini 起好测试跑一遍，红了的 Orchestrator 直接甩给 Claude 修。绿不绿、什么时候算完——你说了算。',
           },
           {
-            kicker: '玩法 · 03',
-            title: '自己组个队',
-            body: '不喜欢上面？自己排兵布阵。给每个 worker 起个角色名（前端、后端、QA、文档），怎么爽怎么来。',
+            kicker: '分工 · 03',
+            title: '不止写代码',
+            body: '把蜂巢拆给任何活——研究员、剧本作家、视频剪辑师、辩论搭子。给每个 Agent 一个角色名，让 Orchestrator 来排班。',
           },
         ],
       },
     }
   : {
-      installLabel: 'Three commands to launch',
+      installLabel: 'Three commands to build one',
       footerNote: 'Hive · 2026',
-      builtBy: 'Solo-built by @tt-a1i · Source-available (BSL 1.1, free for non-production use) · Node ≥ 22',
-      trademark:
-        'Claude, Codex, Gemini and other CLI names and logos are trademarks of their respective owners. Hive is an independent project, not affiliated with or endorsed by Anthropic, OpenAI, Google, or any other vendor.',
+      builtBy: 'Solo-built by @tt-a1i · BSL 1.1 · Node ≥ 22',
+      manifesto: "One agent saves you time. A hive shows you what's possible.",
+      footerTagline: 'A hive of agents, on your laptop. Local, source-available.',
+      footerColProduct: 'Product',
+      footerColAbout: 'Project',
+      footerLinkGitHub: 'GitHub',
+      footerLinkNpm: 'npm',
+      footerLinkChangelog: 'Changelog',
+      footerLinkLicense: 'BSL 1.1',
+      footerLinkSecurity: 'Security',
+      footerLinkIssues: 'Issues',
       patterns: {
-        label: 'Three ways to play',
-        heading: "It's not one AI writing — it's a team.",
-        sub: 'Different AIs, different jobs, same workbench. Three patterns we see all the time.',
+        label: 'Three ways to split',
+        heading: 'No hero in the hive.',
+        sub: 'No single agent finishes the whole project. Each plays the part it does best. Three patterns we see all the time.',
         cards: [
           {
             kicker: 'Pattern · 01',
             title: 'Write + review',
-            body: "Claude Code writes the code. Codex reads it, finds the bugs, and ships its notes back to the orchestrator. The orchestrator hands them to Claude for a second pass. Cross-vendor review keeps the bar high.",
+            body: "Claude writes. Codex reviews, flags the bugs, sends notes back. Claude takes a second pass. Two vendors checking each other — you review the final diff.",
           },
           {
             kicker: 'Pattern · 02',
             title: 'Test + fix',
-            body: "Gemini drafts the tests and runs them. Anything red, the orchestrator hands to Claude to fix. You decide when it's actually green.",
+            body: "Gemini drafts the tests and runs them. When something turns red, the orchestrator hands it to Claude to fix. You decide when it's actually green.",
           },
           {
             kicker: 'Pattern · 03',
-            title: 'Build your own crew',
-            body: "Neither of the above? Roll your own team. Name each worker (frontend, backend, QA, docs) and let them split work the way you like.",
+            title: 'Beyond code',
+            body: "Cast any team. Researcher, novelist, video editor, debate partner — give each agent a role and let the orchestrator dispatch.",
           },
         ],
       },
@@ -132,12 +153,12 @@ const t = lang === 'zh'
     <Hero lang={lang} />
 
     {/* ─── Product screenshot — the page's main visual anchor ───── */}
-    <section class="relative overflow-hidden pb-24 sm:pb-32">
-      <div class="pointer-events-none absolute left-1/2 top-1/4 -z-10 size-[1100px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(90,138,138,0.07),transparent_60%)] blur-[80px]"></div>
+    <section class="relative isolate overflow-hidden pb-24 sm:pb-32">
+      <div class="pointer-events-none absolute left-1/2 top-1/4 -z-10 size-[1100px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.10),transparent_60%)] blur-[100px]"></div>
 
       <div class="mx-auto max-w-[1320px] px-6">
         <div class="reveal relative" style="animation-delay:0.15s">
-          <div class="screenshot-float overflow-hidden rounded-2xl border border-white/[0.06] shadow-[0_60px_160px_-40px_rgba(0,0,0,0.75)]">
+          <div class="overflow-hidden rounded-2xl border border-[var(--color-border)] shadow-[0_30px_80px_-30px_rgba(15,23,42,0.25)]">
             <Picture
               src={hiveUi}
               formats={['avif', 'webp']}
@@ -157,7 +178,11 @@ const t = lang === 'zh'
     </section>
 
     {/* ─── Use-case patterns — three concrete "what could I do with this?" cards ─ */}
-    <section class="relative py-20 sm:py-24">
+    <section class="relative isolate overflow-hidden py-24 sm:py-32">
+      {/* Soft watercolor echoes — peach in the upper-right, sky-blue in the lower-left */}
+      <div class="pointer-events-none absolute -top-32 -right-40 size-[700px] -z-10 rounded-full blur-[120px]" style="background: radial-gradient(circle, rgba(255, 178, 122, 0.45), transparent 65%);"></div>
+      <div class="pointer-events-none absolute -bottom-40 -left-40 size-[600px] -z-10 rounded-full blur-[120px]" style="background: radial-gradient(circle, rgba(125, 180, 255, 0.40), transparent 65%);"></div>
+
       <div class="mx-auto max-w-6xl px-6">
         <div class="reveal max-w-2xl" style="animation-delay:0.05s">
           <p class="font-mono text-[10.5px] uppercase tracking-[0.22em] text-[var(--color-accent)]">{t.patterns.label}</p>
@@ -170,15 +195,34 @@ const t = lang === 'zh'
           <p class="mt-4 max-w-xl text-[15px] leading-relaxed text-[var(--color-text-muted)]">{t.patterns.sub}</p>
         </div>
 
-        <ul class="mt-14 grid grid-cols-1 gap-5 md:grid-cols-3">
+        <ul class="mt-20 space-y-24 sm:space-y-32">
           {t.patterns.cards.map((card, i) => (
             <li
-              class="reveal group rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)]/30 p-7 transition-colors duration-150 ease-out hover:border-[var(--color-accent)]/40"
-              style={`animation-delay:${0.2 + i * 0.08}s`}
+              class={`reveal flex flex-col items-center gap-10 sm:gap-20 ${i % 2 === 1 ? 'sm:flex-row-reverse' : 'sm:flex-row'}`}
+              style={`animation-delay:${0.15 + i * 0.1}s`}
             >
-              <p class="font-mono text-[10.5px] uppercase tracking-[0.22em] text-[var(--color-text-faint)]">{card.kicker}</p>
-              <h3 class="mt-4 text-[19px] font-semibold tracking-tight text-[var(--color-text)]">{card.title}</h3>
-              <p class="mt-3 text-[14.5px] leading-relaxed text-[var(--color-text-muted)]">{card.body}</p>
+              <div class="shrink-0">
+                <Picture
+                  src={patternImages[i]}
+                  formats={['avif', 'webp']}
+                  widths={[280, 420, 560]}
+                  sizes="(min-width: 640px) 280px, 220px"
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  class="size-56 sm:size-64"
+                />
+              </div>
+              <div class="max-w-md text-center sm:text-left">
+                <p class="font-mono text-[10.5px] uppercase tracking-[0.22em] text-[var(--color-accent)]">{card.kicker}</p>
+                <h3
+                  class="mt-4 tracking-[-0.025em] leading-[1.15] text-[var(--color-text)]"
+                  style="font-family:'Inter Variable',system-ui,sans-serif;font-size:clamp(1.75rem,3vw,2.25rem);font-weight:560"
+                >
+                  {card.title}
+                </h3>
+                <p class="mt-5 text-[15.5px] leading-[1.75] text-[var(--color-text-muted)]">{card.body}</p>
+              </div>
             </li>
           ))}
         </ul>
@@ -189,9 +233,12 @@ const t = lang === 'zh'
     <CliGrid lang={lang} />
 
     {/* ─── Install panel — quiet and competent ──────────────────── */}
-    <section id="install" class="relative py-20 sm:py-24">
+    <section id="install" class="relative isolate overflow-hidden py-24 sm:py-32">
+      {/* Soft amber halo behind the install card */}
+      <div class="pointer-events-none absolute left-1/2 top-1/2 -z-10 size-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[120px]" style="background: radial-gradient(circle, rgba(255, 178, 122, 0.35), transparent 60%);"></div>
+
       <div class="mx-auto max-w-3xl px-6">
-        <div class="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)]/40 p-8 backdrop-blur-sm sm:p-10">
+        <div class="rounded-3xl border border-[var(--color-border)] bg-white p-8 shadow-[0_20px_60px_-20px_rgba(15,23,42,0.12)] sm:p-10">
           <div class="flex flex-wrap items-baseline justify-between gap-4">
             <p class="font-mono text-[10.5px] uppercase tracking-[0.22em] text-[var(--color-accent)]">
               {t.installLabel}
@@ -203,10 +250,10 @@ const t = lang === 'zh'
             </p>
           </div>
 
-          <div class="mt-6 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-2)]/70 p-5 font-mono text-[13px] leading-[1.95]">
-            <div class="text-[var(--color-text-faint)]"><span class="select-none text-[var(--color-text-muted)]">$</span> <span class="text-[var(--color-text)]">npm i -g @tt-a1i/hive</span></div>
-            <div class="text-[var(--color-text-faint)]"><span class="select-none text-[var(--color-text-muted)]">$</span> <span class="text-[var(--color-text)]">hive --port 4010</span></div>
-            <div class="text-[var(--color-text-faint)]"><span class="select-none text-[var(--color-text-muted)]">$</span> <span class="text-[var(--color-text)]">open http://localhost:4010</span></div>
+          <div class="mt-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-2)] p-5 font-mono text-[13px] leading-[1.95]">
+            <div><span class="select-none text-[var(--color-accent)]">$</span> <span class="text-[var(--color-text)]">npm i -g @tt-a1i/hive</span></div>
+            <div><span class="select-none text-[var(--color-accent)]">$</span> <span class="text-[var(--color-text)]">hive --port 4010</span></div>
+            <div><span class="select-none text-[var(--color-accent)]">$</span> <span class="text-[var(--color-text)]">open http://localhost:4010</span></div>
           </div>
 
           <p class="mt-6 font-mono text-[11px] text-[var(--color-text-faint)]">{t.builtBy}</p>
@@ -214,19 +261,67 @@ const t = lang === 'zh'
       </div>
     </section>
 
-    {/* ─── Footer ──────────────────────────────────────────────── */}
-    <footer class="border-t border-[var(--color-border)]/60 py-12">
+    {/* ─── Manifesto — a quiet philosophical sign-off before the footer */}
+    <section class="relative isolate overflow-hidden py-32 sm:py-44">
+      <div
+        class="pointer-events-none absolute inset-0 -z-10"
+        style="background-image:url('/manifesto-bg.webp'); background-size:cover; background-position:center; mask-image:linear-gradient(180deg, transparent 0%, black 18%, black 82%, transparent 100%); -webkit-mask-image:linear-gradient(180deg, transparent 0%, black 18%, black 82%, transparent 100%);"
+      ></div>
+
+      <div class="mx-auto max-w-4xl px-6 text-center">
+        <p
+          class="reveal mx-auto"
+          style="font-family:var(--font-display);font-size:clamp(1.875rem,4.2vw,3.25rem);font-weight:380;line-height:1.25;letter-spacing:-0.015em;color:var(--color-text);font-variation-settings:'opsz' 144,'SOFT' 30"
+        >
+          {t.manifesto}
+        </p>
+      </div>
+    </section>
+
+    {/* ─── Footer — wordmark + tagline + structured links */}
+    <footer class="relative border-t border-[var(--color-border)]/60 py-20 sm:py-24">
       <div class="mx-auto max-w-6xl px-6">
-        <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-          <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-text-faint)]">{t.footerNote}</p>
-          <div class="flex flex-wrap gap-x-6 gap-y-2 font-mono text-[11px]">
-            <a href="https://github.com/tt-a1i/hive" class="text-[var(--color-text-muted)] transition-colors duration-150 ease-out hover:text-[var(--color-text)]">GitHub</a>
-            <a href="https://www.npmjs.com/package/@tt-a1i/hive" class="text-[var(--color-text-muted)] transition-colors duration-150 ease-out hover:text-[var(--color-text)]">npm</a>
-            <a href="https://github.com/tt-a1i/hive/blob/main/CHANGELOG.md" class="text-[var(--color-text-muted)] transition-colors duration-150 ease-out hover:text-[var(--color-text)]">Changelog</a>
-            <a href="https://github.com/tt-a1i/hive/blob/main/LICENSE" class="text-[var(--color-text-muted)] transition-colors duration-150 ease-out hover:text-[var(--color-text)]">BSL 1.1</a>
+        <div class="grid grid-cols-1 gap-14 sm:grid-cols-12 sm:gap-10">
+          {/* Wordmark column */}
+          <div class="sm:col-span-6">
+            <a
+              href={lang === 'zh' ? '/' : '/en/'}
+              class="inline-block text-[var(--color-text)]"
+              style="font-family:var(--font-display);font-size:clamp(3rem,5vw,4.25rem);font-weight:380;line-height:1;letter-spacing:-0.02em;font-variation-settings:'opsz' 144,'SOFT' 30"
+            >
+              Hive
+            </a>
+            <p class="mt-5 max-w-sm text-[15px] leading-relaxed text-[var(--color-text-muted)]">
+              {t.footerTagline}
+            </p>
+          </div>
+
+          {/* Link columns */}
+          <div class="grid grid-cols-2 gap-10 sm:col-span-6">
+            <div>
+              <p class="font-mono text-[10.5px] uppercase tracking-[0.22em] text-[var(--color-text-faint)]">{t.footerColProduct}</p>
+              <ul class="mt-5 space-y-3 text-[14px]">
+                <li><a href="https://github.com/tt-a1i/hive" class="text-[var(--color-text-muted)] transition-colors duration-150 ease-out hover:text-[var(--color-text)]">{t.footerLinkGitHub}</a></li>
+                <li><a href="https://www.npmjs.com/package/@tt-a1i/hive" class="text-[var(--color-text-muted)] transition-colors duration-150 ease-out hover:text-[var(--color-text)]">{t.footerLinkNpm}</a></li>
+                <li><a href="https://github.com/tt-a1i/hive/blob/main/CHANGELOG.md" class="text-[var(--color-text-muted)] transition-colors duration-150 ease-out hover:text-[var(--color-text)]">{t.footerLinkChangelog}</a></li>
+              </ul>
+            </div>
+            <div>
+              <p class="font-mono text-[10.5px] uppercase tracking-[0.22em] text-[var(--color-text-faint)]">{t.footerColAbout}</p>
+              <ul class="mt-5 space-y-3 text-[14px]">
+                <li><a href="https://github.com/tt-a1i/hive/blob/main/LICENSE" class="text-[var(--color-text-muted)] transition-colors duration-150 ease-out hover:text-[var(--color-text)]">{t.footerLinkLicense}</a></li>
+                <li><a href="https://github.com/tt-a1i/hive/blob/main/SECURITY.md" class="text-[var(--color-text-muted)] transition-colors duration-150 ease-out hover:text-[var(--color-text)]">{t.footerLinkSecurity}</a></li>
+                <li><a href="https://github.com/tt-a1i/hive/issues" class="text-[var(--color-text-muted)] transition-colors duration-150 ease-out hover:text-[var(--color-text)]">{t.footerLinkIssues}</a></li>
+              </ul>
+            </div>
           </div>
         </div>
-        <p class="mt-8 max-w-3xl text-[11px] leading-relaxed text-[var(--color-text-faint)]">{t.trademark}</p>
+
+        {/* Bottom row */}
+        <div class="mt-16 flex flex-col gap-3 border-t border-[var(--color-border)]/50 pt-8 sm:flex-row sm:items-center sm:justify-between">
+          <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-text-faint)]">{t.footerNote}</p>
+          <p class="font-mono text-[11px] tracking-[0.04em] text-[var(--color-text-faint)]">{t.builtBy}</p>
+        </div>
       </div>
     </footer>
   </main>

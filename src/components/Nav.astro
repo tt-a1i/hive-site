@@ -1,5 +1,4 @@
 ---
-import HexLogo from './HexLogo.astro'
 import type { Lang } from '../i18n'
 import { STRINGS } from '../i18n'
 
@@ -13,9 +12,8 @@ const homeHref = lang === 'zh' ? '/' : '/en/'
 
 <nav class="absolute inset-x-0 top-0 z-40">
   <div class="mx-auto flex max-w-6xl items-center justify-between px-6 pt-6">
-    <a href={homeHref} class="group flex items-center gap-2.5 text-[var(--color-text)]">
-      <HexLogo class="text-[var(--color-accent)] transition duration-500 group-hover:rotate-[14deg]" glow size={24} />
-      <span class="font-display text-[19px] font-medium tracking-tight" style="font-variation-settings:'opsz' 60,'SOFT' 30">Hive</span>
+    <a href={homeHref} class="text-[var(--color-text)]">
+      <span class="text-[20px] font-semibold tracking-tight">Hive</span>
     </a>
 
     <div class="flex items-center gap-2">

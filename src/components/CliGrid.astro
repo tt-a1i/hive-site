@@ -9,20 +9,23 @@ const { lang } = Astro.props
 const t = lang === 'zh'
   ? {
       label: '阵容',
-      heading: '把你已经在用的 AI，都拉进来。',
-      sub: '下面七个开箱即用。你想加谁都行——你电脑上能跑的 AI，Hive 里就能跑。不用新账号，不用新 key。',
+      heading: '已经在巢里的，和能加入的。',
+      sub: '七个 Agent 开箱即用——不过那只是开始。你电脑上能跑的任何 Agent，Hive 里都能跑。不用再注册，不用再配 key。',
     }
   : {
-      label: 'Lineup',
-      heading: 'Bring the AIs you already use.',
-      sub: "Seven come built-in. Bring anyone else — if it runs on your laptop, it runs in Hive. No new accounts, no new keys.",
+      label: 'The lineup',
+      heading: "Who's already in the hive.",
+      sub: "Seven agents are built in — and that's just the start. Any agent that runs on your laptop runs here too. No new accounts, no new keys.",
     }
 
 const baseDelay = 0.2
 const step = 0.05
 ---
 
-<section class="relative py-20 sm:py-24">
+<section class="relative isolate overflow-hidden py-24 sm:py-32">
+  {/* Soft sky-blue echo behind the lineup */}
+  <div class="pointer-events-none absolute -top-20 left-1/2 size-[1000px] -z-10 -translate-x-1/2 rounded-full blur-[140px]" style="background: radial-gradient(circle, rgba(125, 180, 255, 0.32), transparent 60%);"></div>
+
   <div class="mx-auto max-w-6xl px-6">
     <div class="reveal max-w-2xl" style="animation-delay:0.05s">
       <p class="font-mono text-[10.5px] uppercase tracking-[0.22em] text-[var(--color-accent)]">{t.label}</p>

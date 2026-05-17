@@ -52,8 +52,8 @@ const jsonLd = {
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={`${baseUrl}/og.png`} />
-    <meta property="og:image:width" content="1672" />
-    <meta property="og:image:height" content="941" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:locale" content={lang === 'zh' ? 'zh_CN' : 'en_US'} />
     <meta property="og:locale:alternate" content={lang === 'zh' ? 'en_US' : 'zh_CN'} />
 
@@ -62,8 +62,8 @@ const jsonLd = {
     <meta name="twitter:description" content={s.meta.description} />
     <meta name="twitter:image" content={`${baseUrl}/og.png`} />
 
-    <meta name="color-scheme" content="dark" />
-    <meta name="theme-color" content="#0e0c08" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#fafaf7" />
 
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>

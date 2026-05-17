@@ -58,9 +58,9 @@ export const STRINGS: Record<Lang, Strings> = {
   en: {
     htmlLang: 'en',
     meta: {
-      title: 'Hive — Browser-native hive-mind for CLI coding agents',
+      title: 'Hive — A hive of agents, in your browser',
       description:
-        'Orchestrate Claude Code, Codex, Gemini, and OpenCode as real PTY processes via a small team protocol. Your orchestrator is a real CLI agent.',
+        'Bundle multiple agents into a hive — code, research, writing, video. One orchestrates, the rest execute. Local, source-available, alpha.',
     },
     hero: {
       kicker: { product: 'Volume 01', sub: 'browser-native', version: 'v0.6.0-alpha.5' },
@@ -105,16 +105,16 @@ export const STRINGS: Record<Lang, Strings> = {
     },
     nav: {
       star: 'Star',
-      switcherLabel: '中文',
+      switcherLabel: '中',
       switcherHref: '/',
     },
   },
   zh: {
     htmlLang: 'zh-CN',
     meta: {
-      title: 'Hive — 面向 CLI Coding Agent 的浏览器版蜂巢',
+      title: 'Hive — 在浏览器里造一座 Agent 蜂巢',
       description:
-        '让 Claude Code、Codex、Gemini、OpenCode 作为真实 PTY 进程协作，通过一个轻量的 team 协议互通。你的 orchestrator 本身就是一个真实的 CLI agent。',
+        '把多个 Agent 组成蜂巢——写代码、做调研、写作、剪辑——一个 Orchestrator 派活，其它执行。本地运行，源码可见，alpha 阶段。',
     },
     hero: {
       kicker: { product: '卷一', sub: '浏览器原生', version: 'v0.6.0-alpha.5' },
@@ -159,7 +159,7 @@ export const STRINGS: Record<Lang, Strings> = {
     },
     nav: {
       star: 'Star',
-      switcherLabel: 'English',
+      switcherLabel: 'EN',
       switcherHref: '/en/',
     },
   },

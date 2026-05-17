@@ -12,8 +12,9 @@ const homeHref = lang === 'zh' ? '/' : '/en/'
 
 <nav class="absolute inset-x-0 top-0 z-40">
   <div class="mx-auto flex max-w-6xl items-center justify-between px-6 pt-6">
-    <a href={homeHref} class="text-[var(--color-text)]">
-      <span class="text-[20px] font-semibold tracking-tight">Hive</span>
+    <a href={homeHref} class="group inline-flex items-center gap-2.5 text-[var(--color-text)]">
+      <img src="/logo-256.png" alt="" width="56" height="56" class="size-14 transition-transform duration-500 ease-out group-hover:-translate-y-px" />
+      <span class="text-[28px] font-semibold tracking-tight">Hive</span>
     </a>
 
     <div class="flex items-center gap-2">

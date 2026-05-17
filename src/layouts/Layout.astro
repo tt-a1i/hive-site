@@ -9,7 +9,7 @@ interface Props {
 
 const { lang = 'en' } = Astro.props
 const s = STRINGS[lang]
-const baseUrl = 'https://hive-site.pages.dev'
+const baseUrl = 'https://hivehq.dev'
 const path = lang === 'zh' ? '/' : '/en/'
 const canonicalUrl = `${baseUrl}${path}`
 
@@ -36,7 +36,9 @@ const jsonLd = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/logo-32.png" />
+    <link rel="icon" type="image/png" sizes="64x64" href="/logo-64.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/logo-180.png" />
     <meta name="generator" content={Astro.generator} />
 
     <title>{s.meta.title}</title>

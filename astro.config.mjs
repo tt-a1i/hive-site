@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import sitemap from '@astrojs/sitemap'
 
 export default defineConfig({
-  site: 'https://hive-site.pages.dev',
+  site: 'https://hivehq.dev',
   integrations: [
     sitemap({
       i18n: {

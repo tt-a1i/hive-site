@@ -73,7 +73,7 @@ const t = lang === 'zh'
   ? {
       installLabel: '三条命令造一座',
       footerNote: 'Hive · 2026',
-      builtBy: '由 @tt-a1i 一人维护 · BSL 1.1 · Node ≥ 22',
+      builtBy: '由 @tt-a1i 一人维护 · Node ≥ 22',
       manifesto: '一个 Agent 让你省时间。一群 Agent 让你看到可能。',
       footerTagline: '一座属于你的 Agent 蜂巢。本地运行，源码可见。',
       footerColProduct: '产品',
@@ -110,7 +110,7 @@ const t = lang === 'zh'
   : {
       installLabel: 'Three commands to build one',
       footerNote: 'Hive · 2026',
-      builtBy: 'Solo-built by @tt-a1i · BSL 1.1 · Node ≥ 22',
+      builtBy: 'Solo-built by @tt-a1i · Node ≥ 22',
       manifesto: "One agent saves you time. A hive shows you what's possible.",
       footerTagline: 'A hive of agents, on your laptop. Local, source-available.',
       footerColProduct: 'Product',
@@ -286,10 +286,14 @@ const t = lang === 'zh'
           <div class="sm:col-span-6">
             <a
               href={lang === 'zh' ? '/' : '/en/'}
-              class="inline-block text-[var(--color-text)]"
-              style="font-family:var(--font-display);font-size:clamp(3rem,5vw,4.25rem);font-weight:380;line-height:1;letter-spacing:-0.02em;font-variation-settings:'opsz' 144,'SOFT' 30"
+              class="inline-flex items-baseline gap-3 text-[var(--color-text)]"
             >
-              Hive
+              <img src="/logo-256.png" alt="" width="56" height="56" class="size-12 self-center sm:size-14" />
+              <span
+                style="font-family:var(--font-display);font-size:clamp(3rem,5vw,4.25rem);font-weight:380;line-height:1;letter-spacing:-0.02em;font-variation-settings:'opsz' 144,'SOFT' 30"
+              >
+                Hive
+              </span>
             </a>
             <p class="mt-5 max-w-sm text-[15px] leading-relaxed text-[var(--color-text-muted)]">
               {t.footerTagline}
@@ -309,7 +313,6 @@ const t = lang === 'zh'
             <div>
               <p class="font-mono text-[10.5px] uppercase tracking-[0.22em] text-[var(--color-text-faint)]">{t.footerColAbout}</p>
               <ul class="mt-5 space-y-3 text-[14px]">
-                <li><a href="https://github.com/tt-a1i/hive/blob/main/LICENSE" class="text-[var(--color-text-muted)] transition-colors duration-150 ease-out hover:text-[var(--color-text)]">{t.footerLinkLicense}</a></li>
                 <li><a href="https://github.com/tt-a1i/hive/blob/main/SECURITY.md" class="text-[var(--color-text-muted)] transition-colors duration-150 ease-out hover:text-[var(--color-text)]">{t.footerLinkSecurity}</a></li>
                 <li><a href="https://github.com/tt-a1i/hive/issues" class="text-[var(--color-text-muted)] transition-colors duration-150 ease-out hover:text-[var(--color-text)]">{t.footerLinkIssues}</a></li>
               </ul>

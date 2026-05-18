@@ -73,7 +73,7 @@ const t = lang === 'zh'
   ? {
       installLabel: '三条命令造一座',
       footerNote: 'Hive · 2026',
-      builtBy: '由 @tt-a1i 一人维护 · Node ≥ 22',
+      builtBy: '由 <a href="https://github.com/tt-a1i" target="_blank" rel="noopener" class="underline-offset-2 transition-colors hover:text-[var(--color-text)] hover:underline">@tt-a1i</a> 一人维护 · Node ≥ 22',
       manifesto: '一个 Agent 让你省时间。一群 Agent 让你看到可能。',
       footerTagline: '一座属于你的 Agent 蜂巢。本地运行，源码可见。',
       footerColProduct: '产品',
@@ -110,7 +110,7 @@ const t = lang === 'zh'
   : {
       installLabel: 'Three commands to build one',
       footerNote: 'Hive · 2026',
-      builtBy: 'Solo-built by @tt-a1i · Node ≥ 22',
+      builtBy: 'Solo-built by <a href="https://github.com/tt-a1i" target="_blank" rel="noopener" class="underline-offset-2 transition-colors hover:text-[var(--color-text)] hover:underline">@tt-a1i</a> · Node ≥ 22',
       manifesto: "One agent saves you time. A hive shows you what's possible.",
       footerTagline: 'A hive of agents, on your laptop. Local, source-available.',
       footerColProduct: 'Product',
@@ -176,6 +176,42 @@ const t = lang === 'zh'
         </div>
       </div>
     </section>
+
+    {lang === 'zh' && (
+      <section class="relative isolate overflow-hidden py-24 sm:py-32">
+        <div class="mx-auto max-w-5xl px-6">
+          <div class="reveal max-w-2xl">
+            <p class="font-mono text-[10.5px] uppercase tracking-[0.22em] text-[var(--color-accent)]">演示视频</p>
+            <h2
+              class="mt-4 tracking-[-0.025em] leading-[1.1] text-[var(--color-text)]"
+              style="font-family:'Inter Variable',system-ui,sans-serif;font-size:clamp(1.65rem,3.2vw,2.5rem);font-weight:560"
+            >
+              一镜到底，看它跑起来。
+            </h2>
+            <p class="mt-4 max-w-xl text-[15px] leading-relaxed text-[var(--color-text-muted)]">
+              从启 Orchestrator、派活 Worker、到角色扮演分工——十分钟实地走一遍。
+            </p>
+          </div>
+          <div class="reveal mt-12 overflow-hidden rounded-2xl border border-[var(--color-border)] shadow-[0_30px_80px_-30px_rgba(15,23,42,0.25)]" style="animation-delay:0.15s">
+            <div class="relative" style="aspect-ratio: 16 / 9;">
+              <iframe
+                src="https://player.bilibili.com/player.html?bvid=BV1UHLp6nEQR&page=1&as_wide=1&high_quality=1&danmaku=0&autoplay=0"
+                scrolling="no"
+                frameborder="no"
+                framespacing="0"
+                allowfullscreen
+                loading="lazy"
+                class="absolute inset-0 size-full"
+                title="Hive 演示视频"
+              ></iframe>
+            </div>
+          </div>
+          <p class="mt-6 text-center text-[13px] text-[var(--color-text-muted)]">
+            视频原片：<a href="https://www.bilibili.com/video/BV1UHLp6nEQR" target="_blank" rel="noopener" class="underline-offset-2 transition-colors hover:text-[var(--color-text)] hover:underline">在 Bilibili 打开</a>
+          </p>
+        </div>
+      </section>
+    )}
 
     {/* ─── Use-case patterns — three concrete "what could I do with this?" cards ─ */}
     <section class="relative isolate overflow-hidden py-24 sm:py-32">
@@ -256,7 +292,7 @@ const t = lang === 'zh'
             <div><span class="select-none text-[var(--color-accent)]">$</span> <span class="text-[var(--color-text)]">open http://localhost:4010</span></div>
           </div>
 
-          <p class="mt-6 font-mono text-[11px] text-[var(--color-text-faint)]">{t.builtBy}</p>
+          <p class="mt-6 font-mono text-[11px] text-[var(--color-text-faint)]" set:html={t.builtBy}></p>
         </div>
       </div>
     </section>
@@ -323,7 +359,7 @@ const t = lang === 'zh'
         {/* Bottom row */}
         <div class="mt-16 flex flex-col gap-3 border-t border-[var(--color-border)]/50 pt-8 sm:flex-row sm:items-center sm:justify-between">
           <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-text-faint)]">{t.footerNote}</p>
-          <p class="font-mono text-[11px] tracking-[0.04em] text-[var(--color-text-faint)]">{t.builtBy}</p>
+          <p class="font-mono text-[11px] tracking-[0.04em] text-[var(--color-text-faint)]" set:html={t.builtBy}></p>
         </div>
       </div>
     </footer>

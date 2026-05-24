@@ -8,16 +8,16 @@ const { lang } = Astro.props
 
 const t = lang === 'zh'
   ? {
-      headline1: '独行已尽其远，',
-      headline2: '众行方启其新',
-      subhead: '一动，万象自成。',
+      headline1: '在浏览器里',
+      headline2: '造一座 Agent 蜂巢。',
+      subhead: '独行已尽其远，众行方启其新。',
       tryDemo: '进去看看',
       viewSource: '先读源码',
     }
   : {
-      headline1: 'One walks no further.',
-      headline2: 'The many begin',
-      subhead: 'Move once. A hive forms.',
+      headline1: 'A hive of agents',
+      headline2: 'right in your browser.',
+      subhead: 'One walks no further. The many begin.',
       tryDemo: 'Step into the hive',
       viewSource: 'Read the source first',
     }
@@ -37,8 +37,8 @@ const t = lang === 'zh'
       class="max-w-4xl tracking-[-0.02em] leading-[1.04]"
       style="font-family:var(--font-display);font-size:clamp(2.75rem,7vw,5.75rem);font-weight:380;font-variation-settings:'opsz' 144,'SOFT' 30"
     >
-      <span class="block text-[var(--color-text)]">{t.headline1}</span>
-      <span class="block text-right text-[var(--color-accent)]">{t.headline2}</span>
+      <span class="text-[var(--color-text)]">{t.headline1}</span>
+      <span class="text-[var(--color-accent)]"> {t.headline2}</span>
     </h1>
 
     <p

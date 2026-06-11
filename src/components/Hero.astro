@@ -11,14 +11,18 @@ const t = lang === 'zh'
       headline1: '在你的浏览器里，',
       headline2: '造一座 Agent 蜂巢。',
       subhead: '独行已尽其远，众行方启其新。',
-      tryDemo: '进去看看',
+      mechanic:
+        '一个 Orchestrator 派活，Claude Code、Codex、Gemini 这些真实的 CLI Agent 在浏览器终端里各自开工——全部跑在你本机。',
+      build: '造一座蜂巢',
       viewSource: '先读源码',
     }
   : {
       headline1: 'A hive of agents',
       headline2: 'right in your browser.',
-      subhead: 'One walks no further. The many begin.',
-      tryDemo: 'Step into the hive',
+      subhead: 'Alone has gone as far as it goes. Together is just getting started.',
+      mechanic:
+        'One orchestrator hands out the work. Claude Code, Codex and Gemini pick it up as real CLI processes, each in its own terminal in your browser — all on your machine.',
+      build: 'Build your hive',
       viewSource: 'Read the source first',
     }
 ---
@@ -33,27 +37,31 @@ const t = lang === 'zh'
   ></div>
 
   <div class="mx-auto max-w-6xl px-6">
-    <h1
-      class="max-w-5xl tracking-[-0.02em] leading-[1.06]"
-      style="font-family:var(--font-display);font-size:clamp(2.75rem,7vw,5.75rem);font-weight:380;font-variation-settings:'opsz' 144,'SOFT' 30"
-    >
+    <h1 class="type-display max-w-5xl">
       <span class="block text-[var(--color-text)]">{t.headline1}</span>
       <span class="block text-[var(--color-accent)] sm:pl-[1.5em]">{t.headline2}</span>
     </h1>
 
     <p
-      class="reveal mt-6 max-w-xl text-[var(--color-text-muted)]"
-      style="font-family:var(--font-display);font-size:clamp(1.375rem,2.5vw,2.125rem);font-weight:380;font-variation-settings:'opsz' 144,'SOFT' 50;line-height:1.45;animation-delay:0.28s"
+      class="type-subhead reveal mt-6 max-w-2xl text-balance text-[var(--color-text-muted)]"
+      style="animation-delay:0.28s"
     >
       {t.subhead}
     </p>
 
-    <div class="reveal mt-10 flex flex-wrap items-center gap-3" style="animation-delay:0.4s">
+    <p
+      class="reveal mt-5 max-w-xl text-[15px] leading-[1.75] text-[var(--color-text-muted)] [text-wrap:pretty]"
+      style="animation-delay:0.36s"
+    >
+      {t.mechanic}
+    </p>
+
+    <div class="reveal mt-10 flex flex-wrap items-center gap-3" style="animation-delay:0.46s">
       <a
         href="#install"
         class="group inline-flex items-center gap-2 rounded-full bg-[var(--color-accent)] px-6 py-3 text-[13.5px] font-semibold text-white shadow-[0_8px_24px_-8px_rgba(37,99,235,0.45)] transition-all duration-200 ease-out hover:-translate-y-px hover:bg-[var(--color-accent-hi)] hover:shadow-[0_12px_32px_-8px_rgba(37,99,235,0.55)] active:translate-y-0 active:shadow-[0_4px_12px_-4px_rgba(37,99,235,0.35)] active:duration-75"
       >
-        {t.tryDemo}
+        {t.build}
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" class="transition group-hover:translate-x-0.5" aria-hidden="true" focusable="false">
           <path d="M5 12h14M13 5l7 7-7 7"/>
         </svg>

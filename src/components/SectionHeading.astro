@@ -1,0 +1,17 @@
+---
+interface Props {
+  kicker: string
+  heading: string
+  sub?: string
+  /** Extra classes on the wrapper (e.g. reveal + animation delay). */
+  class?: string
+  style?: string
+}
+const { kicker, heading, sub, class: className = '', style } = Astro.props
+---
+
+<div class={`max-w-2xl ${className}`} style={style}>
+  <p class="type-kicker text-[var(--color-accent)]">{kicker}</p>
+  <h2 class="type-h2 mt-4 text-[var(--color-text)]">{heading}</h2>
+  {sub && <p class="mt-4 max-w-xl text-[15px] leading-relaxed text-[var(--color-text-muted)]">{sub}</p>}
+</div>

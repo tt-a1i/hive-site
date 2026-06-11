@@ -10,126 +10,92 @@ const t = lang === 'zh'
   ? {
       label: '阵容',
       heading: '已经在巢里的，和能加入的。',
-      sub: '七个 Agent 开箱即用——不过那只是开始。你电脑上能跑的任何 Agent，Hive 里都能跑。不用再注册，不用再配 key。',
+      sub: '九个预设开箱即用——而那只是开始。你电脑上能跑的任何 Agent，Hive 里都能跑：用你已经登录好的 CLI 就行，Hive 自己不要账号、不要 key。',
     }
   : {
       label: 'The lineup',
       heading: "Who's already in the hive.",
-      sub: "Seven agents are built in — and that's just the start. Any agent that runs on your laptop runs here too. No new accounts, no new keys.",
+      sub: "Nine presets out of the box — and that's just the start. Any agent on your laptop runs here too: your CLIs bring their own logins. Hive itself asks for no account, no key.",
     }
 
+/* One surface for every tile (--color-tile) so the lineup reads as a single
+   deliberate terminal stripe instead of nine mismatched app icons.
+   Monochrome marks render in cream; brand-colored marks keep their color. */
+interface Tile {
+  name: string
+  href: string
+  img?: string
+  imgSize?: string
+  path?: string
+  viewBox?: string
+}
+const tiles: Tile[] = [
+  { name: 'Claude Code', href: 'https://claude.com/code', img: '/logos/claude-code.png' },
+  {
+    name: 'Codex CLI',
+    href: 'https://github.com/openai/codex',
+    path: 'M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.08L8.704 5.46a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z',
+  },
+  { name: 'Gemini CLI', href: 'https://github.com/google-gemini/gemini-cli', img: '/logos/gemini.png' },
+  {
+    name: 'OpenCode',
+    href: 'https://opencode.ai',
+    viewBox: '0 0 512 512',
+    path: 'M384 416H128V96H384V416ZM320 160H192V352H320V160ZM320 224V352H192V224H320Z',
+  },
+  {
+    name: 'Antigravity',
+    href: 'https://antigravity.google',
+    path: 'M21.751 22.607c1.34 1.005 3.35.335 1.508-1.508C17.73 15.74 18.904 1 12.037 1 5.17 1 6.342 15.74.815 21.1c-2.01 2.009.167 2.511 1.507 1.506 5.192-3.517 4.857-9.714 9.715-9.714 4.857 0 4.522 6.197 9.714 9.715z',
+  },
+  {
+    name: 'Cursor CLI',
+    href: 'https://cursor.com',
+    path: 'M22.106 5.68L12.5.135a.998.998 0 00-.998 0L1.893 5.68a.84.84 0 00-.419.726v11.186c0 .3.16.577.42.727l9.607 5.547a.999.999 0 00.998 0l9.608-5.547a.84.84 0 00.42-.727V6.407a.84.84 0 00-.42-.726zm-.603 1.176L12.228 22.92c-.063.108-.228.064-.228-.061V12.34a.59.59 0 00-.295-.51l-9.11-5.26c-.107-.062-.063-.228.062-.228h18.55c.264 0 .428.286.296.514z',
+  },
+  {
+    name: 'Grok Build',
+    href: 'https://x.ai',
+    path: 'M9.27 15.29l7.978-5.897c.391-.29.95-.177 1.137.272.98 2.369.542 5.215-1.41 7.169-1.951 1.954-4.667 2.382-7.149 1.406l-2.711 1.257c3.889 2.661 8.611 2.003 11.562-.953 2.341-2.344 3.066-5.539 2.388-8.42l.006.007c-.983-4.232.242-5.924 2.75-9.383.06-.082.12-.164.179-.248l-3.301 3.305v-.01L9.267 15.292M7.623 16.723c-2.792-2.67-2.31-6.801.071-9.184 1.761-1.763 4.647-2.483 7.166-1.425l2.705-1.25a7.808 7.808 0 00-1.829-1A8.975 8.975 0 005.984 5.83c-2.533 2.536-3.33 6.436-1.962 9.764 1.022 2.487-.653 4.246-2.34 6.022-.599.63-1.199 1.259-1.682 1.925l7.62-6.815',
+  },
+  { name: 'Hermes', href: 'https://hermes-agent.nousresearch.com', img: '/logos/hermes.svg', imgSize: 'size-[62%]' },
+  { name: 'Qwen Code', href: 'https://github.com/QwenLM/qwen-code', img: '/logos/qwen.png' },
+]
+
 const baseDelay = 0.2
-const step = 0.05
+const step = 0.04
 ---
 
 <section class="relative isolate overflow-hidden py-24 sm:py-32">
   {/* Soft sky-blue echo behind the lineup */}
-  <div class="pointer-events-none absolute -top-20 left-1/2 size-[1000px] -z-10 -translate-x-1/2 rounded-full blur-[140px]" style="background: radial-gradient(circle, rgba(125, 180, 255, 0.32), transparent 60%);"></div>
+  <div class="pointer-events-none absolute -top-20 left-1/2 size-[1000px] -z-10 -translate-x-1/2 rounded-full blur-[140px]" style="background: radial-gradient(circle, var(--color-cool-wash), transparent 60%);"></div>
 
   <div class="mx-auto max-w-6xl px-6">
     <div class="reveal max-w-2xl" style="animation-delay:0.05s">
-      <p class="font-mono text-[10.5px] uppercase tracking-[0.22em] text-[var(--color-accent)]">{t.label}</p>
-      <h2
-        class="mt-4 tracking-[-0.025em] leading-[1.1] text-[var(--color-text)]"
-        style="font-family:'Inter Variable',system-ui,sans-serif;font-size:clamp(1.65rem,3.2vw,2.5rem);font-weight:560"
-      >
-        {t.heading}
-      </h2>
+      <p class="type-kicker text-[var(--color-accent)]">{t.label}</p>
+      <h2 class="type-h2 mt-4 text-[var(--color-text)]">{t.heading}</h2>
       <p class="mt-4 max-w-xl text-[15px] leading-relaxed text-[var(--color-text-muted)]">{t.sub}</p>
     </div>
 
-    <ul class="mt-14 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 sm:gap-x-5 lg:grid-cols-7 lg:gap-x-4">
-      {/* Claude Code */}
-      <li class="reveal" style={`animation-delay:${baseDelay + 0 * step}s`}>
-        <a href="https://claude.com/code" target="_blank" rel="noopener" class="group block">
-          <div class="flex aspect-square items-center justify-center rounded-xl border border-[var(--color-border)] bg-[#13161d] transition-all duration-200 ease-out group-hover:-translate-y-0.5 group-hover:border-[var(--color-accent)]/45 group-active:translate-y-0 group-active:duration-75">
-            <img src="/logos/claude-code.png" alt="" aria-hidden="true" class="size-[60%]" loading="lazy" decoding="async"/>
-          </div>
-          <p class="mt-4 text-center text-[13.5px] font-medium tracking-tight text-[var(--color-text-muted)] transition-colors duration-150 group-hover:text-[var(--color-text)]">Claude&nbsp;Code</p>
-        </a>
-      </li>
-
-      {/* Gemini CLI */}
-      <li class="reveal" style={`animation-delay:${baseDelay + 1 * step}s`}>
-        <a href="https://github.com/google-gemini/gemini-cli" target="_blank" rel="noopener" class="group block">
-          <div class="flex aspect-square items-center justify-center rounded-xl border border-[var(--color-border)] bg-[#13161d] transition-all duration-200 ease-out group-hover:-translate-y-0.5 group-hover:border-[var(--color-accent)]/45 group-active:translate-y-0 group-active:duration-75">
-            <img src="/logos/gemini.png" alt="" aria-hidden="true" class="size-[60%]" loading="lazy" decoding="async"/>
-          </div>
-          <p class="mt-4 text-center text-[13.5px] font-medium tracking-tight text-[var(--color-text-muted)] transition-colors duration-150 group-hover:text-[var(--color-text)]">Gemini&nbsp;CLI</p>
-        </a>
-      </li>
-
-      {/* Codex CLI */}
-      <li class="reveal" style={`animation-delay:${baseDelay + 2 * step}s`}>
-        <a href="https://github.com/openai/codex" target="_blank" rel="noopener" class="group block">
-          <div class="flex aspect-square items-center justify-center rounded-xl border border-[var(--color-border)] bg-[#f2efe9] transition-all duration-200 ease-out group-hover:-translate-y-0.5 group-hover:border-[var(--color-accent)]/45 group-active:translate-y-0 group-active:duration-75">
-            <svg viewBox="0 0 24 24" fill="#0f1115" class="size-[55%]" aria-hidden="true" focusable="false">
-              <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.08L8.704 5.46a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/>
-            </svg>
-          </div>
-          <p class="mt-4 text-center text-[13.5px] font-medium tracking-tight text-[var(--color-text-muted)] transition-colors duration-150 group-hover:text-[var(--color-text)]">Codex&nbsp;CLI</p>
-        </a>
-      </li>
-
-      {/* OpenCode */}
-      <li class="reveal" style={`animation-delay:${baseDelay + 3 * step}s`}>
-        <a href="https://opencode.ai" target="_blank" rel="noopener" class="group block">
-          <div class="flex aspect-square items-center justify-center rounded-xl border border-[var(--color-border)] bg-[#131010] transition-all duration-200 ease-out group-hover:-translate-y-0.5 group-hover:border-[var(--color-accent)]/45 group-active:translate-y-0 group-active:duration-75">
-            <svg viewBox="0 0 512 512" class="size-[60%]" aria-hidden="true" focusable="false">
-              <rect width="512" height="512" fill="#131010"/>
-              <path d="M320 224V352H192V224H320Z" fill="#5A5858"/>
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M384 416H128V96H384V416ZM320 160H192V352H320V160Z" fill="white"/>
-            </svg>
-          </div>
-          <p class="mt-4 text-center text-[13.5px] font-medium tracking-tight text-[var(--color-text-muted)] transition-colors duration-150 group-hover:text-[var(--color-text)]">OpenCode</p>
-        </a>
-      </li>
-
-      {/* Hermes */}
-      <li class="reveal" style={`animation-delay:${baseDelay + 4 * step}s`}>
-        <a href="https://hermes-agent.nousresearch.com" target="_blank" rel="noopener" class="group block">
-          <div class="flex aspect-square items-center justify-center rounded-xl border border-[var(--color-border)] bg-[#0e1117] transition-all duration-200 ease-out group-hover:-translate-y-0.5 group-hover:border-[var(--color-accent)]/45 group-active:translate-y-0 group-active:duration-75">
-            <img src="/logos/hermes.svg" alt="" aria-hidden="true" class="size-[62%]" loading="lazy" decoding="async"/>
-          </div>
-          <p class="mt-4 text-center text-[13.5px] font-medium tracking-tight text-[var(--color-text-muted)] transition-colors duration-150 group-hover:text-[var(--color-text)]">Hermes</p>
-        </a>
-      </li>
-
-      {/* Qwen Code */}
-      <li class="reveal" style={`animation-delay:${baseDelay + 5 * step}s`}>
-        <a href="https://github.com/QwenLM/qwen-code" target="_blank" rel="noopener" class="group block">
-          <div class="flex aspect-square items-center justify-center rounded-xl border border-[var(--color-border)] bg-[#13161d] transition-all duration-200 ease-out group-hover:-translate-y-0.5 group-hover:border-[var(--color-accent)]/45 group-active:translate-y-0 group-active:duration-75">
-            <img src="/logos/qwen.png" alt="" aria-hidden="true" class="size-[60%]" loading="lazy" decoding="async"/>
-          </div>
-          <p class="mt-4 text-center text-[13.5px] font-medium tracking-tight text-[var(--color-text-muted)] transition-colors duration-150 group-hover:text-[var(--color-text)]">Qwen&nbsp;Code</p>
-        </a>
-      </li>
-
-      {/* OpenClaw */}
-      <li class="reveal" style={`animation-delay:${baseDelay + 6 * step}s`}>
-        <a href="https://openclaw.ai" target="_blank" rel="noopener" class="group block">
-          <div class="flex aspect-square items-center justify-center rounded-xl border border-[var(--color-border)] bg-[#0b0d12] transition-all duration-200 ease-out group-hover:-translate-y-0.5 group-hover:border-[var(--color-accent)]/45 group-active:translate-y-0 group-active:duration-75">
-            <svg viewBox="0 0 120 120" class="size-[62%]" aria-hidden="true" focusable="false">
-              <defs>
-                <linearGradient id="claw-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#ff4d4d"/>
-                  <stop offset="100%" stop-color="#991b1b"/>
-                </linearGradient>
-              </defs>
-              <path d="M60 10 C30 10 15 35 15 55 C15 75 30 95 45 100 L45 110 L55 110 L55 100 C55 100 60 102 65 100 L65 110 L75 110 L75 100 C90 95 105 75 105 55 C105 35 90 10 60 10Z" fill="url(#claw-grad)"/>
-              <path d="M20 45 C5 40 0 50 5 60 C10 70 20 65 25 55 C28 48 25 45 20 45Z" fill="url(#claw-grad)"/>
-              <path d="M100 45 C115 40 120 50 115 60 C110 70 100 65 95 55 C92 48 95 45 100 45Z" fill="url(#claw-grad)"/>
-              <path d="M45 15 Q35 5 30 8" stroke="#ff4d4d" stroke-width="3" stroke-linecap="round" fill="none"/>
-              <path d="M75 15 Q85 5 90 8" stroke="#ff4d4d" stroke-width="3" stroke-linecap="round" fill="none"/>
-              <circle cx="45" cy="35" r="6" fill="#050810"/>
-              <circle cx="75" cy="35" r="6" fill="#050810"/>
-              <circle cx="46" cy="34" r="2.5" fill="#00e5cc"/>
-              <circle cx="76" cy="34" r="2.5" fill="#00e5cc"/>
-            </svg>
-          </div>
-          <p class="mt-4 text-center text-[13.5px] font-medium tracking-tight text-[var(--color-text-muted)] transition-colors duration-150 group-hover:text-[var(--color-text)]">OpenClaw</p>
-        </a>
-      </li>
+    {/* Centered wrap: 3×3 on phones, 5+4 on tablets, one row of nine on
+        desktop — no stranded tile at any width. */}
+    <ul class="mt-14 flex flex-wrap justify-center gap-x-3 gap-y-10">
+      {tiles.map((tile, i) => (
+        <li class="reveal w-24" style={`animation-delay:${baseDelay + i * step}s`}>
+          <a href={tile.href} target="_blank" rel="noopener" class="group block">
+            <div class="flex aspect-square items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-tile)] shadow-[inset_0_1px_0_rgba(255,255,255,0.07)] transition-all duration-200 ease-out group-hover:-translate-y-0.5 group-hover:border-[var(--color-accent)]/45 group-active:translate-y-0 group-active:duration-75">
+              {tile.img ? (
+                <img src={tile.img} alt="" aria-hidden="true" class={tile.imgSize ?? 'size-[60%]'} loading="lazy" decoding="async" />
+              ) : (
+                <svg viewBox={tile.viewBox ?? '0 0 24 24'} fill="#f2efe9" fill-rule="evenodd" class="size-[55%]" aria-hidden="true" focusable="false">
+                  <path d={tile.path} />
+                </svg>
+              )}
+            </div>
+            <p class="mt-3.5 whitespace-nowrap text-center text-[12px] font-medium tracking-tight text-[var(--color-text-muted)] transition-colors duration-150 group-hover:text-[var(--color-text)]">{tile.name}</p>
+          </a>
+        </li>
+      ))}
     </ul>
   </div>
 </section>

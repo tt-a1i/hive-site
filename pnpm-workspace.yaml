@@ -1,0 +1,8 @@
+# pnpm v10 uses onlyBuiltDependencies; v11 renamed it to allowBuilds.
+# Both kept so native deps (esbuild/sharp) build on any pnpm.
+onlyBuiltDependencies:
+  - esbuild
+  - sharp
+allowBuilds:
+  esbuild: true
+  sharp: true

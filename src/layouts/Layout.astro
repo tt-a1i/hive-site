@@ -1,13 +1,17 @@
 ---
 import '../styles/global.css'
+import frauncesWoff2 from '@fontsource-variable/fraunces/files/fraunces-latin-full-normal.woff2?url'
+import interWoff2 from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url'
 import type { Lang } from '../i18n'
 import { STRINGS } from '../i18n'
 
 interface Props {
   lang?: Lang
+  /** Latest npm version, fetched at build time by the page. */
+  npmVersion?: string | null
 }
 
-const { lang = 'en' } = Astro.props
+const { lang = 'en', npmVersion = null } = Astro.props
 const s = STRINGS[lang]
 const baseUrl = 'https://hivehq.dev'
 const path = lang === 'zh' ? '/' : '/en/'
@@ -24,6 +28,8 @@ const jsonLd = {
   license: 'https://mariadb.com/bsl11/',
   offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
   author: { '@type': 'Person', name: '@tt-a1i', url: 'https://github.com/tt-a1i' },
+  installUrl: 'https://www.npmjs.com/package/@tt-a1i/hive',
+  ...(npmVersion ? { softwareVersion: npmVersion } : {}),
   sameAs: [
     'https://github.com/tt-a1i/hive',
     'https://www.npmjs.com/package/@tt-a1i/hive',
@@ -43,6 +49,16 @@ const jsonLd = {
 
     <title>{s.meta.title}</title>
     <meta name="description" content={s.meta.description} />
+
+    {/* The hero paints the whole first viewport: background wash + display
+        type. Preloading those three files is the difference between the
+        hero arriving composed and arriving in pieces. */}
+    <link rel="preload" as="image" href="/hero-bg.webp" fetchpriority="high" />
+    <link rel="preload" as="font" type="font/woff2" href={frauncesWoff2} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={interWoff2} crossorigin />
+    {lang === 'zh' && (
+      <link rel="preload" as="font" type="font/woff2" href="/fonts/hive-serif-sc.woff2" crossorigin />
+    )}
 
     <link rel="canonical" href={canonicalUrl} />
     <link rel="alternate" hreflang="zh-CN" href={`${baseUrl}/`} />

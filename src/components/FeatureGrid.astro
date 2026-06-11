@@ -1,0 +1,122 @@
+---
+import type { Lang } from '../i18n'
+import SectionHeading from './SectionHeading.astro'
+
+interface Props {
+  lang: Lang
+}
+const { lang } = Astro.props
+
+/* Every claim here traces to the public README or CHANGELOG — auto-staff
+   and workflows ship behind experimental toggles, and the cards say so. */
+const t = lang === 'zh'
+  ? {
+      label: '能力',
+      heading: '派活只是开始。',
+      sub: '让一群 Agent 真正可用的，是调度之外的这些零件。',
+      cards: [
+        {
+          token: 'team spawn',
+          tag: '实验 · 默认开启',
+          title: '自动组队',
+          body: '不想手动建团队就别建。Orchestrator 按任务自己招临时的 coder、tester、reviewer，活儿交回来就自动遣散。',
+        },
+        {
+          token: 'workflows',
+          tag: '实验 · 手动开启',
+          title: '多阶段编排',
+          body: '把一个目标拆成 fan-out、review、test 几个阶段跑完。运行记录、日志、定时任务和停止按钮，都在 Workflows 面板里。',
+        },
+        {
+          token: 'memory',
+          title: '团队记忆',
+          body: 'Workspace 的约束、口径和早前的决定留在巢里，之后每次派单自动带给对的 Agent——不用你再复述一遍。',
+        },
+        {
+          token: '.hive/tasks.md',
+          title: '任务图是份 markdown',
+          body: '任务图就躺在你仓库里：编辑器里随便看改，能进 git。任务可以声明依赖（[needs: #3]），team next 只交出当下没被挡住的活。',
+        },
+        {
+          token: '--resume',
+          title: '断了能接上',
+          body: '重启后先用各家 CLI 原生的 session 恢复接回对话；接不回，就给新进程注入一份自动写好的交接简报。排队中的任务也不丢，重启后继续派。',
+        },
+        {
+          token: 'marketplace',
+          title: '角色模板市场',
+          body: 'Coder / Reviewer / Tester 模板内置，可改可存；另有 400+ 中英双语社区角色模板，搜一下、一键导入，随安装包离线可用。',
+        },
+      ],
+      more: '还有：多 Workspace 侧边栏 · 完成 Webhook（接 Slack / CI）· 桌面通知与六种提示音 · 装成 PWA 桌面应用 · 在 VS Code / 终端里一键打开 Workspace · 界面中英双语',
+    }
+  : {
+      label: 'Capabilities',
+      heading: 'Dispatch is just the start.',
+      sub: 'What makes an agent team livable is everything around the dispatching.',
+      cards: [
+        {
+          token: 'team spawn',
+          tag: 'experimental · on by default',
+          title: 'Auto-staff',
+          body: "Don't build the team by hand. The orchestrator hires temporary coders, testers and reviewers to fit the task — and dismisses them when the work reports back.",
+        },
+        {
+          token: 'workflows',
+          tag: 'experimental · opt-in',
+          title: 'Multi-stage runs',
+          body: 'Split one goal into fan-out, review and test stages. Runs, logs, schedules and a stop button all live in the Workflows panel.',
+        },
+        {
+          token: 'memory',
+          title: 'Team memory',
+          body: 'Workspace constraints, conventions and past decisions stay in the hive and ride along with every later dispatch — no re-explaining.',
+        },
+        {
+          token: '.hive/tasks.md',
+          title: 'The task graph is a markdown file',
+          body: 'It sits in your repo: open it in your editor, commit it to git. Tasks can declare dependencies ([needs: #3]), and team next hands out only what is unblocked right now.',
+        },
+        {
+          token: '--resume',
+          title: 'Survives restarts',
+          body: "After a restart, agents reconnect through each CLI's native session resume; failing that, the fresh process gets an auto-written handover briefing. Queued tasks wait it out and resume.",
+        },
+        {
+          token: 'marketplace',
+          title: 'Role template market',
+          body: 'Coder / reviewer / tester ship built in — editable, savable. Plus 400+ community role templates in English and Chinese: search, import in one click, bundled offline.',
+        },
+      ],
+      more: 'Also: multi-workspace sidebar · completion webhooks (Slack / CI) · desktop notifications with six sound themes · installs as a PWA · open the workspace in VS Code or a terminal · fully bilingual UI',
+    }
+---
+
+<section class="relative isolate overflow-hidden py-16 sm:py-24">
+  <div class="mx-auto max-w-6xl px-6">
+    <SectionHeading kicker={t.label} heading={t.heading} sub={t.sub} class="reveal" style="animation-delay:0.05s" />
+
+    <ul class="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {t.cards.map((card, i) => (
+        <li
+          class="reveal flex flex-col rounded-2xl border border-[var(--color-border)] bg-white/55 p-7"
+          style={`animation-delay:${0.12 + i * 0.05}s`}
+        >
+          <div class="flex items-baseline justify-between gap-3">
+            <span class="font-mono text-[11px] tracking-[0.04em] text-[var(--color-accent)]">{card.token}</span>
+            {card.tag && (
+              <span class="whitespace-nowrap rounded-full border border-[var(--color-border)] px-2.5 py-1 font-mono text-[10px] leading-none text-[var(--color-text-faint)]">{card.tag}</span>
+            )}
+          </div>
+          <h3 class="mt-4 text-[17px] font-semibold leading-snug text-[var(--color-text)]">{card.title}</h3>
+          <p class="mt-2.5 text-[14px] leading-[1.7] text-[var(--color-text-muted)]">{card.body}</p>
+        </li>
+      ))}
+    </ul>
+
+    {/* The long tail, honestly labeled as such — real features, one line each. */}
+    <p class="reveal mt-10 max-w-4xl font-mono text-[12px] leading-[2] text-[var(--color-text-faint)]" style="animation-delay:0.42s">
+      {t.more}
+    </p>
+  </div>
+</section>

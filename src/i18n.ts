@@ -22,7 +22,7 @@ export const STRINGS: Record<Lang, Strings> = {
     meta: {
       title: 'Hive — orchestrate CLI coding agents in your browser',
       description:
-        'Run Claude Code, Codex, Gemini and other CLI agents as one team: an orchestrator dispatches, real terminals run in your browser, everything stays on your machine. Source-available.',
+        'Run Claude Code, Codex, Gemini and other CLI agents as one team: an orchestrator dispatches and auto-staffs workers, runs multi-stage workflows, and keeps a markdown task graph — real terminals in your browser, everything on your machine. Optional E2E-encrypted phone access.',
     },
     nav: {
       install: 'Install',
@@ -36,7 +36,7 @@ export const STRINGS: Record<Lang, Strings> = {
     meta: {
       title: 'Hive — 在浏览器里指挥一支 CLI Agent 团队',
       description:
-        '把 Claude Code、Codex、Gemini 等 CLI Agent 组成一支团队：Orchestrator 派活，Worker 执行，真实终端跑在浏览器里，数据全在本机。源码可见，npm 一条命令安装。',
+        '把 Claude Code、Codex、Gemini 等 CLI Agent 组成一支团队：Orchestrator 派活、自动组队、多阶段 Workflow，任务图就是仓库里的一份 markdown。真实终端跑在浏览器里，数据全在本机，手机可加密远程接入。',
     },
     nav: {
       install: '安装',

@@ -1,0 +1,86 @@
+---
+import type { Lang } from '../i18n'
+
+interface Props {
+  lang: Lang
+}
+const { lang } = Astro.props
+
+/* Remote access is the page's one dark moment — the hive at night, reachable
+   from a phone. Every fact below is the public README's own framing:
+   off by default, E2E encrypted, outbound-only, desktop trust root. */
+const t = lang === 'zh'
+  ? {
+      label: 'Remote Access · 可选',
+      heading: '人出了门，蜂巢还醒着。',
+      body: '在手机浏览器登录，跟桌面配对一次，就能从外面打开家里正跑着的蜂巢——不只是看一眼：终端在手机上能直接打字，活儿照样派。默认关闭，不打开这个开关，远程通路就不存在。',
+      facts: [
+        {
+          title: '端到端加密',
+          body: '手机到本机全程密文，网关只做中转——数据与执行永远在本机。',
+        },
+        {
+          title: '不开任何端口',
+          body: '本机主动出站连接。不需要公网 IP，也不暴露端口。',
+        },
+        {
+          title: '信任根在桌面',
+          body: '新设备配对必须人在电脑前确认；任何设备随时可吊销。',
+        },
+        {
+          title: '完整的 Hive',
+          body: '配对后的手机与本地浏览器等权：完整 UI、可写终端，不是只读监控。',
+        },
+      ],
+    }
+  : {
+      label: 'Remote access · optional',
+      heading: 'You leave. The hive stays awake.',
+      body: 'Sign in on your phone, pair once at the desk, and the terminals running at home open right up — not a viewer: you can type, dispatch, steer. Off by default; until you flip the switch, no remote path exists.',
+      facts: [
+        {
+          title: 'End-to-end encrypted',
+          body: 'Ciphertext the whole way — the gateway only relays. Data and execution never leave your machine.',
+        },
+        {
+          title: 'No ports opened',
+          body: 'Your machine dials outbound. No public IP, nothing exposed.',
+        },
+        {
+          title: 'Trust roots at the desk',
+          body: 'New devices are approved in person, at the desktop — and revocable any time.',
+        },
+        {
+          title: 'The full Hive',
+          body: 'A paired phone holds the same authority as the local browser: full UI, writable terminals, not a read-only mirror.',
+        },
+      ],
+    }
+---
+
+<section class="relative isolate overflow-hidden py-16 sm:py-24">
+  <div class="mx-auto max-w-6xl px-6">
+    <div class="reveal relative overflow-hidden rounded-[28px] bg-[var(--color-tile)] px-8 py-12 shadow-[0_30px_80px_-30px_rgba(15,23,42,0.45)] sm:p-14" style="animation-delay:0.1s">
+      {/* A faint warm dawn inside the dark card — the hive at night. */}
+      <div class="pointer-events-none absolute -top-32 -right-24 size-[480px] rounded-full blur-[110px]" style="background: radial-gradient(circle, rgba(255,178,122,0.16), transparent 65%);"></div>
+      <div class="pointer-events-none absolute -bottom-40 -left-32 size-[460px] rounded-full blur-[110px]" style="background: radial-gradient(circle, rgba(125,180,255,0.12), transparent 65%);"></div>
+
+      <div class="relative grid gap-12 md:grid-cols-2 md:gap-16">
+        <div>
+          <p class="type-kicker" style="color: var(--color-warm)">{t.label}</p>
+          <h2 class="type-h2 mt-4 text-[#f2efe9]">{t.heading}</h2>
+          <p class="mt-5 max-w-md text-[15px] leading-[1.8] text-white/65">{t.body}</p>
+        </div>
+
+        <ul class="self-center divide-y divide-white/10">
+          {t.facts.map((fact) => (
+            <li class="py-4 first:pt-0 last:pb-0">
+              <p class="text-[14.5px] font-semibold text-white/90">{fact.title}</p>
+              <p class="mt-1 text-[13.5px] leading-relaxed text-white/55">{fact.body}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

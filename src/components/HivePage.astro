@@ -5,6 +5,8 @@ import Layout from '../layouts/Layout.astro'
 import Nav from './Nav.astro'
 import Hero from './Hero.astro'
 import SectionHeading from './SectionHeading.astro'
+import FeatureGrid from './FeatureGrid.astro'
+import RemoteBand from './RemoteBand.astro'
 import CliGrid from './CliGrid.astro'
 import hiveUi from '../assets/screenshots/hive-ui.png'
 import hiveUiMobile from '../assets/screenshots/hive-ui-mobile.png'
@@ -293,8 +295,15 @@ const videoEmbedSrc =
       </div>
     </section>
 
+    {/* ─── Capabilities beyond dispatch — auto-staff, workflows, memory,
+        tasks.md, resume, marketplace. All public-README facts. ───── */}
+    <FeatureGrid lang={lang} />
+
     {/* ─── Supported CLIs grid ──────────────────────────────────── */}
     <CliGrid lang={lang} />
+
+    {/* ─── Remote access — the one dark band: phone reach, local trust ─ */}
+    <RemoteBand lang={lang} />
 
     {/* ─── Install — the conversion moment, with a proper heading ── */}
     <section id="install" class="relative isolate overflow-hidden py-24 sm:py-32">

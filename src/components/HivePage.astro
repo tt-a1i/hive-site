@@ -1,6 +1,5 @@
 ---
 import { getImage } from 'astro:assets'
-import { Picture } from 'astro:assets'
 import Layout from '../layouts/Layout.astro'
 import Nav from './Nav.astro'
 import Hero from './Hero.astro'
@@ -10,12 +9,16 @@ import RemoteBand from './RemoteBand.astro'
 import CliGrid from './CliGrid.astro'
 import hiveUi from '../assets/screenshots/hive-ui.png'
 import hiveUiMobile from '../assets/screenshots/hive-ui-mobile.png'
-import pattern1 from '../assets/pattern-1.png'
-import pattern2 from '../assets/pattern-2.png'
-import pattern3 from '../assets/pattern-3.png'
 import type { Lang } from '../i18n'
 
-const patternImages = [pattern1, pattern2, pattern3]
+/* Pattern-card terminal vignettes: out = a dispatch leaving the
+   orchestrator ($, cool blue), in = a report coming back (←, warm peach).
+   Same cool→warm direction as the hero watercolor. */
+interface PatternLine {
+  dir: 'out' | 'in'
+  cmd: string
+  arg: string
+}
 
 interface Props {
   lang: Lang
@@ -84,22 +87,36 @@ const t = lang === 'zh'
       patterns: {
         label: '三种分工',
         heading: '蜂巢里没有英雄。',
-        sub: '没有一个 Agent 干完整个项目。每个负责自己最擅长的那一段。下面是我们最常看到的三种玩法。',
+        sub: '没有一个 Agent 干完整个项目，每个只负责最擅长的那段。',
+        legendOut: '派出去',
+        legendIn: '交回来',
         cards: [
           {
-            kicker: '分工 · 01',
             title: '写 + 审',
-            body: 'Claude Code 写完，Codex 立刻挑刺，Orchestrator 把意见再丢回去改一轮。两家互查，代码踏实——你只看最终 diff。',
+            body: '两家模型互相挑刺，比一家自查狠得多。改完再审一轮，你只看最终 diff。',
+            lines: [
+              { dir: 'out', cmd: 'team send claude', arg: '"写：给设置页加暗色模式"' },
+              { dir: 'out', cmd: 'team send codex', arg: '"审：挑这版 diff 的毛病"' },
+              { dir: 'in', cmd: 'codex report:', arg: '2 处边界问题，得再改一轮' },
+            ] as PatternLine[],
           },
           {
-            kicker: '分工 · 02',
             title: '测 + 修',
-            body: 'Gemini 起好测试跑一遍；哪条红了，Orchestrator 直接甩给 Claude 修。绿不绿、什么时候算完——你说了算。',
+            body: '红绿循环在巢里自己转。什么时候算绿、什么时候收工——你说了算。',
+            lines: [
+              { dir: 'out', cmd: 'team send gemini', arg: '"写测试，全量跑一遍"' },
+              { dir: 'in', cmd: 'gemini report:', arg: '3 条红' },
+              { dir: 'out', cmd: 'team send claude', arg: '"修掉这 3 条红"' },
+            ] as PatternLine[],
           },
           {
-            kicker: '分工 · 03',
             title: '不止写代码',
-            body: '把蜂巢拆给任何活——研究员、剧本作家、视频剪辑师、辩论搭子。给每个 Agent 一个角色名，让 Orchestrator 来排班。',
+            body: '研究员、译者、编剧、辩论搭子——起个角色名，剩下交给 Orchestrator 排班。',
+            lines: [
+              { dir: 'out', cmd: 'team send researcher', arg: '"核查引用的 5 个来源"' },
+              { dir: 'out', cmd: 'team send translator', arg: '"把结论翻成英文"' },
+              { dir: 'in', cmd: 'researcher report:', arg: '两条站不住，已附出处' },
+            ] as PatternLine[],
           },
         ],
       },
@@ -144,22 +161,36 @@ const t = lang === 'zh'
       patterns: {
         label: 'Three ways to split',
         heading: 'No hero in the hive.',
-        sub: 'No single agent finishes the whole project. Each plays the part it does best. Three patterns we see all the time.',
+        sub: 'No single agent finishes the whole project — each plays the part it does best.',
+        legendOut: 'goes out',
+        legendIn: 'comes back',
         cards: [
           {
-            kicker: 'Pattern · 01',
             title: 'Write + review',
-            body: "Claude writes. Codex reviews, flags the bugs, sends notes back. Claude takes a second pass. Two vendors checking each other — you review the final diff.",
+            body: "Two vendors picking at each other's work beats one checking its own. You read the final diff.",
+            lines: [
+              { dir: 'out', cmd: 'team send claude', arg: '"implement dark mode"' },
+              { dir: 'out', cmd: 'team send codex', arg: '"review claude\'s diff"' },
+              { dir: 'in', cmd: 'codex report:', arg: '2 edge cases to fix' },
+            ] as PatternLine[],
           },
           {
-            kicker: 'Pattern · 02',
             title: 'Test + fix',
-            body: "Gemini drafts the tests and runs them. When something turns red, the orchestrator hands it to Claude to fix. You decide when it's actually green.",
+            body: 'The red-green loop spins inside the hive. You decide when green means done.',
+            lines: [
+              { dir: 'out', cmd: 'team send gemini', arg: '"write + run tests"' },
+              { dir: 'in', cmd: 'gemini report:', arg: '3 failures' },
+              { dir: 'out', cmd: 'team send claude', arg: '"fix those 3 reds"' },
+            ] as PatternLine[],
           },
           {
-            kicker: 'Pattern · 03',
             title: 'Beyond code',
-            body: "Cast any team. Researcher, novelist, video editor, debate partner — give each agent a role and let the orchestrator dispatch.",
+            body: 'Researcher, translator, screenwriter, debate partner — name the role and let the orchestrator run the rota.',
+            lines: [
+              { dir: 'out', cmd: 'team send researcher', arg: '"vet 5 sources"' },
+              { dir: 'out', cmd: 'team send translator', arg: '"make it English"' },
+              { dir: 'in', cmd: 'researcher report:', arg: "2 don't hold up" },
+            ] as PatternLine[],
           },
         ],
       },
@@ -266,29 +297,33 @@ const videoEmbedSrc =
       <div class="mx-auto max-w-6xl px-6">
         <SectionHeading kicker={t.patterns.label} heading={t.patterns.heading} sub={t.patterns.sub} class="reveal" style="animation-delay:0.05s" />
 
-        <ul class="mt-16 space-y-20 sm:mt-20 md:space-y-28">
+        {/* Each pattern is a tiny team-protocol transcript: dispatches leave
+            in cool blue, reports return in warm peach — the hero watercolor's
+            cool→warm read, applied to the product's own grammar. */}
+        <p class="reveal mt-8 flex items-center gap-7 font-mono text-[12px] text-[var(--color-text-muted)]" style="animation-delay:0.1s">
+          <span class="flex items-baseline gap-2.5"><span class="text-[var(--color-accent)]" aria-hidden="true">$</span>{t.patterns.legendOut}</span>
+          <span class="flex items-baseline gap-2.5"><span class="text-[#b45309]" aria-hidden="true">←</span>{t.patterns.legendIn}</span>
+        </p>
+
+        <ul class="mt-8 grid gap-x-5 gap-y-12 lg:grid-cols-3">
           {t.patterns.cards.map((card, i) => (
-            <li
-              class={`reveal flex flex-col items-center gap-8 md:gap-20 ${i % 2 === 1 ? 'md:flex-row-reverse' : 'md:flex-row'}`}
-              style={`animation-delay:${0.15 + i * 0.1}s`}
-            >
-              <div class="shrink-0">
-                <Picture
-                  src={patternImages[i]}
-                  formats={['avif', 'webp']}
-                  widths={[280, 420, 560]}
-                  sizes="(min-width: 768px) 288px, 224px"
-                  alt=""
-                  loading="lazy"
-                  decoding="async"
-                  class="size-56 md:size-72"
-                />
+            <li class="reveal flex max-w-xl flex-col lg:max-w-none" style={`animation-delay:${0.15 + i * 0.1}s`}>
+              <div class="flex-1 rounded-2xl border border-[var(--color-border)] bg-[var(--color-tile)] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.07)] sm:p-6">
+                <ol class="space-y-3 font-mono text-[12px] leading-[1.7]">
+                  {card.lines.map((line) => (
+                    <li class="flex gap-2.5">
+                      <span class={`select-none ${line.dir === 'out' ? 'text-[#7da7ff]' : 'text-[var(--color-warm)]'}`} aria-hidden="true">{line.dir === 'out' ? '$' : '←'}</span>
+                      {line.dir === 'out' ? (
+                        <span class="text-[#f2efe9]">{line.cmd} <span class="text-white/60">{line.arg}</span></span>
+                      ) : (
+                        <span class="text-[var(--color-warm)]">{line.cmd} <span class="text-white/70">{line.arg}</span></span>
+                      )}
+                    </li>
+                  ))}
+                </ol>
               </div>
-              <div class="max-w-md text-center md:text-left">
-                <p class="type-kicker text-[var(--color-accent)]">{card.kicker}</p>
-                <h3 class="type-h3 mt-4 text-[var(--color-text)]">{card.title}</h3>
-                <p class="mt-4 text-[15.5px] leading-[1.75] text-[var(--color-text-muted)]">{card.body}</p>
-              </div>
+              <h3 class="mt-5 text-[17px] font-semibold leading-snug text-[var(--color-text)]">{card.title}</h3>
+              <p class="mt-2 text-[14px] leading-[1.7] text-[var(--color-text-muted)]">{card.body}</p>
             </li>
           ))}
         </ul>

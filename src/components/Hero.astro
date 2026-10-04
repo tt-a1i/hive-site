@@ -10,24 +10,26 @@ const t = lang === 'zh'
   ? {
       headline1: '在你的浏览器里，',
       headline2: '造一座 Agent 蜂巢。',
-      subhead: '独行已尽其远，众行方启其新。',
+      subhead: '让 Claude 写，Codex 审，Gemini 测。',
       mechanic:
-        '一个 Orchestrator 派活，Claude Code、Codex、Gemini 这些真实的 CLI Agent 在浏览器终端里各自开工——全部跑在你本机。',
-      build: '造一座蜂巢',
+        'Hive 把你电脑上已经装好的 CLI Agent 编成一支队伍：Orchestrator 拆活、派单，成员们在浏览器里的真终端各自开工，干完自己交回。全部跑在你本机。',
+      copy: '复制',
+      copied: '已复制',
       viewSource: '先读源码',
     }
   : {
       headline1: 'A hive of agents',
       headline2: 'right in your browser.',
-      subhead: 'Alone has gone as far as it goes. Together is just getting started.',
+      subhead: 'Claude writes. Codex reviews. Gemini tests.',
       mechanic:
-        'One orchestrator hands out the work. Claude Code, Codex and Gemini pick it up as real CLI processes, each in its own terminal in your browser — all on your machine.',
-      build: 'Build your hive',
+        "Hive turns the CLI agents already on your machine into a team. The orchestrator splits the work and hands it out; each member runs in a real terminal in your browser and reports back when it's done. All on your machine.",
+      copy: 'Copy',
+      copied: 'Copied',
       viewSource: 'Read the source first',
     }
 ---
 
-<section class="relative isolate overflow-hidden pt-32 pb-20 sm:pt-44 sm:pb-28">
+<section class="relative isolate overflow-hidden pt-32 pb-16 sm:pt-44 sm:pb-20">
   {/* Watercolor hero background — cool blue → cream → warm peach.
      Mask fades the painting into the page bg at the bottom so it doesn't
      hard-cut into the screenshot section below. */}
@@ -46,7 +48,8 @@ const t = lang === 'zh'
       class="type-subhead reveal mt-6 max-w-2xl text-balance text-[var(--color-text-muted)]"
       style="animation-delay:0.28s"
     >
-      {t.subhead}
+      {/* One clause per unbreakable run: "Codex 审，" never splits. */}
+      {t.subhead.split(/(?<=[，。.])\s*/).map((clause) => <><span class="inline-block">{clause}</span>{lang === 'en' ? ' ' : ''}</>)}
     </p>
 
     <p
@@ -57,15 +60,20 @@ const t = lang === 'zh'
     </p>
 
     <div class="reveal mt-10 flex flex-wrap items-center gap-3" style="animation-delay:0.46s">
-      <a
-        href="#install"
-        class="group inline-flex items-center gap-2 rounded-full bg-[var(--color-accent)] px-6 py-3 text-[13.5px] font-semibold text-white shadow-[0_8px_24px_-8px_rgba(37,99,235,0.45)] transition-all duration-200 ease-out hover:-translate-y-px hover:bg-[var(--color-accent-hi)] hover:shadow-[0_12px_32px_-8px_rgba(37,99,235,0.55)] active:translate-y-0 active:shadow-[0_4px_12px_-4px_rgba(37,99,235,0.35)] active:duration-75"
+      {/* Primary action is the install itself — one click, one paste. */}
+      <button
+        type="button"
+        class="group inline-flex items-center gap-3 rounded-full bg-[var(--color-accent)] py-2.5 pr-2.5 pl-5 font-mono text-[13px] text-white shadow-[0_8px_24px_-8px_rgba(37,99,235,0.45)] transition-all duration-200 ease-out hover:-translate-y-px hover:bg-[var(--color-accent-hi)] hover:shadow-[0_12px_32px_-8px_rgba(37,99,235,0.55)] active:translate-y-0 active:duration-75"
+        data-copy-text="npm i -g @tt-a1i/hive"
+        data-copied-label={t.copied}
       >
-        {t.build}
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" class="transition group-hover:translate-x-0.5" aria-hidden="true" focusable="false">
-          <path d="M5 12h14M13 5l7 7-7 7"/>
-        </svg>
-      </a>
+        <span class="select-none text-white/60">$</span>
+        <span>npm i -g @tt-a1i/hive</span>
+        <span class="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 font-sans text-[11.5px] font-semibold transition-colors group-hover:bg-white/30">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true" focusable="false"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+          <span data-copy-label>{t.copy}</span>
+        </span>
+      </button>
       <a
         href="https://github.com/tt-a1i/hive"
         class="group inline-flex items-center gap-2 rounded-full border border-[var(--color-border-hi)] bg-white/70 px-6 py-3 text-[13.5px] font-semibold text-[var(--color-text)] backdrop-blur-sm transition-colors duration-150 ease-out hover:border-[var(--color-text-muted)] hover:bg-white"
@@ -76,5 +84,6 @@ const t = lang === 'zh'
         {t.viewSource}
       </a>
     </div>
+
   </div>
 </section>

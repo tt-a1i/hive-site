@@ -1,0 +1,385 @@
+---
+import type { Lang } from '../i18n'
+
+interface Props {
+  lang: Lang
+}
+const { lang } = Astro.props
+
+/* A scripted replay of the real team protocol, drawn after the actual
+   Hive UI: workspace rail, the orchestrator's CLI terminal (tool calls,
+   Hive system-message blocks for reports), and the Team members panel
+   with running / idle states. Same command names as the product. */
+type Action =
+  | { k: 'phase'; v: 0 | 1 | 2 }
+  | { k: 'user' | 'say'; s: string }
+  | { k: 'send'; w: number; s: string; task: string }
+  | { k: 'work'; w: number; s: string }
+  | { k: 'report'; w: number; s: string }
+  | { k: 'wait'; ms: number }
+
+const workers = [
+  { name: 'claude', role: 'Coder', logo: '/logos/claude-code.png' },
+  { name: 'codex', role: 'Reviewer', logo: '/logos/codex.svg' },
+  { name: 'gemini', role: 'Tester', logo: '/logos/gemini.png' },
+]
+
+const t = lang === 'zh'
+  ? {
+      aria: '演示动画：Orchestrator 用 team send 依次派活给 claude、codex、gemini 三个成员，它们干完用 team report 交回结果。',
+      steps: ['你给 Orchestrator 一个目标', '它用 team send 派活', '成员干完 team report 交回'],
+      ready: ['Hive workspace 已就绪：3 名成员在线。', '告诉我你想推进什么，我来拆解、派单。'],
+      members: '团队成员',
+      sysFrom: (n: string) => `[Hive 系统消息：来自 @${n} 的汇报]`,
+      dispatched: (n: string) => `已派给 ${n}`,
+      received: '收到任务：',
+      reported: '已交回',
+      script: [
+        { k: 'phase', v: 0 },
+        { k: 'user', s: '给设置页加暗色模式，审过、测过再给我看' },
+        { k: 'wait', ms: 600 },
+        { k: 'say', s: '拆成三段：claude 写 → codex 审 → gemini 测。' },
+        { k: 'wait', ms: 400 },
+        { k: 'phase', v: 1 },
+        { k: 'send', w: 0, s: 'team send claude "实现设置页暗色模式"', task: '实现设置页暗色模式' },
+        { k: 'work', w: 0, s: '编辑 theme.ts  +42 −3' },
+        { k: 'work', w: 0, s: 'pnpm check  ✓' },
+        { k: 'phase', v: 2 },
+        { k: 'report', w: 0, s: '完成，顺手修了 2 处对比度。' },
+        { k: 'phase', v: 1 },
+        { k: 'send', w: 1, s: 'team send codex "审 claude 的 diff"', task: '审 claude 的 diff' },
+        { k: 'work', w: 1, s: '审阅 4 个文件…' },
+        { k: 'phase', v: 2 },
+        { k: 'report', w: 1, s: '1 处 focus ring 对比度偏低，其余可合。' },
+        { k: 'phase', v: 1 },
+        { k: 'send', w: 2, s: 'team send gemini "补测试，全量跑"', task: '补测试，全量跑' },
+        { k: 'work', w: 2, s: 'vitest run · 128 passed' },
+        { k: 'phase', v: 2 },
+        { k: 'report', w: 2, s: '128 绿 0 红。' },
+        { k: 'wait', ms: 300 },
+        { k: 'say', s: '齐了：1 处等你拍板，diff 已备好。' },
+        { k: 'wait', ms: 3800 },
+      ] as Action[],
+    }
+  : {
+      aria: 'Animated demo: the orchestrator uses team send to hand work to three members — claude, codex and gemini — and each one returns its result with team report.',
+      steps: ['You give the orchestrator a goal', 'It dispatches with team send', 'Members finish and team report back'],
+      ready: ['Hive workspace ready: 3 members online.', "Tell me what you want done; I'll split it up and dispatch."],
+      members: 'Team members',
+      sysFrom: (n: string) => `[Hive system message: report from @${n}]`,
+      dispatched: (n: string) => `dispatched to ${n}`,
+      received: 'task: ',
+      reported: 'reported back',
+      script: [
+        { k: 'phase', v: 0 },
+        { k: 'user', s: 'Add dark mode to settings. Review and test it before I look.' },
+        { k: 'wait', ms: 600 },
+        { k: 'say', s: 'Three legs: claude builds → codex reviews → gemini tests.' },
+        { k: 'wait', ms: 400 },
+        { k: 'phase', v: 1 },
+        { k: 'send', w: 0, s: 'team send claude "implement dark mode"', task: 'implement dark mode' },
+        { k: 'work', w: 0, s: 'edit theme.ts  +42 −3' },
+        { k: 'work', w: 0, s: 'pnpm check  ✓' },
+        { k: 'phase', v: 2 },
+        { k: 'report', w: 0, s: 'Done, plus 2 contrast fixes.' },
+        { k: 'phase', v: 1 },
+        { k: 'send', w: 1, s: 'team send codex "review claude\'s diff"', task: "review claude's diff" },
+        { k: 'work', w: 1, s: 'reviewing 4 files…' },
+        { k: 'phase', v: 2 },
+        { k: 'report', w: 1, s: 'One focus-ring contrast nit; the rest is good to merge.' },
+        { k: 'phase', v: 1 },
+        { k: 'send', w: 2, s: 'team send gemini "add tests, run all"', task: 'add tests, run all' },
+        { k: 'work', w: 2, s: 'vitest run · 128 passed' },
+        { k: 'phase', v: 2 },
+        { k: 'report', w: 2, s: '128 green, 0 red.' },
+        { k: 'wait', ms: 300 },
+        { k: 'say', s: 'All in. One call is yours; the diff is ready.' },
+        { k: 'wait', ms: 3800 },
+      ] as Action[],
+    }
+
+const rail = [
+  { l: 'A', c: '#f97316' },
+  { l: 'M', c: '#8b5cf6' },
+  { l: 'S', c: '#eab308' },
+]
+const labels = {
+  sysFrom: workers.map((w) => t.sysFrom(w.name)),
+  dispatched: workers.map((w) => t.dispatched(w.name)),
+  received: t.received,
+  reported: t.reported,
+}
+---
+
+<div class="wb-root" data-workbench data-script={JSON.stringify(t.script)} data-labels={JSON.stringify(labels)}>
+  <div
+    class="overflow-hidden rounded-2xl border border-black/10 bg-[#1c1d20] shadow-[0_30px_80px_-30px_rgba(15,23,42,0.35)] ring-1 ring-white/5"
+    role="img"
+    aria-label={t.aria}
+  >
+    <div aria-hidden="true">
+      {/* App bar — as in the product */}
+      <div class="flex items-center gap-2 border-b border-white/[0.06] bg-[#1a1b1e] px-4 py-2">
+        <img src="/logo-64.png" alt="" class="size-4" />
+        <span class="text-[12.5px] font-semibold text-white/90">Hive</span>
+        <span class="font-mono text-[10.5px] text-white/35">~/code/my-app</span>
+        <span class="ml-auto flex items-center gap-3 text-white/40">
+          <span class="font-mono text-[10.5px]">{lang === 'zh' ? 'EN' : '中'}</span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+        </span>
+      </div>
+
+      <div class="grid md:grid-cols-[44px_minmax(0,1fr)_minmax(0,340px)] lg:grid-cols-[48px_minmax(0,1fr)_minmax(0,380px)]">
+        {/* Workspace rail */}
+        <div class="hidden flex-col items-center gap-2.5 border-r border-white/[0.06] bg-[#18191b] py-3 md:flex">
+          {rail.map((r, i) => (
+            <span class="flex size-7 items-center justify-center rounded-md text-[11px] font-semibold" style={`color:${r.c};background:${r.c}22;${i === 0 ? `box-shadow:0 0 0 1.5px ${r.c}` : ''}`}>{r.l}</span>
+          ))}
+          <span class="flex size-7 items-center justify-center rounded-md border border-dashed border-white/20 text-[13px] text-white/35">+</span>
+        </div>
+
+        {/* Orchestrator terminal */}
+        <div class="flex min-w-0 flex-col bg-[#151618]">
+          <div class="wb-term flex h-[250px] flex-col overflow-hidden px-4 pt-4 font-mono text-[11px] leading-[1.7] text-[#d4d4d4] sm:h-[318px] sm:px-5 sm:text-[12.5px]" data-wb-term>
+            {t.ready.map((l, i) => (
+              <div class={`wb-ready flex gap-2 ${i ? 'pl-4 text-[#a3a3a3]' : ''}`}>{!i && <span class="text-white/80">●</span>}<span>{l}</span></div>
+            ))}
+          </div>
+          {/* Prompt box + mode line */}
+          <div class="mt-auto px-4 pb-3 font-mono text-[11px] sm:px-5 sm:text-[12px]">
+            <div class="flex items-center gap-2 border-t border-white/10 pt-2.5 text-white/80">
+              <span>›</span><span class="type-caret inline-block h-[1.1em] w-[0.55em] bg-white/80"></span>
+            </div>
+            <div class="mt-1.5 text-[10px] text-[#f472b6]/80 sm:text-[10.5px]">▸▸ bypass permissions on</div>
+          </div>
+        </div>
+
+        {/* Team members panel */}
+        <div class="border-t border-white/[0.06] bg-[#1c1d20] p-3 sm:p-4 md:border-t-0 md:border-l">
+          <div class="flex items-center justify-between gap-2">
+            <p class="text-[12.5px] font-semibold text-white/90">{t.members} <span class="ml-1 font-normal text-white/40">3</span></p>
+            <span class="hidden items-center gap-1 rounded-md bg-[#2563eb] px-2.5 py-1 text-[11px] font-semibold text-white sm:inline-flex">+ Add Member</span>
+          </div>
+          <p class="mt-1.5 flex gap-3 font-mono text-[10px] text-white/45">
+            <span class="flex items-center gap-1"><span class="size-1.5 rounded-full bg-[#22c55e]"></span><span data-count-running>0</span> running</span>
+            <span class="flex items-center gap-1"><span class="size-1.5 rounded-full bg-white/35"></span><span data-count-idle>3</span> idle</span>
+            <span class="flex items-center gap-1"><span class="size-1.5 rounded-full bg-[#ef4444]"></span>0 stopped</span>
+          </p>
+          <div class="mt-3 grid grid-cols-3 gap-2 md:grid-cols-1 md:gap-2.5">
+            {workers.map((w, i) => (
+              <div class="wb-card flex min-w-0 flex-col gap-2 rounded-lg border border-white/[0.06] bg-[#26272b] p-2.5 transition-[border-color,box-shadow,background] duration-300 md:flex-row md:items-center md:gap-3 md:p-3" data-wb-worker={i}>
+                <span class="flex size-8 shrink-0 items-center justify-center rounded-md bg-[#111214] ring-1 ring-white/10 md:size-10">
+                  <img src={w.logo} alt="" class="size-[55%] object-contain" />
+                </span>
+                <div class="min-w-0 flex-1">
+                  <p class="flex items-baseline gap-2">
+                    <span class="truncate text-[11.5px] font-medium text-white/90 sm:text-[12.5px]">{w.name}</span>
+                    <span class="hidden text-[10.5px] text-white/40 md:inline">{w.role}</span>
+                  </p>
+                  <p class="wb-status mt-1 flex items-center gap-1.5 font-mono text-[10px] text-white/45">
+                    <span class="wb-dot size-1.5 shrink-0 rounded-full bg-white/35"></span>
+                    <span data-wb-status-label>idle</span>
+                  </p>
+                  <p class="wb-activity mt-1 hidden truncate font-mono text-[10.5px] text-white/40 md:block" data-wb-activity>&nbsp;</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {/* The mechanic, in sync with the replay above. */}
+  <ol class="mx-auto mt-8 flex max-w-4xl flex-col gap-2.5 px-1 font-mono text-[12px] leading-relaxed sm:flex-row sm:justify-between sm:gap-8" data-wb-steps>
+    {t.steps.map((step, i) => (
+      <li class="wb-step flex items-baseline gap-2.5 text-[var(--color-text-faint)] transition-colors duration-300" data-wb-step={i}>
+        <span class="text-[var(--color-accent)]">0{i + 1}</span>
+        <span>{step}</span>
+      </li>
+    ))}
+  </ol>
+</div>
+
+<script>
+  type Action =
+    | { k: 'phase'; v: number }
+    | { k: 'user' | 'say'; s: string }
+      | { k: 'send'; w: number; s: string; task: string }
+    | { k: 'work'; w: number; s: string }
+    | { k: 'report'; w: number; s: string }
+    | { k: 'wait'; ms: number }
+  interface Labels { sysFrom: string[]; dispatched: string[]; received: string; reported: string }
+
+  for (const root of document.querySelectorAll<HTMLElement>('[data-workbench]')) {
+    const script = JSON.parse(root.dataset.script ?? '[]') as Action[]
+    const L = JSON.parse(root.dataset.labels ?? '{}') as Labels
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const term = root.querySelector<HTMLElement>('[data-wb-term]')!
+    const ready = [...term.children]
+    const cards = [...root.querySelectorAll<HTMLElement>('[data-wb-worker]')]
+    const steps = [...root.querySelectorAll<HTMLElement>('[data-wb-step]')]
+    const countRunning = root.querySelector<HTMLElement>('[data-count-running]')!
+    const countIdle = root.querySelector<HTMLElement>('[data-count-idle]')!
+    const status = cards.map(() => 'idle')
+
+    /* ── Pause while offscreen / tab hidden ───────────────────────── */
+    let onScreen = false
+    let wake: (() => void) | null = null
+    const visible = () => onScreen && !document.hidden
+    const poke = () => { if (visible() && wake) { wake(); wake = null } }
+    new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; poke() }).observe(root)
+    document.addEventListener('visibilitychange', poke)
+    const sleep = async (ms: number) => {
+      if (reduced) return
+      await new Promise((r) => setTimeout(r, ms))
+      if (!visible()) await new Promise<void>((r) => { wake = r })
+    }
+
+    /* ── Terminal rendering ───────────────────────────────────────── */
+    const trim = () => {
+      while (term.scrollHeight > term.clientHeight + 1 && term.children.length > 1) term.firstElementChild?.remove()
+    }
+    const el = (tag: string, cls: string, text = '') => {
+      const n = document.createElement(tag)
+      n.className = cls
+      n.textContent = text
+      return n
+    }
+    const add = (node: HTMLElement) => {
+      node.classList.add('wb-line')
+      term.append(node)
+      trim()
+      return node
+    }
+    const bullet = (text: string, color = 'rgba(255,255,255,0.8)') => {
+      const row = el('div', 'flex gap-2 mt-2')
+      const b = el('span', 'shrink-0', '●')
+      b.style.color = color
+      row.append(b, el('span', 'min-w-0', text))
+      return add(row)
+    }
+
+    async function typeInto(node: HTMLElement, text: string) {
+      if (reduced) { node.textContent = text; return }
+      for (let i = 1; i <= text.length; i++) {
+        node.textContent = text.slice(0, i)
+        await sleep(12 + Math.random() * 20)
+      }
+    }
+
+    function setStatus(w: number, next: 'idle' | 'running') {
+      status[w] = next
+      cards[w].dataset.state = next
+      cards[w].querySelector<HTMLElement>('[data-wb-status-label]')!.textContent = next
+      const running = status.filter((s) => s === 'running').length
+      countRunning.textContent = `${running}`
+      countIdle.textContent = `${status.length - running}`
+    }
+    const activity = (w: number, text: string) => {
+      const a = cards[w].querySelector<HTMLElement>('[data-wb-activity]')!
+      a.textContent = text
+      a.classList.remove('wb-flash')
+      void a.offsetWidth
+      a.classList.add('wb-flash')
+    }
+    const setPhase = (v: number) => steps.forEach((s, i) => s.toggleAttribute('data-active', i === v))
+
+    function reset() {
+      term.replaceChildren(...ready)
+      cards.forEach((_, i) => { setStatus(i, 'idle'); activity(i, '\u00a0') })
+      setPhase(-1)
+    }
+
+    async function run(a: Action) {
+      switch (a.k) {
+        case 'phase': setPhase(a.v); break
+        case 'wait': await sleep(a.ms); break
+        case 'user': {
+          const row = el('div', 'mt-3 flex gap-2 rounded bg-white/[0.07] px-2 py-1 text-white/90')
+          row.append(el('span', 'text-white/50', '›'), el('span', 'min-w-0', a.s))
+          add(row)
+          break
+        }
+        case 'say': bullet(a.s); break
+        case 'send': {
+          /* A tool call, as the CLI renders it: ● Bash(team send …) */
+          const row = bullet('', '#22c55e')
+          const body = row.lastElementChild as HTMLElement
+          body.append(el('span', 'text-white/90', 'Bash('))
+          const cmd = el('span', 'text-[#93c5fd]')
+          body.append(cmd)
+          const close = el('span', 'text-white/90', '')
+          body.append(close)
+          await typeInto(cmd, a.s)
+          close.textContent = ')'
+          trim()
+          await sleep(250)
+          add(el('div', 'pl-4 text-white/40', `⎿ ${L.dispatched[a.w]}`))
+          setStatus(a.w, 'running')
+          activity(a.w, `${L.received}${a.task}`)
+          await sleep(900)
+          break
+        }
+        case 'work':
+          activity(a.w, a.s)
+          await sleep(900)
+          break
+        case 'report': {
+          activity(a.w, `$ team report — ${L.reported}`)
+          await sleep(450)
+          setStatus(a.w, 'idle')
+          /* Reports land in the orchestrator as a Hive system-message block. */
+          const block = el('div', 'mt-2 rounded bg-[#3a3b3f] px-2.5 py-1.5')
+          block.append(el('div', 'text-white/55', L.sysFrom[a.w]), el('div', 'text-white/90', a.s))
+          add(block)
+          await sleep(900)
+          break
+        }
+      }
+    }
+
+    async function loop() {
+      for (;;) {
+        reset()
+        for (const a of script) await run(a)
+        if (reduced) return
+        root.classList.add('wb-fading')
+        await sleep(450)
+        root.classList.remove('wb-fading')
+      }
+    }
+    void loop()
+  }
+</script>
+
+<style>
+  .wb-root :global(.wb-line) {
+    animation: wb-in 260ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  @keyframes wb-in {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: none; }
+  }
+  .wb-root.wb-fading .wb-term {
+    opacity: 0;
+    transition: opacity 400ms;
+  }
+  .wb-card[data-state='running'] {
+    border-color: rgba(34, 197, 94, 0.45);
+    background: #282c2a;
+    box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.15), 0 0 28px -10px rgba(34, 197, 94, 0.5);
+  }
+  .wb-card[data-state='running'] .wb-status { color: #4ade80; }
+  .wb-card[data-state='running'] .wb-dot {
+    background: #22c55e;
+    animation: wb-live 1.2s ease-in-out infinite;
+  }
+  .wb-card[data-state='running'] .wb-activity { color: rgba(255, 255, 255, 0.7); }
+  @keyframes wb-live {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.6); }
+    50% { box-shadow: 0 0 0 4px rgba(34, 197, 94, 0); }
+  }
+  .wb-flash { animation: wb-in 300ms ease-out; }
+  .wb-step[data-active] { color: var(--color-text); }
+</style>

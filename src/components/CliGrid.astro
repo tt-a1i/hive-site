@@ -66,14 +66,14 @@ const baseDelay = 0.2
 const step = 0.04
 ---
 
-<section class="relative isolate overflow-hidden py-24 sm:py-32">
+<section class="relative isolate py-24 sm:py-32">
   {/* Soft sky-blue echo behind the lineup */}
   <div class="pointer-events-none absolute -top-20 left-1/2 size-[1000px] -z-10 -translate-x-1/2 rounded-full blur-[140px]" style="background: radial-gradient(circle, var(--color-cool-wash), transparent 60%);"></div>
 
   <div class="mx-auto max-w-6xl px-6">
     <div class="reveal max-w-2xl" style="animation-delay:0.05s">
-      <p class="type-kicker text-[var(--color-accent)]">{t.label}</p>
-      <h2 class="type-h2 mt-4 text-[var(--color-text)]">{t.heading}</h2>
+      <p class="type-kicker flex items-center gap-3 text-[var(--color-accent)]"><span class="h-px w-7 bg-current opacity-60" aria-hidden="true"></span>{t.label}</p>
+      <h2 class="type-h2 mt-5 text-balance text-[var(--color-text)]">{t.heading}</h2>
       <p class="mt-4 max-w-xl text-[15px] leading-relaxed text-[var(--color-text-muted)]">{t.sub}</p>
     </div>
 

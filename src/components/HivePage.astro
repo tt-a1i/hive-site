@@ -7,9 +7,8 @@ import SectionHeading from './SectionHeading.astro'
 import FeatureGrid from './FeatureGrid.astro'
 import RemoteBand from './RemoteBand.astro'
 import CliGrid from './CliGrid.astro'
-import Workbench from './Workbench.astro'
-import Clipboard from './Clipboard.astro'
 import hiveUi from '../assets/screenshots/hive-ui.png'
+import hiveUiMobile from '../assets/screenshots/hive-ui-mobile.png'
 import type { Lang } from '../i18n'
 
 /* Pattern-card terminal vignettes: out = a dispatch leaving the
@@ -56,22 +55,31 @@ const dlData = await fetchJson(
 )
 const weeklyDownloads = (dlData?.downloads as number | undefined) ?? null
 
-/* The hero area shows a scripted replay of the protocol; the real,
-   unretouched workbench screenshot is the video poster further down. */
-const SHOT_WIDTHS = [768, 1280, 1920]
-const shotAvif = await getImage({ src: hiveUi, format: 'avif', widths: SHOT_WIDTHS })
-const shotWebp = await getImage({ src: hiveUi, format: 'webp', widths: SHOT_WIDTHS })
-const shotFallback = await getImage({ src: hiveUi, format: 'webp', width: 1280 })
-const shotSizes = '(min-width: 1104px) 1024px, 92vw'
+/* Art-directed screenshot: phones get a readable crop of the team panel
+   instead of the whole workbench shrunk 4x. Manual <picture> so mobile
+   never downloads the desktop file (a hidden <img> still would). */
+const SHOT_WIDTHS = [768, 1280, 1920, 2400]
+const shotDesktopAvif = await getImage({ src: hiveUi, format: 'avif', widths: SHOT_WIDTHS })
+const shotDesktopWebp = await getImage({ src: hiveUi, format: 'webp', widths: SHOT_WIDTHS })
+const shotMobileAvif = await getImage({ src: hiveUiMobile, format: 'avif', widths: [480, 720, 1120] })
+const shotMobileWebp = await getImage({ src: hiveUiMobile, format: 'webp', widths: [480, 720, 1120] })
+const shotFallback = await getImage({ src: hiveUi, format: 'webp', width: 1920 })
+const shotSizesDesktop = '(min-width: 1320px) 1272px, 92vw'
+const shotSizesMobile = '92vw'
 
 const t = lang === 'zh'
   ? {
       shotAlt:
         'Hive 工作台：浏览器里的 orchestrator 给多个 CLI worker（Claude Code、Codex、Gemini 等）派活的协作截图',
+      steps: [
+        { num: '01', body: '你给 Orchestrator 一个目标' },
+        { num: '02', body: '它用 team send 给 Worker 派活' },
+        { num: '03', body: 'Worker 干完，team report 交回' },
+      ],
       video: {
         label: '演示视频',
-        heading: '七分钟，一刀不剪。',
-        sub: '从启动 Orchestrator、派活、汇报到换角色分工，完整走一遍真实流程。',
+        heading: '一镜到底，看它跑起来。',
+        sub: '从启 Orchestrator、派活 Worker、到角色扮演分工——七分钟实地走一遍。',
         play: '播放演示',
         meta: '07:21 · Bilibili',
         note: '视频原片：<a href="https://www.bilibili.com/video/BV1UHLp6nEQR" target="_blank" rel="noopener" class="underline-offset-2 transition-colors hover:text-[var(--color-text)] hover:underline">在 Bilibili 打开</a>',
@@ -79,13 +87,13 @@ const t = lang === 'zh'
       patterns: {
         label: '三种分工',
         heading: '蜂巢里没有英雄。',
-        sub: '没有哪个 Agent 包揽全程。作者之外有人审、有人测，问题才藏不住。',
+        sub: '没有一个 Agent 干完整个项目，每个只负责最擅长的那段。',
         legendOut: '派出去',
         legendIn: '交回来',
         cards: [
           {
             title: '写 + 审',
-            body: 'Claude 写，Codex 审。作者自查总会放过自己的习惯性错误，换一家模型来挑，狠得多。你只看最后那版 diff。',
+            body: '两家模型互相挑刺，比一家自查狠得多。改完再审一轮，你只看最终 diff。',
             lines: [
               { dir: 'out', cmd: 'team send claude', arg: '"写：给设置页加暗色模式"' },
               { dir: 'out', cmd: 'team send codex', arg: '"审：挑这版 diff 的毛病"' },
@@ -94,7 +102,7 @@ const t = lang === 'zh'
           },
           {
             title: '测 + 修',
-            body: 'Gemini 跑测试，红了派给 Claude 修，修完再跑。红绿循环在巢里自己转，什么时候收工由你定。',
+            body: '红绿循环在巢里自己转。什么时候算绿、什么时候收工——你说了算。',
             lines: [
               { dir: 'out', cmd: 'team send gemini', arg: '"写测试，全量跑一遍"' },
               { dir: 'in', cmd: 'gemini report:', arg: '3 条红' },
@@ -103,7 +111,7 @@ const t = lang === 'zh'
           },
           {
             title: '不止写代码',
-            body: '研究员核查来源，译者出英文版，编辑统一口径。起个角色名、写几句职责，就能派活。',
+            body: '研究员、译者、编剧、辩论搭子——起个角色名，剩下交给 Orchestrator 排班。',
             lines: [
               { dir: 'out', cmd: 'team send researcher', arg: '"核查引用的 5 个来源"' },
               { dir: 'out', cmd: 'team send translator', arg: '"把结论翻成英文"' },
@@ -120,7 +128,7 @@ const t = lang === 'zh'
         openHint: '# 打开它打印的本机地址，通常是 http://127.0.0.1:3000',
         published: (d: string) => `发布于 ${d}`,
         downloads: (n: string) => `周下载 ${n}`,
-        demo: '还没装任何 Agent CLI？启动后在向导里点 <strong>Try Demo</strong>，先看一个演示蜂巢跑起来，再决定装不装真的。',
+        demo: '还没装任何 Agent CLI？启动后在向导里点 <strong>Try Demo</strong>——先看一个假蜂巢跑起来，再决定装不装真的。',
         trust: '只监听 127.0.0.1 · 代码不出本机 · BSL 1.1 · Node ≥ 22 · macOS / Linux / Windows',
       },
       manifesto: ['一个 Agent，等你的下一条指令。', '一座蜂巢，朝你给的方向飞。'],
@@ -137,10 +145,15 @@ const t = lang === 'zh'
   : {
       shotAlt:
         'Hive workbench: an orchestrator dispatching tasks to Claude Code, Codex and Gemini worker terminals in the browser',
+      steps: [
+        { num: '01', body: 'You give the orchestrator a goal' },
+        { num: '02', body: 'It dispatches workers via team send' },
+        { num: '03', body: 'Workers finish and team report back' },
+      ],
       video: {
         label: 'Demo video',
-        heading: 'Seven minutes. No cuts.',
-        sub: 'Orchestrator up, work dispatched, reports in, roles switched — the real flow, unedited. Narration is in Chinese; the terminals speak for themselves.',
+        heading: 'One take, start to finish.',
+        sub: 'Orchestrator up, workers dispatched, roles in play — seven minutes, unedited. Narration is in Chinese; the terminals speak for themselves.',
         play: 'Play the demo',
         meta: '07:21 · Bilibili',
         note: 'Source video: <a href="https://www.bilibili.com/video/BV1UHLp6nEQR" target="_blank" rel="noopener" class="underline-offset-2 transition-colors hover:text-[var(--color-text)] hover:underline">open on Bilibili</a>',
@@ -148,13 +161,13 @@ const t = lang === 'zh'
       patterns: {
         label: 'Three ways to split',
         heading: 'No hero in the hive.',
-        sub: 'No single agent carries the whole job. When someone other than the author reviews and tests, problems have nowhere to hide.',
+        sub: 'No single agent finishes the whole project — each plays the part it does best.',
         legendOut: 'goes out',
         legendIn: 'comes back',
         cards: [
           {
             title: 'Write + review',
-            body: 'Claude writes, Codex reviews. Authors let their own habits slide; a different vendor picking at the diff is far less forgiving. You read the final version.',
+            body: "Two vendors picking at each other's work beats one checking its own. You read the final diff.",
             lines: [
               { dir: 'out', cmd: 'team send claude', arg: '"implement dark mode"' },
               { dir: 'out', cmd: 'team send codex', arg: '"review claude\'s diff"' },
@@ -163,7 +176,7 @@ const t = lang === 'zh'
           },
           {
             title: 'Test + fix',
-            body: 'Gemini runs the tests, reds go to Claude, then the suite runs again. The loop spins inside the hive; you decide when green means done.',
+            body: 'The red-green loop spins inside the hive. You decide when green means done.',
             lines: [
               { dir: 'out', cmd: 'team send gemini', arg: '"write + run tests"' },
               { dir: 'in', cmd: 'gemini report:', arg: '3 failures' },
@@ -189,7 +202,7 @@ const t = lang === 'zh'
         openHint: '# open the URL it prints — usually http://127.0.0.1:3000',
         published: (d: string) => `published ${d}`,
         downloads: (n: string) => `${n} weekly downloads`,
-        demo: 'No agent CLIs installed yet? Hit <strong>Try Demo</strong> in the first-run wizard — watch a demo hive run before you install a real one.',
+        demo: 'No agent CLIs installed yet? Hit <strong>Try Demo</strong> in the first-run wizard — watch a fake hive run before you install a real one.',
         trust: 'Binds to 127.0.0.1 · your code stays home · BSL 1.1 · Node ≥ 22 · macOS / Linux / Windows',
       },
       manifesto: ['One agent waits for your next word.', 'A hive flies where you point.'],
@@ -211,18 +224,44 @@ const videoEmbedSrc =
 <Layout lang={lang} npmVersion={npmLatest}>
   <Nav lang={lang} />
 
-  <main class="overflow-x-clip">
+  <main>
     <Hero lang={lang} />
 
-    {/* ─── The product, running — a scripted replay of the real team
-        protocol where the static screenshot used to be. ───────── */}
-    <section class="relative isolate pb-16 sm:pb-20">
-      <div class="reveal mx-auto max-w-[1320px] px-4 sm:px-6" style="animation-delay:0.15s">
-        <Workbench lang={lang} />
+    {/* ─── Product screenshot — the page's main visual anchor ───── */}
+    <section class="relative isolate overflow-hidden pb-16 sm:pb-20">
+      <div class="mx-auto max-w-[1320px] px-6">
+        <div class="reveal relative" style="animation-delay:0.15s">
+          <div class="overflow-hidden rounded-2xl border border-[var(--color-border)] shadow-[0_30px_80px_-30px_rgba(15,23,42,0.25)]">
+            <picture>
+              <source media="(max-width: 639px)" type="image/avif" srcset={shotMobileAvif.srcSet.attribute} sizes={shotSizesMobile} />
+              <source media="(max-width: 639px)" type="image/webp" srcset={shotMobileWebp.srcSet.attribute} sizes={shotSizesMobile} />
+              <source type="image/avif" srcset={shotDesktopAvif.srcSet.attribute} sizes={shotSizesDesktop} />
+              <source type="image/webp" srcset={shotDesktopWebp.srcSet.attribute} sizes={shotSizesDesktop} />
+              <img
+                src={shotFallback.src}
+                width={hiveUi.width}
+                height={hiveUi.height}
+                alt={t.shotAlt}
+                loading="eager"
+                decoding="async"
+                fetchpriority="high"
+                class="block w-full"
+              />
+            </picture>
+          </div>
+        </div>
+
+        {/* The mechanic in one quiet mono strip — what you are looking at. */}
+        <ol class="reveal mx-auto mt-8 flex max-w-4xl flex-col gap-2.5 px-1 font-mono text-[12px] leading-relaxed text-[var(--color-text-muted)] sm:flex-row sm:justify-between sm:gap-8" style="animation-delay:0.3s">
+          {t.steps.map((step) => (
+            <li class="flex items-baseline gap-2.5">
+              <span class="text-[var(--color-accent)]">{step.num}</span>
+              <span>{step.body}</span>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
-
-    <Clipboard lang={lang} />
 
     {/* ─── Demo video — click-to-load facade, no third-party JS until asked ─ */}
     <section class="relative isolate overflow-hidden py-16 sm:py-20">
@@ -230,13 +269,6 @@ const videoEmbedSrc =
         <SectionHeading kicker={t.video.label} heading={t.video.heading} sub={t.video.sub} class="reveal" />
         <div class="reveal mt-12 max-w-5xl overflow-hidden rounded-2xl border border-[var(--color-border)] shadow-[0_30px_80px_-30px_rgba(15,23,42,0.25)]" style="animation-delay:0.15s">
           <div class="relative bg-[var(--color-tile)]" style="aspect-ratio: 16 / 9;" data-video-facade data-src={videoEmbedSrc} data-title={lang === 'zh' ? 'Hive 演示视频' : 'Hive demo video'}>
-            {/* The real workbench as the poster, dimmed behind the play button. */}
-            <picture>
-              <source type="image/avif" srcset={shotAvif.srcSet.attribute} sizes={shotSizes} />
-              <source type="image/webp" srcset={shotWebp.srcSet.attribute} sizes={shotSizes} />
-              <img src={shotFallback.src} width={hiveUi.width} height={hiveUi.height} alt={t.shotAlt} loading="lazy" decoding="async" class="absolute inset-0 size-full object-cover object-left-top opacity-45" />
-            </picture>
-            <div class="absolute inset-0 bg-gradient-to-b from-[#0e1117]/20 to-[#0e1117]/70"></div>
             <button
               type="button"
               class="group absolute inset-0 flex size-full cursor-pointer flex-col items-center justify-center gap-5"
@@ -257,7 +289,7 @@ const videoEmbedSrc =
     </section>
 
     {/* ─── Use-case patterns — three concrete "what could I do with this?" cards ─ */}
-    <section class="relative isolate py-16 sm:py-24">
+    <section class="relative isolate overflow-hidden py-16 sm:py-24">
       {/* Soft watercolor echoes — peach in the upper-right, sky-blue in the lower-left */}
       <div class="pointer-events-none absolute -top-32 -right-40 size-[700px] -z-10 rounded-full blur-[120px]" style="background: radial-gradient(circle, var(--color-warm-soft), transparent 65%);"></div>
       <div class="pointer-events-none absolute -bottom-40 -left-40 size-[600px] -z-10 rounded-full blur-[120px]" style="background: radial-gradient(circle, var(--color-cool-wash), transparent 65%);"></div>
@@ -309,7 +341,7 @@ const videoEmbedSrc =
     <RemoteBand lang={lang} />
 
     {/* ─── Install — the conversion moment, with a proper heading ── */}
-    <section id="install" class="relative isolate py-24 sm:py-32">
+    <section id="install" class="relative isolate overflow-hidden py-24 sm:py-32">
       {/* Watercolor texture echo so the painted quality carries into the
           bottom half of the page, plus the soft amber halo. */}
       <div
@@ -326,14 +358,14 @@ const videoEmbedSrc =
             <button
               type="button"
               class="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-md border border-[var(--color-border)] bg-white px-2.5 py-1.5 font-mono text-[11px] text-[var(--color-text-muted)] transition-colors duration-150 ease-out hover:border-[var(--color-accent)]/40 hover:text-[var(--color-text)]"
-              data-copy-text={'npm i -g @tt-a1i/hive\nhive'}
+              data-copy-install
               data-copied-label={t.install.copied}
             >
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false">
                 <rect x="9" y="9" width="11" height="11" rx="2"/>
                 <path d="M5 15V5a2 2 0 0 1 2-2h10"/>
               </svg>
-              <span data-copy-label>{t.install.copy}</span>
+              <span>{t.install.copy}</span>
             </button>
             <div><span class="select-none text-[var(--color-accent)]">$</span> <span class="text-[var(--color-text)]">npm i -g @tt-a1i/hive</span></div>
             <div><span class="select-none text-[var(--color-accent)]">$</span> <span class="text-[var(--color-text)]">hive</span></div>
@@ -441,9 +473,10 @@ const videoEmbedSrc =
     })
   }
 
-  // Click-to-copy for the install commands (hero button + install card).
-  for (const copyBtn of document.querySelectorAll<HTMLButtonElement>('[data-copy-text]')) copyBtn.addEventListener('click', async () => {
-    const text = copyBtn.dataset.copyText ?? ''
+  // Click-to-copy for the install commands.
+  const copyBtn = document.querySelector<HTMLButtonElement>('[data-copy-install]')
+  copyBtn?.addEventListener('click', async () => {
+    const text = 'npm i -g @tt-a1i/hive\nhive'
     let copied = false
     try {
       await navigator.clipboard.writeText(text)
@@ -459,7 +492,7 @@ const videoEmbedSrc =
       copied = document.execCommand('copy')
       ta.remove()
     }
-    const label = copyBtn.querySelector('[data-copy-label]')
+    const label = copyBtn.querySelector('span')
     if (copied && label) {
       const original = label.textContent
       label.textContent = copyBtn.dataset.copiedLabel ?? 'Copied'

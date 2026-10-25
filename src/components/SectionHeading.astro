@@ -7,11 +7,20 @@ interface Props {
   class?: string
   style?: string
 }
-const { kicker, heading, sub, class: className = '', style } = Astro.props
+const {
+  kicker,
+  heading,
+  sub,
+  class: className = '',
+  style,
+} = Astro.props
 ---
 
 <div class={`max-w-2xl ${className}`} style={style}>
-  <p class="type-kicker text-[var(--color-accent)]">{kicker}</p>
-  <h2 class="type-h2 mt-4 text-[var(--color-text)]">{heading}</h2>
-  {sub && <p class="mt-4 max-w-xl text-[15px] leading-relaxed text-[var(--color-text-muted)]">{sub}</p>}
+  <p class="type-kicker flex items-center gap-3 text-[var(--color-accent)]">
+    <span class="h-px w-6 bg-current opacity-55" aria-hidden="true"></span>
+    <span>{kicker}</span>
+  </p>
+  <h2 class="type-h2 mt-4 text-balance text-[var(--color-text)]">{heading}</h2>
+  {sub && <p class="mt-4 max-w-xl text-[15.5px] leading-[1.78] text-[var(--color-text-muted)] [text-wrap:pretty]">{sub}</p>}
 </div>

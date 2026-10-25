@@ -1,5 +1,6 @@
 ---
 import type { Lang } from '../i18n'
+import Swarm from './Swarm.astro'
 
 interface Props {
   lang: Lang
@@ -10,7 +11,7 @@ const t = lang === 'zh'
   ? {
       headline1: '在你的浏览器里，',
       headline2: '造一座 Agent 蜂巢。',
-      subhead: '独行已尽其远，众行方启其新。',
+      couplet: ['独行已尽其远，', '众行方启其新。'],
       mechanic:
         '一个 Orchestrator 派活，Claude Code、Codex、Gemini 这些真实的 CLI Agent 在浏览器终端里各自开工——全部跑在你本机。',
       build: '造一座蜂巢',
@@ -19,7 +20,7 @@ const t = lang === 'zh'
   : {
       headline1: 'A hive of agents',
       headline2: 'right in your browser.',
-      subhead: 'Alone has gone as far as it goes. Together is just getting started.',
+      couplet: ['Alone has gone as far as it goes.', 'Together is just getting started.'],
       mechanic:
         'One orchestrator hands out the work. Claude Code, Codex and Gemini pick it up as real CLI processes, each in its own terminal in your browser — all on your machine.',
       build: 'Build your hive',
@@ -28,35 +29,33 @@ const t = lang === 'zh'
 ---
 
 <section class="relative isolate overflow-hidden pt-32 pb-20 sm:pt-44 sm:pb-28">
-  {/* Watercolor hero background — cool blue → cream → warm peach.
-     Mask fades the painting into the page bg at the bottom so it doesn't
-     hard-cut into the screenshot section below. */}
+  {/* Watercolor hero background — cool blue → cream → warm peach. */}
   <div
     class="pointer-events-none absolute inset-0 -z-10"
-    style="background-image:url('/hero-bg.webp'); background-size:cover; background-position:50% 30%; mask-image:linear-gradient(180deg, black 0%, black 55%, transparent 100%); -webkit-mask-image:linear-gradient(180deg, black 0%, black 55%, transparent 100%);"
+    style="background-image:url('/hero-bg.webp'); background-size:cover; background-position:50% 30%; mask-image:linear-gradient(180deg, black 0%, black 58%, transparent 100%); -webkit-mask-image:linear-gradient(180deg, black 0%, black 58%, transparent 100%);"
   ></div>
+  {/* One ink stroke leaves the end of the first line and flies far; where it
+      lands, the flock appears together with the second line. */}
+  <Swarm mode="travel" class="-z-5" />
 
   <div class="mx-auto max-w-6xl px-6">
-    <h1 class="type-display max-w-5xl">
+    <h1 class="type-display reveal max-w-5xl" style="animation-delay:0.08s">
       <span class="block text-[var(--color-text)]">{t.headline1}</span>
       <span class="block text-[var(--color-accent)] sm:pl-[1.5em]">{t.headline2}</span>
     </h1>
 
-    <p
-      class="type-subhead reveal mt-6 max-w-2xl text-balance text-[var(--color-text-muted)]"
-      style="animation-delay:0.28s"
-    >
-      {t.subhead}
+    <p class="type-subhead mt-7 max-w-2xl text-balance">
+      <span class="reveal inline-block text-[var(--color-text-muted)]" style="animation-delay:0.3s" data-swarm-origin>{t.couplet[0]}</span>{lang === 'en' && ' '}<span class="reveal inline-block text-[var(--color-text)]" style="animation-delay:1.7s" data-swarm-sync>{t.couplet[1]}</span>
     </p>
 
     <p
-      class="reveal mt-5 max-w-xl text-[15px] leading-[1.75] text-[var(--color-text-muted)] [text-wrap:pretty]"
-      style="animation-delay:0.36s"
+      class="reveal mt-5 max-w-xl text-[15.5px] leading-[1.78] text-[var(--color-text-muted)] [text-wrap:pretty]"
+      style="animation-delay:0.5s"
     >
       {t.mechanic}
     </p>
 
-    <div class="reveal mt-10 flex flex-wrap items-center gap-3" style="animation-delay:0.46s">
+    <div class="reveal mt-10 flex flex-wrap items-center gap-3" style="animation-delay:0.6s">
       <a
         href="#install"
         class="group inline-flex items-center gap-2 rounded-full bg-[var(--color-accent)] px-6 py-3 text-[13.5px] font-semibold text-white shadow-[0_8px_24px_-8px_rgba(37,99,235,0.45)] transition-all duration-200 ease-out hover:-translate-y-px hover:bg-[var(--color-accent-hi)] hover:shadow-[0_12px_32px_-8px_rgba(37,99,235,0.55)] active:translate-y-0 active:shadow-[0_4px_12px_-4px_rgba(37,99,235,0.35)] active:duration-75"
@@ -68,7 +67,7 @@ const t = lang === 'zh'
       </a>
       <a
         href="https://github.com/tt-a1i/hive"
-        class="group inline-flex items-center gap-2 rounded-full border border-[var(--color-border-hi)] bg-white/70 px-6 py-3 text-[13.5px] font-semibold text-[var(--color-text)] backdrop-blur-sm transition-colors duration-150 ease-out hover:border-[var(--color-text-muted)] hover:bg-white"
+        class="group inline-flex items-center gap-2 rounded-full border border-[var(--color-border-hi)] bg-white/75 px-6 py-3 text-[13.5px] font-semibold text-[var(--color-text)] backdrop-blur-sm transition-colors duration-150 ease-out hover:border-[var(--color-text-muted)] hover:bg-white"
       >
         <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false">
           <path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.34c-2.22.48-2.69-1.07-2.69-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.87 2.34.66.07-.52.28-.87.5-1.07-1.77-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 8 0Z"/>

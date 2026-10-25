@@ -18,9 +18,6 @@ const t = lang === 'zh'
       sub: "Nine presets out of the box — and that's just the start. Any agent on your laptop runs here too: your CLIs bring their own logins. Hive itself asks for no account, no key.",
     }
 
-/* One surface for every tile (--color-tile) so the lineup reads as a single
-   deliberate terminal stripe instead of nine mismatched app icons.
-   Monochrome marks render in cream; brand-colored marks keep their color. */
 interface Tile {
   name: string
   href: string
@@ -66,19 +63,16 @@ const baseDelay = 0.2
 const step = 0.04
 ---
 
-<section class="relative isolate overflow-hidden py-24 sm:py-32">
-  {/* Soft sky-blue echo behind the lineup */}
+<section class="relative isolate py-24 sm:py-32">
   <div class="pointer-events-none absolute -top-20 left-1/2 size-[1000px] -z-10 -translate-x-1/2 rounded-full blur-[140px]" style="background: radial-gradient(circle, var(--color-cool-wash), transparent 60%);"></div>
 
   <div class="mx-auto max-w-6xl px-6">
     <div class="reveal max-w-2xl" style="animation-delay:0.05s">
-      <p class="type-kicker text-[var(--color-accent)]">{t.label}</p>
-      <h2 class="type-h2 mt-4 text-[var(--color-text)]">{t.heading}</h2>
-      <p class="mt-4 max-w-xl text-[15px] leading-relaxed text-[var(--color-text-muted)]">{t.sub}</p>
+      <p class="type-kicker flex items-center gap-3 text-[var(--color-accent)]"><span class="h-px w-6 bg-current opacity-55" aria-hidden="true"></span>{t.label}</p>
+      <h2 class="type-h2 mt-4 text-balance text-[var(--color-text)]">{t.heading}</h2>
+      <p class="mt-4 max-w-xl text-[15.5px] leading-[1.78] text-[var(--color-text-muted)]">{t.sub}</p>
     </div>
 
-    {/* Centered wrap: 3×3 on phones, 5+4 on tablets, one row of nine on
-        desktop — no stranded tile at any width. */}
     <ul class="mt-14 flex flex-wrap justify-center gap-x-3 gap-y-10">
       {tiles.map((tile, i) => (
         <li class="reveal w-24" style={`animation-delay:${baseDelay + i * step}s`}>

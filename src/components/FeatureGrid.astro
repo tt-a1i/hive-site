@@ -7,8 +7,6 @@ interface Props {
 }
 const { lang } = Astro.props
 
-/* Every claim here traces to the public README or CHANGELOG — auto-staff
-   and workflows ship behind experimental toggles, and the cards say so. */
 const t = lang === 'zh'
   ? {
       label: '能力',
@@ -48,7 +46,7 @@ const t = lang === 'zh'
           body: 'Coder / Reviewer / Tester 模板内置，可改可存；另有 400+ 中英双语社区角色模板，搜一下、一键导入，随安装包离线可用。',
         },
       ],
-      more: '还有：多 Workspace 侧边栏 · 完成 Webhook（接 Slack / CI）· 桌面通知与六种提示音 · 装成 PWA 桌面应用 · 在 VS Code / 终端里一键打开 Workspace · 界面中英双语',
+      more: '还有：多 Workspace 侧边栏 · 完成 Webhook（接 Slack / CI） · 桌面通知与六种提示音 · 装成 PWA 桌面应用 · 在 VS Code / 终端里一键打开 Workspace · 界面中英双语',
     }
   : {
       label: 'Capabilities',
@@ -90,16 +88,27 @@ const t = lang === 'zh'
       ],
       more: 'Also: multi-workspace sidebar · completion webhooks (Slack / CI) · desktop notifications with six sound themes · installs as a PWA · open the workspace in VS Code or a terminal · fully bilingual UI',
     }
+
+const zh = lang === 'zh'
+const pv = {
+  memory: zh ? '测试统一放 tests/ 下' : 'tests live in tests/',
+  memoryNote: zh ? '↳ 随下一次派单自动带上' : '↳ rides along with the next dispatch',
+  tasks: zh
+    ? [{ d: true, s: '#1 定暗色 token' }, { d: false, s: '#2 设置页接入', n: '#1' }, { d: false, s: '#3 全量测试', n: '#2' }]
+    : [{ d: true, s: '#1 dark tokens' }, { d: false, s: '#2 wire settings', n: '#1' }, { d: false, s: '#3 full test run', n: '#2' }],
+  resumed: zh ? '✓ 接回原对话' : '✓ conversation restored',
+}
+const stages = ['fan-out', 'review', 'test']
 ---
 
-<section class="relative isolate overflow-hidden py-16 sm:py-24">
+<section class="relative isolate py-16 sm:py-24">
   <div class="mx-auto max-w-6xl px-6">
     <SectionHeading kicker={t.label} heading={t.heading} sub={t.sub} class="reveal" style="animation-delay:0.05s" />
 
-    <ul class="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <ul class="mt-14 grid gap-x-10 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
       {t.cards.map((card, i) => (
         <li
-          class="reveal flex flex-col rounded-2xl border border-[var(--color-border)] bg-white/55 p-7"
+          class="feature reveal flex flex-col border-t border-[var(--color-border-hi)] pt-6"
           style={`animation-delay:${0.12 + i * 0.05}s`}
         >
           <div class="flex items-baseline justify-between gap-3">
@@ -110,13 +119,82 @@ const t = lang === 'zh'
           </div>
           <h3 class="mt-4 text-[17px] font-semibold leading-snug text-[var(--color-text)]">{card.title}</h3>
           <p class="mt-2.5 text-[14px] leading-[1.7] text-[var(--color-text-muted)]">{card.body}</p>
+          <div class="mt-auto pt-6" aria-hidden="true">
+            <div class="feature-preview rounded-xl border border-[var(--color-border)] bg-white/60 px-4 py-3 font-mono text-[11px] leading-[1.85] text-[var(--color-text-muted)] transition-[transform,box-shadow] duration-300 ease-out">
+              {i === 0 && (
+                <>
+                  <div><span class="text-[var(--color-accent)]">$</span> team spawn tester --ephemeral</div>
+                  <div class="mt-1 flex flex-wrap gap-1.5">
+                    <span class="inline-flex items-center gap-1.5 rounded-md bg-white px-2 py-0.5 text-[var(--color-text)] ring-1 ring-[var(--color-border)]"><span class="size-1.5 rounded-full bg-[#22c55e]"></span>tester-07 · running</span>
+                    <span class="inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-[var(--color-text-faint)] line-through ring-1 ring-[var(--color-border)]">reviewer-03</span>
+                  </div>
+                </>
+              )}
+              {i === 1 && (
+                <div class="flex flex-wrap items-center gap-1.5">
+                  {stages.map((st, j) => (
+                    <>
+                      {j > 0 && <span class="text-[var(--color-text-faint)]">→</span>}
+                      <span class={`rounded-md px-2 py-0.5 ring-1 ${j < 2 ? 'bg-white text-[var(--color-text)] ring-[var(--color-border)]' : 'text-[var(--color-accent)] ring-[var(--color-accent)]/40'}`}>{j < 2 ? '✓ ' : '● '}{st}</span>
+                    </>
+                  ))}
+                </div>
+              )}
+              {i === 2 && (
+                <>
+                  <div><span class="text-[var(--color-accent)]">memory:</span> {pv.memory}</div>
+                  <div class="text-[var(--color-text-faint)]">{pv.memoryNote}</div>
+                </>
+              )}
+              {i === 3 && pv.tasks.map((task) => (
+                <div class="flex items-baseline gap-2">
+                  <span class={`inline-flex size-3 shrink-0 translate-y-[1px] items-center justify-center rounded-[3px] border text-[8px] ${task.d ? 'border-[var(--color-accent)] bg-[var(--color-accent)] text-white' : 'border-[var(--color-border-hi)] bg-white'}`}>{task.d ? '✓' : ''}</span>
+                  <span class={task.d ? 'text-[var(--color-text-faint)] line-through' : 'text-[var(--color-text)]'}>{task.s}</span>
+                  {task.n && <span class="text-[var(--color-accent)]">[needs: {task.n}]</span>}
+                </div>
+              ))}
+              {i === 4 && (
+                <>
+                  <div><span class="text-[var(--color-accent)]">$</span> claude --resume 7f3a…</div>
+                  <div class="text-[#15803d]">{pv.resumed}</div>
+                </>
+              )}
+              {i === 5 && (
+                <div class="flex flex-wrap gap-1.5">
+                  {['Coder', 'Reviewer', 'Tester'].map((r) => <span class="rounded-md bg-white px-2 py-0.5 text-[var(--color-text)] ring-1 ring-[var(--color-border)]">{r}</span>)}
+                  <span class="rounded-md bg-[var(--color-accent-soft)] px-2 py-0.5 font-semibold text-[var(--color-accent)]">+400</span>
+                </div>
+              )}
+            </div>
+          </div>
         </li>
       ))}
     </ul>
 
-    {/* The long tail, honestly labeled as such — real features, one line each. */}
-    <p class="reveal mt-10 max-w-4xl font-mono text-[12px] leading-[2] text-[var(--color-text-faint)]" style="animation-delay:0.42s">
+    <p class="reveal mt-14 max-w-4xl font-mono text-[12px] leading-[2] text-[var(--color-text-faint)]" style="animation-delay:0.42s">
       {t.more}
     </p>
   </div>
 </section>
+
+<style>
+  /* The rule above each item draws in from the left on hover. */
+  .feature { position: relative; }
+  .feature::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 0;
+    height: 1px;
+    width: 100%;
+    background: var(--color-accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s cubic-bezier(0.16, 0.84, 0.24, 1);
+  }
+  .feature:hover::before { transform: scaleX(1); }
+  .feature:hover .feature-preview {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 36px -22px rgba(11, 30, 62, 0.3);
+  }
+</style>

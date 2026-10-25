@@ -1,0 +1,321 @@
+---
+/* A flock of ink strokes drawn on a transparent canvas over the watercolor.
+   travel: one stroke leaves [data-swarm-origin] and flies far; where it lands,
+           the many appear (timed to [data-swarm-sync]'s CSS reveal).
+   wait:   one stroke blinks like a caret at [data-swarm-origin] until the
+           section is in view, then bursts into a flock that follows the pointer. */
+interface Props {
+  mode: 'travel' | 'wait'
+  /** wait mode: ms from entering view until the flock appears. */
+  spawn?: number
+  class?: string
+}
+const { mode, spawn = 1900, class: className = '' } = Astro.props
+---
+
+<canvas
+  data-swarm
+  data-mode={mode}
+  data-spawn={spawn}
+  class={`pointer-events-none absolute inset-0 size-full ${className}`}
+  aria-hidden="true"
+></canvas>
+
+<script>
+  type Mode = 'travel' | 'wait'
+  interface Pt { x: number; y: number }
+  interface Bee extends Pt { vx: number; vy: number; c: string; a: number; w: number }
+
+  const PALETTE: [string, number][] = [
+    ['#2563eb', 0.8], ['#1d4ed8', 0.7], ['#7da7ff', 0.8],
+    ['#0b1e3e', 0.5], ['#0b1e3e', 0.42], ['#f0a46b', 0.85], ['#ffb27a', 0.9],
+  ]
+  const INK = '#0b1e3e'
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2)
+
+  /* When an element's CSS reveal starts, on the document timeline.
+     undefined = no animation to sync to; null = not started yet. */
+  const revealStart = (el: Element | null): number | null | undefined => {
+    const anim = el?.getAnimations?.()[0]
+    if (!anim) return undefined
+    if (anim.startTime == null) return null
+    return Number(anim.startTime) + Number(anim.effect?.getTiming().delay ?? 0)
+  }
+
+  function run(canvas: HTMLCanvasElement) {
+    const host = canvas.closest('section')
+    const ctx = canvas.getContext('2d')
+    if (!host || !ctx) return
+    const mode = canvas.dataset.mode as Mode
+    const spawnDelay = Number(canvas.dataset.spawn)
+    const origin = host.querySelector('[data-swarm-origin]')
+    const sync = host.querySelector('[data-swarm-sync]')
+
+    let w = 0
+    let h = 0
+    const wide = () => w >= 768
+    const bees: Bee[] = []
+
+    const anchor = (t: number): Pt => {
+      const bx = mode === 'travel' ? (wide() ? 0.8 : 0.72) : 0.5
+      const by = mode === 'travel' ? (wide() ? 0.45 : 0.92) : 0.8
+      return {
+        x: w * bx + Math.sin(t * 0.00029) * w * 0.06,
+        y: h * by + Math.sin(t * 0.00043 + 1.3) * h * 0.05,
+      }
+    }
+    const originPt = (): Pt => {
+      const r = canvas.getBoundingClientRect()
+      const rects = origin?.getClientRects()
+      const last = rects?.length ? rects[rects.length - 1] : null
+      if (!last) return { x: w * 0.3, y: h * 0.5 }
+      return { x: last.right - r.left + 6, y: last.top - r.top + last.height * 0.55 }
+    }
+
+    const spawn = (at: Pt) => {
+      const count = mode === 'travel' ? (wide() ? 84 : 42) : (wide() ? 72 : 40)
+      for (let i = 0; i < count; i++) {
+        const [c, a] = PALETTE[(Math.random() * PALETTE.length) | 0]
+        const ang = Math.random() * Math.PI * 2
+        const sp = 0.8 + Math.random() * 2.2
+        bees.push({
+          x: at.x + Math.cos(ang) * 4, y: at.y + Math.sin(ang) * 4,
+          vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp,
+          c, a, w: 1.1 + Math.random() * 0.9,
+        })
+      }
+    }
+
+    /* ── Pointer: the flock leans toward it (travel) or follows it (wait);
+       a click anywhere that isn't a control sends it there. ── */
+    let pointer: Pt | null = null
+    let pointerAt = -Infinity
+    let burst: Pt | null = null
+    let burstAt = -Infinity
+    const local = (e: MouseEvent): Pt => {
+      const r = canvas.getBoundingClientRect()
+      return { x: e.clientX - r.left, y: e.clientY - r.top }
+    }
+    host.addEventListener('pointermove', (e) => { pointer = local(e); pointerAt = performance.now() })
+    host.addEventListener('pointerleave', () => { pointer = null })
+    host.addEventListener('click', (e) => {
+      if ((e.target as Element).closest('a, button, input, select, textarea, [role="button"]')) return
+      const at = local(e)
+      burst = at
+      burstAt = performance.now()
+      for (const b of bees) {
+        const dx = at.x - b.x
+        const dy = at.y - b.y
+        const d = Math.hypot(dx, dy) || 1
+        b.vx += (dx / d) * 1.6
+        b.vy += (dy / d) * 1.6
+      }
+    })
+
+    const target = (t: number): Pt => {
+      const a = anchor(t)
+      if (burst && t - burstAt < 1400) return burst
+      if (pointer && t - pointerAt < 2600) {
+        const k = mode === 'travel' ? 0.35 : 1
+        return { x: a.x + (pointer.x - a.x) * k, y: a.y + (pointer.y - a.y) * k }
+      }
+      return a
+    }
+
+    const R2 = 38 * 38
+    const S2 = 13 * 13
+    const step = (t: number, dt: number) => {
+      const tg = target(t)
+      for (const b of bees) {
+        let n = 0, cx = 0, cy = 0, ax = 0, ay = 0, sx = 0, sy = 0
+        for (const o of bees) {
+          if (o === b) continue
+          const dx = o.x - b.x
+          const dy = o.y - b.y
+          const d2 = dx * dx + dy * dy
+          if (d2 > R2) continue
+          n++
+          cx += o.x; cy += o.y; ax += o.vx; ay += o.vy
+          if (d2 < S2 && d2 > 0.01) { sx -= dx / d2; sy -= dy / d2 }
+        }
+        let fx = sx * 1.1
+        let fy = sy * 1.1
+        if (n) {
+          fx += (cx / n - b.x) * 0.003 + (ax / n - b.vx) * 0.05
+          fy += (cy / n - b.y) * 0.003 + (ay / n - b.vy) * 0.05
+        }
+        const tx = tg.x - b.x
+        const ty = tg.y - b.y
+        const td = Math.hypot(tx, ty) || 1
+        const pull = 0.028 * Math.min(td / 70, 2)
+        /* Pull plus a little tangential drift, so the flock eddies instead of
+           collapsing to a point — and stays a tight cloud, not a wide ring. */
+        fx += (tx / td) * pull - (ty / td) * pull * 0.35 + (Math.random() - 0.5) * 0.06
+        fy += (ty / td) * pull + (tx / td) * pull * 0.35 + (Math.random() - 0.5) * 0.06
+        b.vx += fx * dt
+        b.vy += fy * dt
+        const sp = Math.hypot(b.vx, b.vy) || 1
+        const k = sp > 2 ? 2 / sp : sp < 0.5 ? 0.5 / sp : 1
+        b.vx *= k
+        b.vy *= k
+        b.x += b.vx * dt
+        b.y += b.vy * dt
+      }
+    }
+
+    /* Partial erase leaves short trails on a transparent canvas. */
+    const fadeOut = (amount: number) => {
+      ctx.globalCompositeOperation = 'destination-out'
+      ctx.fillStyle = `rgba(0,0,0,${amount})`
+      ctx.fillRect(0, 0, w, h)
+      ctx.globalCompositeOperation = 'source-over'
+    }
+    const drawBees = () => {
+      ctx.lineCap = 'round'
+      for (const b of bees) {
+        const sp = Math.hypot(b.vx, b.vy) || 1
+        const len = 2 + sp * 1.6
+        ctx.globalAlpha = b.a
+        ctx.strokeStyle = b.c
+        ctx.lineWidth = b.w
+        ctx.beginPath()
+        ctx.moveTo(b.x - (b.vx / sp) * len, b.y - (b.vy / sp) * len)
+        ctx.lineTo(b.x, b.y)
+        ctx.stroke()
+      }
+      ctx.globalAlpha = 1
+    }
+    const dot = (p: Pt, r = 2.3) => {
+      ctx.fillStyle = INK
+      ctx.beginPath()
+      ctx.arc(p.x, p.y, r, 0, Math.PI * 2)
+      ctx.fill()
+    }
+
+    const renderStatic = () => {
+      bees.length = 0
+      spawn(anchor(0))
+      for (let i = 0; i < 260; i++) step(i * 16, 1)
+      ctx.clearRect(0, 0, w, h)
+      drawBees()
+    }
+
+    const resize = () => {
+      const r = canvas.getBoundingClientRect()
+      const dpr = Math.min(window.devicePixelRatio || 1, 2)
+      w = r.width
+      h = r.height
+      canvas.width = Math.round(w * dpr)
+      canvas.height = Math.round(h * dpr)
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+      if (reduced) renderStatic()
+    }
+    resize()
+    new ResizeObserver(resize).observe(canvas)
+    if (reduced) return
+
+    if (mode === 'wait') host.classList.add('swarm-armed')
+
+    /* ── Timeline ── */
+    let phase: 'idle' | 'lone' | 'swarm' = 'idle'
+    let startAt: number | null = null
+    let spawnAt: number | null = null
+    let from: Pt = { x: 0, y: 0 }
+    let ctrl: Pt = { x: 0, y: 0 }
+    let to: Pt = { x: 0, y: 0 }
+    let prev: Pt | null = null
+
+    const resolveTravel = (now: number) => {
+      if (startAt == null) {
+        const s = revealStart(origin)
+        if (s !== null) startAt = (s ?? now) + 350
+      }
+      if (spawnAt == null) {
+        const s = revealStart(sync)
+        if (s !== null) spawnAt = s ?? now + 1400
+      }
+    }
+
+    let visible = false
+    let raf = 0
+    let last = 0
+    const frame = (now: number) => {
+      raf = 0
+      if (!visible) return
+      const dt = last ? Math.min((now - last) / 16.67, 2.2) : 1
+      last = now
+      if (mode === 'travel') resolveTravel(now)
+
+      if (phase === 'idle' && startAt != null && now >= startAt) {
+        phase = 'lone'
+        from = originPt()
+        to = mode === 'travel' ? anchor(spawnAt ?? now) : from
+        /* Run out level under the headline, then rise to the landing point. */
+        ctrl = { x: to.x, y: wide() ? from.y + h * 0.08 : from.y }
+        prev = null
+      }
+
+      if (phase === 'lone') {
+        if (spawnAt != null && now >= spawnAt) {
+          phase = 'swarm'
+          spawn(mode === 'travel' ? to : originPt())
+        } else if (mode === 'travel') {
+          const end = Math.max(spawnAt ?? startAt! + 1100, startAt! + 600)
+          const p = easeInOut(Math.min((now - startAt!) / (end - startAt!), 1))
+          const q = 1 - p
+          const pt = {
+            x: q * q * from.x + 2 * q * p * ctrl.x + p * p * to.x,
+            y: q * q * from.y + 2 * q * p * ctrl.y + p * p * to.y,
+          }
+          /* A slow erase keeps the long ink path of the one that went alone. */
+          fadeOut(0.035)
+          /* Only the line is painted into the fading layer — painting the head
+             every frame would leave a string of beads. */
+          if (prev) {
+            /* Opaque stroke in a softened ink: translucent segments would
+               darken where their round caps overlap. */
+            ctx.strokeStyle = '#5a6b8a'
+            ctx.lineWidth = 1.8
+            ctx.lineCap = 'round'
+            ctx.beginPath()
+            ctx.moveTo(prev.x, prev.y)
+            ctx.lineTo(pt.x, pt.y)
+            ctx.stroke()
+          }
+          prev = pt
+        } else {
+          /* The one that waits: a blinking caret after the first line. */
+          ctx.clearRect(0, 0, w, h)
+          if (Math.floor((now - startAt!) / 530) % 2 === 0) dot(originPt(), 2.6)
+        }
+      }
+
+      if (phase === 'swarm') {
+        step(now, dt)
+        fadeOut(0.32)
+        drawBees()
+      }
+      raf = requestAnimationFrame(frame)
+    }
+
+    new IntersectionObserver(
+      ([e]) => {
+        visible = e.isIntersecting
+        if (mode === 'wait' && startAt == null && e.intersectionRatio >= 0.35) {
+          host.classList.add('is-in')
+          const now = performance.now()
+          startAt = now + 900
+          spawnAt = now + spawnDelay
+        }
+        if (visible && !raf) {
+          last = 0
+          raf = requestAnimationFrame(frame)
+        }
+      },
+      { threshold: [0, 0.35] },
+    ).observe(host)
+  }
+
+  for (const canvas of document.querySelectorAll<HTMLCanvasElement>('canvas[data-swarm]')) run(canvas)
+</script>

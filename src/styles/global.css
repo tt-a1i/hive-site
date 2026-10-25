@@ -7,11 +7,12 @@
    settings the display type depends on. */
 @import '@fontsource-variable/fraunces/full.css';
 
-/* Self-hosted CJK serif subset (34 glyphs, 13KB, wght 200-900) so the zh
-   display headlines keep their serif voice on Windows/Android, where
-   Songti SC doesn't exist. Regenerate when display copy changes:
+/* Self-hosted CJK serif subset (wght 200-900) so the zh display type
+   keeps its serif voice on Windows/Android, where Songti SC doesn't
+   exist. Regenerate when display copy changes (after `pnpm build`):
+     node scripts/display-chars.mjs > /tmp/chars.txt
      python3 -m fontTools.subset NotoSerifSC[wght].ttf \
-       --text="<all zh chars used in display type>" \
+       --text-file=/tmp/chars.txt \
        --flavor=woff2 --layout-features='*' --no-hinting \
        --output-file=public/fonts/hive-serif-sc.woff2 */
 @font-face {
@@ -22,38 +23,36 @@
 }
 
 @theme {
-  /* Light watercolor theme — warm off-white base + sky blue + warm peach.
-     Inspired by the hero watercolor (cool blue → cream → warm peach). */
-  --color-bg: #fafaf7;            /* warm off-white page bg */
-  --color-bg-2: #ffffff;          /* code blocks, install panel inner */
-  --color-surface: #ffffff;       /* cards */
-  --color-surface-2: #f4f2ec;     /* subtly differentiated surface */
-  --color-border: #e6e3da;        /* card / divider lines */
-  --color-border-hi: #d0ccc0;
+  /* Light watercolor monograph theme — warm archival paper + cobalt signal + dawn peach. */
+  --color-bg: #fafaf7;            /* warm archival paper bg */
+  --color-bg-2: #ffffff;          /* elevated paper, code inner */
+  --color-surface: #ffffff;       /* primary cards */
+  --color-surface-2: #f3f0e8;     /* warm stone inset surface */
+  --color-border: #e4e0d5;        /* architectural hairline */
+  --color-border-hi: #cbc5b5;     /* emphasized hairline */
 
-  /* Deep navy text — sits naturally against sky-blue accent.
-     All three pass WCAG AA on #fafaf7:
+  /* Deep navy-ink text — all three pass WCAG AA on #fafaf7:
         text   #0b1e3e → 14.6:1
-        muted  #4f5b73 →  6.5:1
-        faint  #6a7287 →  4.6:1 (4.8:1 on white) */
+        muted  #4a566e →  6.8:1
+        faint  #667085 →  4.8:1 */
   --color-text: #0b1e3e;
-  --color-text-muted: #4f5b73;
-  --color-text-faint: #6a7287;
+  --color-text-muted: #4a566e;
+  --color-text-faint: #667085;
 
-  /* Vibrant sky blue — primary action color, links, code. */
+  /* Vibrant sky/cobalt blue — primary action color, $ team send signal. */
   --color-accent: #2563eb;
   --color-accent-hi: #1d4ed8;
-  --color-accent-soft: rgba(37, 99, 235, 0.10);
+  --color-accent-soft: rgba(37, 99, 235, 0.09);
   --color-accent-glow: rgba(37, 99, 235, 0.22);
 
-  /* Warm peach — secondary accent, the warm half of the hero watercolor.
-     Used by the section halos. */
+  /* Warm peach / amber — secondary accent, ← team report return signal. */
   --color-warm: rgb(255, 178, 122);
-  --color-warm-soft: rgba(255, 178, 122, 0.40);
-  --color-cool-wash: rgba(125, 180, 255, 0.36);
+  --color-warm-ink: #b45309;
+  --color-warm-soft: rgba(255, 178, 122, 0.38);
+  --color-cool-wash: rgba(125, 180, 255, 0.34);
 
-  /* The one dark surface on the page — CLI lineup tiles, video poster. */
-  --color-tile: #0e1117;
+  /* Dark obsidian terminal surface — workbench theatre, CLI matrix, night watch. */
+  --color-tile: #0d1017;
 
   --font-sans:
     'Inter Variable', 'PingFang SC', 'Microsoft YaHei',
@@ -61,65 +60,64 @@
   --font-mono:
     'JetBrains Mono Variable', ui-monospace, 'SF Mono', Menlo, Consolas,
     monospace;
-  /* Display serif — hero h1/subhead, manifesto, wordmark.
-     Fraunces covers Latin; Hive Serif SC covers the zh display glyphs
-     everywhere, with Songti SC and the Han serifs as wider fallbacks. */
+  /* Display serif — hero h1/subhead, section h2s, manifesto, wordmark. */
   --font-display:
     'Fraunces Variable', 'Hive Serif SC', 'Songti SC', 'Source Han Serif SC',
     'Noto Serif CJK SC', Georgia, serif;
 }
 
 /* ─── Type scale ─────────────────────────────────────────────────
-   The whole scale lives here so levels can't drift apart again.
-   Rule: each level's max stays below the next level's min. */
+   Every level's max stays below the next level's min. */
 
 .type-display {
   font-family: var(--font-display);
-  font-size: clamp(2.75rem, 7vw, 5.75rem);
+  font-size: clamp(2.35rem, 6.8vw, 5.65rem);
   font-weight: 380;
   line-height: 1.06;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.022em;
   font-variation-settings: 'opsz' 144, 'SOFT' 30;
 }
 
 .type-subhead {
   font-family: var(--font-display);
-  font-size: clamp(1.375rem, 2.5vw, 2.125rem);
-  font-weight: 380;
-  line-height: 1.45;
+  font-size: clamp(1.35rem, 2.4vw, 2.05rem);
+  font-weight: 400;
+  line-height: 1.44;
   font-variation-settings: 'opsz' 144, 'SOFT' 50;
 }
 
 .type-manifesto {
   font-family: var(--font-display);
-  font-size: clamp(1.875rem, 4.2vw, 3.25rem);
+  font-size: clamp(1.85rem, 4.2vw, 3.25rem);
   font-weight: 380;
-  line-height: 1.25;
+  line-height: 1.28;
   letter-spacing: -0.015em;
   font-variation-settings: 'opsz' 144, 'SOFT' 30;
 }
 
+/* Section headings share the hero's editorial serif voice. */
 .type-h2 {
-  font-family: var(--font-sans);
-  font-size: clamp(1.65rem, 3.2vw, 2.5rem);
-  font-weight: 560;
-  line-height: 1.1;
-  letter-spacing: -0.025em;
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 4vw, 3.25rem);
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  font-variation-settings: 'opsz' 144, 'SOFT' 30;
 }
 
 .type-h3 {
   font-family: var(--font-sans);
-  font-size: clamp(1.35rem, 2.1vw, 1.65rem);
-  font-weight: 560;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+  font-size: clamp(1.2rem, 1.85vw, 1.45rem);
+  font-weight: 600;
+  line-height: 1.28;
+  letter-spacing: -0.015em;
 }
 
 .type-kicker {
   font-family: var(--font-mono);
-  font-size: 10.5px;
+  font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.2em;
 }
 
 .type-wordmark {
@@ -130,15 +128,18 @@
   font-variation-settings: 'opsz' 144, 'SOFT' 30;
 }
 
-/* ─── CJK layer ──────────────────────────────────────────────────
-   Latin micro-typography doesn't transfer: full-width glyphs need no
-   negative tracking, and hanzi below ~12px lose stroke resolution. */
+/* ─── CJK micro-typography layer ───────────────────────────────── */
 :lang(zh-CN) .type-display { letter-spacing: 0; line-height: 1.14; hanging-punctuation: allow-end; }
-:lang(zh-CN) .type-subhead { letter-spacing: 0; }
-:lang(zh-CN) .type-manifesto { letter-spacing: 0; }
-:lang(zh-CN) .type-h2 { letter-spacing: 0; }
+:lang(zh-CN) .type-subhead { letter-spacing: 0.01em; }
+:lang(zh-CN) .type-manifesto { letter-spacing: 0.01em; }
+:lang(zh-CN) .type-h2 { letter-spacing: 0; line-height: 1.22; }
 :lang(zh-CN) .type-h3 { letter-spacing: 0; }
 :lang(zh-CN) .type-kicker { font-size: 12px; letter-spacing: 0.14em; }
+/* Headlines break only at spaces and punctuation — never inside 蜂巢. */
+:lang(zh-CN) :is(.type-display, .type-subhead, .type-manifesto, .type-h2) {
+  word-break: keep-all;
+  font-feature-settings: 'halt';
+}
 
 html {
   background: var(--color-bg);
@@ -149,23 +150,55 @@ html {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   scroll-behavior: smooth;
-  scroll-padding-top: 80px;
+  scroll-padding-top: 84px;
+  overflow-x: clip;
 }
 
 body {
   background: var(--color-bg);
   min-height: 100vh;
+  overflow-x: clip;
 }
 
-/* Reveal: load-time sequencing via animation-delay. Below-fold elements
-   complete their animation before users scroll to them. */
-@keyframes hive-reveal {
-  from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: translateY(0); }
+main {
+  overflow-x: clip;
 }
+
+/* ─── Motion ───────────────────────────────────────────────────── */
+@keyframes hive-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .reveal {
   opacity: 0;
-  animation: hive-reveal 1.1s cubic-bezier(0.16, 0.7, 0.18, 1) forwards;
+  animation: hive-reveal 0.85s cubic-bezier(0.16, 0.84, 0.24, 1) forwards;
+}
+
+/* The product screenshot lies tilted back and settles flat as it scrolls
+   in. Scroll-driven where supported; a plain fade-up elsewhere. */
+.rise-in {
+  opacity: 0;
+  animation: hive-reveal 0.9s cubic-bezier(0.16, 0.84, 0.24, 1) 0.2s forwards;
+}
+@supports (animation-timeline: view()) {
+  .rise-in {
+    opacity: 1;
+    transform-origin: 50% 0;
+    animation: rise-in linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 42%;
+  }
+}
+@keyframes rise-in {
+  from { transform: perspective(1800px) rotateX(16deg) scale(0.93); opacity: 0.55; }
+  to { transform: none; opacity: 1; }
 }
 
 /* Keyboard focus ring — visible on every interactive surface. */
@@ -176,7 +209,7 @@ body {
 }
 
 ::selection {
-  background: rgba(37, 99, 235, 0.18);
+  background: rgba(37, 99, 235, 0.16);
   color: var(--color-text);
 }
 
@@ -193,9 +226,11 @@ body {
 
 /* Honor user motion preference (WCAG 2.3.3) */
 @media (prefers-reduced-motion: reduce) {
-  .reveal {
-    opacity: 1;
-    animation: none;
+  .reveal,
+  .rise-in {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
   }
   html { scroll-behavior: auto; }
   *,
@@ -207,7 +242,12 @@ body {
   }
 }
 
-/* If scripting is unavailable, never leave .reveal stuck at opacity: 0. */
+/* If scripting is unavailable, never leave elements stuck at opacity: 0. */
 @media (scripting: none) {
-  .reveal { opacity: 1; animation: none; }
+  .reveal,
+  .rise-in {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
 }

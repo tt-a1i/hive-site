@@ -1,0 +1,217 @@
+---
+import { getImage } from 'astro:assets'
+import pattern1 from '../assets/pattern-1.png'
+import pattern2 from '../assets/pattern-2.png'
+import pattern3 from '../assets/pattern-3.png'
+import SectionHeading from './SectionHeading.astro'
+import type { Lang } from '../i18n'
+
+interface Props {
+  lang: Lang
+}
+const { lang } = Astro.props
+
+const [art1, art2, art3] = await Promise.all(
+  [pattern1, pattern2, pattern3].map((src) => getImage({ src, format: 'webp', width: 640 })),
+)
+
+interface Line {
+  dir: 'out' | 'in'
+  cmd: string
+  arg: string
+}
+
+const t = lang === 'zh'
+  ? {
+      label: '三种分工',
+      heading: '蜂巢里没有英雄。',
+      sub: '没有一个 Agent 干完整个项目，每个只负责最擅长的那段。',
+      legendOut: '派出去',
+      legendIn: '交回来',
+      roles1: ['写', '审'],
+      roles2: { test: 'gemini · 测', fix: 'claude · 修', center: '红 → 绿' },
+      roles3: { hub: 'Orchestrator', spokes: ['研究员', '译者', '编剧', '辩论搭子'] },
+      items: [
+        {
+          title: '写 + 审',
+          body: '两家模型互相挑刺，比一家自查狠得多。改完再审一轮，你只看最终 diff。',
+          lines: [
+            { dir: 'out', cmd: 'team send claude', arg: '"写：给设置页加暗色模式"' },
+            { dir: 'out', cmd: 'team send codex', arg: '"审：挑这版 diff 的毛病"' },
+            { dir: 'in', cmd: 'codex report:', arg: '2 处边界问题，得再改一轮' },
+          ] as Line[],
+        },
+        {
+          title: '测 + 修',
+          body: '红绿循环在巢里自己转。什么时候算绿、什么时候收工——你说了算。',
+          lines: [
+            { dir: 'out', cmd: 'team send gemini', arg: '"写测试，全量跑一遍"' },
+            { dir: 'in', cmd: 'gemini report:', arg: '3 条红' },
+            { dir: 'out', cmd: 'team send claude', arg: '"修掉这 3 条红"' },
+          ] as Line[],
+        },
+        {
+          title: '不止写代码',
+          body: '研究员、译者、编剧、辩论搭子——起个角色名，剩下交给 Orchestrator 排班。',
+          lines: [
+            { dir: 'out', cmd: 'team send researcher', arg: '"核查引用的 5 个来源"' },
+            { dir: 'out', cmd: 'team send translator', arg: '"把结论翻成英文"' },
+            { dir: 'in', cmd: 'researcher report:', arg: '两条站不住，已附出处' },
+          ] as Line[],
+        },
+      ],
+    }
+  : {
+      label: 'Three ways to split',
+      heading: 'No hero in the hive.',
+      sub: 'No single agent finishes the whole project — each plays the part it does best.',
+      legendOut: 'goes out',
+      legendIn: 'comes back',
+      roles1: ['writes', 'reviews'],
+      roles2: { test: 'gemini · tests', fix: 'claude · fixes', center: 'red → green' },
+      roles3: { hub: 'Orchestrator', spokes: ['researcher', 'translator', 'screenwriter', 'debate partner'] },
+      items: [
+        {
+          title: 'Write + review',
+          body: "Two vendors picking at each other's work beats one checking its own. You read the final diff.",
+          lines: [
+            { dir: 'out', cmd: 'team send claude', arg: '"implement dark mode"' },
+            { dir: 'out', cmd: 'team send codex', arg: '"review claude\'s diff"' },
+            { dir: 'in', cmd: 'codex report:', arg: '2 edge cases to fix' },
+          ] as Line[],
+        },
+        {
+          title: 'Test + fix',
+          body: 'The red-green loop spins inside the hive. You decide when green means done.',
+          lines: [
+            { dir: 'out', cmd: 'team send gemini', arg: '"write + run tests"' },
+            { dir: 'in', cmd: 'gemini report:', arg: '3 failures' },
+            { dir: 'out', cmd: 'team send claude', arg: '"fix those 3 reds"' },
+          ] as Line[],
+        },
+        {
+          title: 'Beyond code',
+          body: 'Researcher, translator, screenwriter, debate partner — name the role and let the orchestrator run the rota.',
+          lines: [
+            { dir: 'out', cmd: 'team send researcher', arg: '"vet 5 sources"' },
+            { dir: 'out', cmd: 'team send translator', arg: '"make it English"' },
+            { dir: 'in', cmd: 'researcher report:', arg: "2 don't hold up" },
+          ] as Line[],
+        },
+      ],
+    }
+
+/* Labels sit in the same 520×300 coordinate box as the SVG, so they stay on
+   their marks at every width. */
+const pct = (x: number, y: number) => `left:${(x / 520) * 100}%;top:${(y / 300) * 100}%`
+const spokes = [
+  { x: 112, y: 66 },
+  { x: 408, y: 66 },
+  { x: 112, y: 234 },
+  { x: 408, y: 234 },
+]
+const label = 'absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full border border-[var(--color-border-hi)]/80 bg-white/90 px-3 py-1 text-[12px] font-medium text-[var(--color-text)] shadow-[0_6px_18px_-10px_rgba(11,30,62,0.35)] backdrop-blur-sm'
+---
+
+<section class="relative isolate py-20 sm:py-28">
+  <div class="pointer-events-none absolute -top-32 -right-40 size-[700px] -z-10 rounded-full blur-[120px]" style="background: radial-gradient(circle, var(--color-warm-soft), transparent 65%);"></div>
+  <div class="pointer-events-none absolute -bottom-40 -left-40 size-[600px] -z-10 rounded-full blur-[120px]" style="background: radial-gradient(circle, var(--color-cool-wash), transparent 65%);"></div>
+
+  <div class="mx-auto max-w-6xl px-6">
+    <SectionHeading kicker={t.label} heading={t.heading} sub={t.sub} class="reveal" style="animation-delay:0.05s" />
+    <p class="reveal mt-7 flex items-center gap-7 font-mono text-[12px] text-[var(--color-text-muted)]" style="animation-delay:0.1s">
+      <span class="flex items-center gap-2"><span class="size-1.5 rounded-full bg-[var(--color-accent)]"></span>$ {t.legendOut}</span>
+      <span class="flex items-center gap-2"><span class="size-1.5 rounded-full bg-[#e8935a]"></span>← {t.legendIn}</span>
+    </p>
+
+    <ol class="mt-14 space-y-20 sm:mt-16 sm:space-y-28">
+      {t.items.map((item, i) => (
+        <li class="reveal grid items-center gap-8 lg:grid-cols-12 lg:gap-14" style={`animation-delay:${0.12 + i * 0.08}s`}>
+          {/* ── Art ── */}
+          <div class={`relative aspect-[520/300] w-full lg:col-span-7 ${i === 1 ? 'lg:order-2' : ''}`} aria-hidden="true">
+            {i === 0 && (
+              <>
+                <img src={art1.src} alt="" class="absolute left-1/2 top-1/2 h-[96%] -translate-x-1/2 -translate-y-1/2 object-contain" />
+                <svg class="absolute inset-0 size-full" viewBox="0 0 520 300" fill="none">
+                  <path d="M 170 122 C 230 62, 290 62, 350 122" stroke="#2563eb" stroke-opacity="0.35" stroke-width="1.4" stroke-dasharray="3 5" />
+                  <path d="M 350 178 C 290 238, 230 238, 170 178" stroke="#d97706" stroke-opacity="0.35" stroke-width="1.4" stroke-dasharray="3 5" />
+                  <circle r="4" fill="#2563eb"><animateMotion dur="3.2s" repeatCount="indefinite" path="M 170 122 C 230 62, 290 62, 350 122" calcMode="spline" keyTimes="0;1" keySplines="0.45 0 0.2 1" /></circle>
+                  <circle r="4" fill="#e8935a"><animateMotion dur="3.2s" begin="1.6s" repeatCount="indefinite" path="M 350 178 C 290 238, 230 238, 170 178" calcMode="spline" keyTimes="0;1" keySplines="0.45 0 0.2 1" /></circle>
+                </svg>
+                <span class={`${label} flex items-center gap-2`} style={pct(150, 150)}>
+                  <img src="/logos/claude-code.png" alt="" class="size-4" />claude <span class="text-[var(--color-text-faint)]">{t.roles1[0]}</span>
+                </span>
+                <span class={`${label} flex items-center gap-2`} style={pct(370, 150)}>
+                  <img src="/logos/codex.svg" alt="" class="size-4 brightness-0" />codex <span class="text-[var(--color-text-faint)]">{t.roles1[1]}</span>
+                </span>
+              </>
+            )}
+            {i === 1 && (
+              <>
+                <img src={art2.src} alt="" class="loop-spin absolute left-1/2 top-1/2 h-[96%] -translate-x-1/2 -translate-y-1/2 object-contain" />
+                <svg class="absolute inset-0 size-full" viewBox="0 0 520 300" fill="none">
+                  <circle cx="260" cy="150" r="104" stroke="#0b1e3e" stroke-opacity="0.12" stroke-dasharray="2 6" />
+                  {/* Runs red down the testing side, turns green after the fix. */}
+                  <circle r="5">
+                    <animateMotion dur="6s" repeatCount="indefinite" path="M 260 46 A 104 104 0 1 1 259.9 46" />
+                    <animate attributeName="fill" dur="6s" repeatCount="indefinite" values="#ea580c;#ea580c;#16a34a;#16a34a" keyTimes="0;0.45;0.55;1" />
+                  </circle>
+                </svg>
+                <span class={label} style={pct(260, 34)}>{t.roles2.test}</span>
+                <span class={label} style={pct(260, 266)}>{t.roles2.fix}</span>
+                <span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-mono text-[12px] text-[var(--color-text-muted)]">{t.roles2.center}</span>
+              </>
+            )}
+            {i === 2 && (
+              <>
+                <img src={art3.src} alt="" class="drift absolute left-1/2 top-1/2 h-[96%] -translate-x-1/2 -translate-y-1/2 object-contain" />
+                <svg class="absolute inset-0 size-full" viewBox="0 0 520 300" fill="none">
+                  {spokes.map((s, j) => (
+                    <>
+                      <path d={`M 260 150 L ${s.x} ${s.y}`} stroke="#0b1e3e" stroke-opacity="0.14" stroke-dasharray="2 5" />
+                      <circle r="3.2" fill={j % 2 ? '#e8935a' : '#2563eb'}>
+                        <animateMotion dur={`${3.4 + j * 0.3}s`} begin={`${j * 0.8}s`} repeatCount="indefinite" path={`M 260 150 L ${s.x} ${s.y} L 260 150`} />
+                      </circle>
+                    </>
+                  ))}
+                </svg>
+                <span class={`${label} border-[var(--color-accent)]/35 font-mono text-[var(--color-accent)]`} style={pct(260, 150)}>{t.roles3.hub}</span>
+                {spokes.map((s, j) => (
+                  <span class={label} style={pct(s.x, s.y)}>{t.roles3.spokes[j]}</span>
+                ))}
+              </>
+            )}
+          </div>
+
+          {/* ── Copy ── */}
+          <div class={`lg:col-span-5 ${i === 1 ? 'lg:order-1' : ''}`}>
+            <p class="type-wordmark text-[44px] text-[var(--color-accent)]/25">0{i + 1}</p>
+            <h3 class="type-h2 mt-2 !text-[clamp(1.6rem,2.6vw,2.2rem)] text-[var(--color-text)]">{item.title}</h3>
+            <p class="mt-4 max-w-md text-[15.5px] leading-[1.8] text-[var(--color-text-muted)]">{item.body}</p>
+            <ol class="mt-6 space-y-1.5 border-l-2 border-[var(--color-border)] pl-4 font-mono text-[12px] leading-[1.7]">
+              {item.lines.map((line) => (
+                <li class={line.dir === 'out' ? 'text-[var(--color-text)]' : 'text-[#b45309]'}>
+                  <span class={line.dir === 'out' ? 'text-[var(--color-accent)]' : ''}>{line.dir === 'out' ? '$' : '←'}</span>{' '}
+                  {line.cmd} <span class={line.dir === 'out' ? 'text-[var(--color-text-faint)]' : 'text-[var(--color-text-muted)]'}>{line.arg}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  /* Centering uses the `translate` property; these only touch `transform`. */
+  .loop-spin { animation: loop-spin 40s linear infinite; }
+  @keyframes loop-spin {
+    to { transform: rotate(360deg); }
+  }
+  .drift { animation: drift 10s ease-in-out infinite; }
+  @keyframes drift {
+    0%, 100% { transform: none; }
+    50% { transform: translateY(-5px) scale(1.03); }
+  }
+</style>
